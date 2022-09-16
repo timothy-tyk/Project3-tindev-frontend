@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function LandingPage() {
+export default function LandingPage(props) {
   const {
     isAuthenticated,
     user,
@@ -23,7 +23,6 @@ export default function LandingPage() {
       audience: process.env.REACT_APP_AUDIENCE,
       scope: process.env.REACT_APP_SCOPE,
     });
-    console.log("userinfo:", user);
     const response = await axios.post(
       "http://localhost:3000/users",
       {
@@ -35,11 +34,11 @@ export default function LandingPage() {
         headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
+    props.handleSignIn(response.data);
   };
 
   useEffect(() => {
     if (isAuthenticated) {
-      console.log(user);
       userInfo(user);
       navigate("/dashboard");
     } else {
