@@ -9,6 +9,7 @@ export default function Dashboard(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
   const [userUpdate, setUserUpdate] = useState(false);
   const [availableLobbies, setAvailableLobbies] = useState([]);
+  const [lobbiesJoined, setLobbiesJoined] = useState([]);
   const [showAvailableLobbies, setShowAvailableLobbies] = useState(false);
   const { logout, user } = useAuth0();
   const navigate = useNavigate();
@@ -22,21 +23,37 @@ export default function Dashboard(props) {
       navigate("/");
     } else {
       props.handleUpdateUser(userData);
+      joinedLobbies();
     }
   }, []);
 
+  // Lobby Join Functionality
   const openLobbyList = async () => {
     const lobbies = await axios.get(`${BACKEND_URL}/lobbies`);
-    console.log(lobbies.data);
-    setAvailableLobbies(lobbies.data);
+    if (userData.lobbiesJoin) {
+      let availLobbies = lobbies.data.filter(
+        (lobby) => !userData.lobbiesJoin.includes(lobby.id)
+      );
+      setAvailableLobbies(availLobbies);
+    } else {
+      setAvailableLobbies(lobbies.data);
+    }
+  };
+  const joinedLobbies = async () => {
+    const response = await axios.get(
+      `${BACKEND_URL}/users/${userData.id}/lobbies`
+    );
+    setLobbiesJoined(response.data);
   };
   const joinLobby = async (lobbyId) => {
     const updatedUserData = await axios.post(
       `${BACKEND_URL}/users/${userData.id}/joinlobby/${lobbyId}`,
       { prevLobbies: userData.lobbiesJoin }
     );
-    console.log(updatedUserData.data);
     setUserData(updatedUserData.data);
+    joinedLobbies();
+    openLobbyList();
+    setShowAvailableLobbies(false);
     props.handleUpdateUser(updatedUserData.data);
   };
 
@@ -65,11 +82,13 @@ export default function Dashboard(props) {
           </button>
           <div>
             <h4>Lobbies</h4>
-            {userData.lobbiesJoin
-              ? userData.lobbiesJoin.map((lobby) => {
+            {lobbiesJoined.length > 0
+              ? lobbiesJoined.map(({ lobby }) => {
                   return (
                     <div key={lobby.id}>
-                      <p>{lobby}</p>
+                      <button>
+                        <Link to={`/lobbies/${lobby.id}`}>{lobby.name}</Link>
+                      </button>
                     </div>
                   );
                 })
@@ -77,13 +96,13 @@ export default function Dashboard(props) {
             <button
               onClick={() => {
                 openLobbyList();
-                setShowAvailableLobbies(!showAvailableLobbies);
+                setShowAvailableLobbies(true);
               }}
             >
               + Add
             </button>
             <div>
-              {availableLobbies.length && showAvailableLobbies > 0
+              {showAvailableLobbies && availableLobbies.length > 0
                 ? availableLobbies.map((lobby) => {
                     return (
                       <div key={lobby.id}>
