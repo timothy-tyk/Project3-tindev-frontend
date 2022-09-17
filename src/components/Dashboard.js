@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 
 export default function Dashboard() {
-  const [userData, setUserData] = useState(useContext(UserContext).data);
+  const [userData, setUserData] = useState(useContext(UserContext));
   const { logout, user } = useAuth0();
   const navigate = useNavigate();
 
@@ -38,6 +38,10 @@ export default function Dashboard() {
           </button>
         </div>
       ) : null}
+      <div>
+        <p>Lobbies:</p>
+        <p>Insert Lobbies here</p>
+      </div>
     </div>
   );
 }

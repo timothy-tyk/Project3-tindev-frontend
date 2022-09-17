@@ -5,12 +5,13 @@ import "./App.css";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import SingleLobby from "./components/SingleLobby";
-import Questions from "./components/Questions";
+import Questions from "./components/SingleQuestion";
 import Profile from "./components/Profile";
 import Dashboard from "./components/Dashboard";
 import { useAuth0 } from "@auth0/auth0-react";
 import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history.js";
-
+import PostQuestion from "./components/PostQuestion";
+import SingleQuestion from "./components/SingleQuestion";
 export const UserContext = createContext();
 
 export default function App() {
@@ -59,7 +60,8 @@ export default function App() {
               path="/profile"
               element={<Profile handleSignIn={handleUserData} />}
             />
-            <Route path="/questions" element={<Questions />} />
+            <Route path="/questions" element={<PostQuestion />} />
+            <Route path="/questions/:questionId" element={<SingleQuestion />} />
             <Route path="/lobby" element={<SingleLobby />} />
           </Routes>
         </header>
