@@ -20,3 +20,8 @@
 .topNav {
   display: flex;
 }
+/* DASHBOARD */
+.profilepic {
+  width: 15vw;
+  height: auto;
+}

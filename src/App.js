@@ -21,7 +21,7 @@ export default function App() {
   const [userData, setUserData] = useState();
 
   const handleUserData = (data) => {
-    console.log("updating user data");
+    console.log("updating user data", data);
     setUserData(data);
   };
 
@@ -55,11 +55,17 @@ export default function App() {
               path="/"
               element={<LandingPage handleSignIn={handleUserData} />}
             />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/dashboard"
+              element={<Dashboard handleUpdateUser={handleUserData} />}
+            />
             <Route
               path="/profile"
               element={<Profile handleSignIn={handleUserData} />}
             />
+            {/*Tim: i change the /question route element here to PostQuestion & added questionId}
+            {/* <Route path="/questions" element={<Questions />} /> */}
+            <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
             <Route path="/questions" element={<PostQuestion />} />
             <Route path="/questions/:questionId" element={<SingleQuestion />} />
             <Route path="/lobby" element={<SingleLobby />} />
