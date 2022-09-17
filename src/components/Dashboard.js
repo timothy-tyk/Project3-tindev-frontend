@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { BACKEND_URL } from "../constants";
 import axios from "axios";
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
+  const [userUpdate, setUserUpdate] = useState(false);
   const [availableLobbies, setAvailableLobbies] = useState([]);
+  const [showAvailableLobbies, setShowAvailableLobbies] = useState(false);
   const { logout, user } = useAuth0();
   const navigate = useNavigate();
 
@@ -19,7 +21,7 @@ export default function Dashboard() {
     if (!user) {
       navigate("/");
     } else {
-      console.log(userData);
+      props.handleUpdateUser(userData);
     }
   }, []);
 
@@ -28,16 +30,15 @@ export default function Dashboard() {
     console.log(lobbies.data);
     setAvailableLobbies(lobbies.data);
   };
-  // const lobbies = availableLobbies.map((lobby) => {
-  //   return (
-  //     <div>
-  //       <button>{lobby.name}</button>
-  //       <p>{lobby.numberOnline} Online</p>
-  //     </div>
-  //   );
-  // });
-
-  // const lobbiesJoined = userData.lobbiesJoin.map((lobby) => <p>{lobby}</p>);
+  const joinLobby = async (lobbyId) => {
+    const updatedUserData = await axios.post(
+      `${BACKEND_URL}/users/${userData.id}/joinlobby/${lobbyId}`,
+      { prevLobbies: userData.lobbiesJoin }
+    );
+    console.log(updatedUserData.data);
+    setUserData(updatedUserData.data);
+    props.handleUpdateUser(updatedUserData.data);
+  };
 
   return (
     <div>
@@ -64,20 +65,39 @@ export default function Dashboard() {
           </button>
           <div>
             <h4>Lobbies</h4>
+            {userData.lobbiesJoin
+              ? userData.lobbiesJoin.map((lobby) => {
+                  return (
+                    <div key={lobby.id}>
+                      <p>{lobby}</p>
+                    </div>
+                  );
+                })
+              : null}
             <button
               onClick={() => {
                 openLobbyList();
+                setShowAvailableLobbies(!showAvailableLobbies);
               }}
             >
               + Add
             </button>
             <div>
-              {availableLobbies.length > 0
+              {availableLobbies.length && showAvailableLobbies > 0
                 ? availableLobbies.map((lobby) => {
                     return (
                       <div key={lobby.id}>
-                        <button>{lobby.name}</button>
-                        <p>{lobby.numberOnline}</p>
+                        <button>
+                          <Link to={`/lobbies/${lobby.id}`}>{lobby.name}</Link>
+                        </button>
+                        <button
+                          onClick={() => {
+                            joinLobby(lobby.id);
+                          }}
+                        >
+                          Join
+                        </button>
+                        <p>{lobby.numberOnline} online</p>
                       </div>
                     );
                   })
