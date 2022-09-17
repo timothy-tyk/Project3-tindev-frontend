@@ -63,7 +63,7 @@ export default function App() {
               element={<Profile handleSignIn={handleUserData} />}
             />
             <Route path="/questions" element={<Questions />} />
-            <Route path="/lobby" element={<SingleLobby />} />
+            <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
           </Routes>
         </header>
       </div>
