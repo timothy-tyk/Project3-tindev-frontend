@@ -2,6 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BACKEND_URL } from "../constants";
 
 export default function LandingPage(props) {
   const {
@@ -24,7 +25,7 @@ export default function LandingPage(props) {
       scope: process.env.REACT_APP_SCOPE,
     });
     const response = await axios.post(
-      "http://localhost:3000/users",
+      `${BACKEND_URL}/users`,
       {
         username: user.nickname,
         email: user.email,
@@ -34,13 +35,13 @@ export default function LandingPage(props) {
         headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
-    props.handleSignIn(response.data);
+    await props.handleSignIn(response.data);
+    navigate("/dashboard");
   };
 
   useEffect(() => {
     if (isAuthenticated) {
       userInfo(user);
-      navigate("/dashboard");
     } else {
       console.log("not authenticated");
     }
