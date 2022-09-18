@@ -1,14 +1,17 @@
 import React from "react";
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../App.js";
-function PostQuestion(props) {
-  const [userData, setUserData] = useState(useContext(UserContext));
-  const [title, setTitle] = useState("");
-  const [details, setDetails] = useState("");
-  const [tokensOffered, setTokensOffered] = useState();
 
+function EditSingleQuestion(props) {
+  const [userData, setUserData] = useState(useContext(UserContext));
+  const [title, setTitle] = useState(props.question.title);
+  const [details, setDetails] = useState(props.question.details);
+  const [tokensOffered, setTokensOffered] = useState(
+    props.question.tokensOffered
+  );
+  const { lobbyId } = useParams();
   //hard coded
   const navigate = useNavigate();
   const postQuestion = async () => {
@@ -21,25 +24,34 @@ function PostQuestion(props) {
     //   status: status,
     //reset input values
     //navigate to that question index
-    const menteeId = props.userData.id;
-    const lobbyId = props.lobbyId;
-    const submitBody = { title, details, tokensOffered, menteeId, lobbyId };
-    axios.post("http://localhost:3000/question", submitBody).then((res) => {
-      setTitle("");
-      setDetails("");
-      setTokensOffered("");
-      alert("u have posted a question");
-      props.setPosted(!props.posted);
-      // navigate(`/lobbies/${lobbyId}`);
-      //or navigate to the individual question id
-    });
+    // const menteeId = props.userData.id;
+
+    const submitBody = {
+      title: title,
+      details: details,
+      tokensOffered: tokensOffered,
+      lobbyId: lobbyId,
+      questionId: props.question.id,
+    };
+    axios
+      .put("http://localhost:3000/question/editQuestion", submitBody)
+      .then((res) => {
+        // setTitle("");
+        // setDetails("");
+        // setTokensOffered("");
+        // dont empty it out cus user may want to edit again
+        alert("u have edited ur question!");
+        props.setEdited(!props.edited);
+        // navigate(`/lobbies/${lobbyId}`);
+        //or navigate to the individual question id
+      });
   };
   return (
     <div>
-      <button onClick={(e) => props.setPosted(!props.posted)}>
-        Post a question
+      <button onClick={(e) => props.setEdited(!props.edited)}>
+        Edit question
       </button>
-      {props.posted && (
+      {props.edited && (
         <div>
           <input
             type="text"
@@ -60,7 +72,7 @@ function PostQuestion(props) {
             placeholder="Tokens Offer?"
           />
           <button type="submit" onClick={postQuestion}>
-            Post Question
+            Submit
           </button>
         </div>
       )}
@@ -68,4 +80,4 @@ function PostQuestion(props) {
   );
 }
 
-export default PostQuestion;
+export default EditSingleQuestion;
