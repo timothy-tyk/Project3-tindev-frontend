@@ -1,10 +1,11 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext, UserContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
 export default function SingleLobby() {
+  const [userData, setUserData] = useState(useContext(UserContext));
   const [questionsList, setQuestionsList] = useState();
   const { user } = useAuth0();
   const { lobbyId } = useParams();

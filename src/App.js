@@ -65,10 +65,10 @@ export default function App() {
             />
             {/*Tim: i change the /question route element here to PostQuestion & added questionId}
             {/* <Route path="/questions" element={<Questions />} /> */}
+            <Route path="/lobby" element={<SingleLobby />} />
             <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
             <Route path="/questions" element={<PostQuestion />} />
             <Route path="/questions/:questionId" element={<SingleQuestion />} />
-            <Route path="/lobby" element={<SingleLobby />} />
           </Routes>
         </header>
       </div>

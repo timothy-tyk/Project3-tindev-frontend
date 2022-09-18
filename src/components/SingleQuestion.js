@@ -1,14 +1,16 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext, UserContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 export default function Questions() {
+  const [userData, setUserData] = useState(useContext(UserContext));
   const { user } = useAuth0();
   const navigate = useNavigate();
   const [questionId, setQuestionId] = useState();
   const [question, setQuestion] = useState();
+  const [editable, setEditable] = useState();
   // Update question index in state if needed to trigger data retrieval
   const params = useParams();
   if (questionId !== params.questionId) {
@@ -27,6 +29,9 @@ export default function Questions() {
           console.log(response, "response");
           console.log(response.data, "response.data");
           setQuestion(response.data);
+          if (response.data.menteeId === userData.id) {
+            setEditable(true);
+          }
         });
     }
   }, []);
@@ -61,6 +66,7 @@ export default function Questions() {
     <div>
       {" "}
       <p>{question && questionDetails}</p>
+      {editable ? <button> Edit </button> : <button>Accept</button>}
     </div>
   );
 }
