@@ -95,7 +95,10 @@ export default function SingleLobby() {
               {question.menteeIdAlias.username}: {question.title} tokens
               offered: {question.tokensOffered}
               {/* darren this is a button to link to each individual question */}
-              <Link to={`/questions/${question.id}`} key={question.id}>
+              <Link
+                to={`/lobbies/${lobbyId}/questions/${question.id}`}
+                key={question.id}
+              >
                 <button> Question{i + 1}</button>
               </Link>
               <br />
