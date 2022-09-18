@@ -1,21 +1,23 @@
-import React, { useContext } from "react";
-import { useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../App.js";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
-import { UserContext } from "../App";
+import PostQuestion from "./PostQuestion.js";
 
 export default function SingleLobby() {
+  const [questionsList, setQuestionsList] = useState();
   const { user } = useAuth0();
   const { lobbyId } = useParams();
   const navigate = useNavigate();
-
   const [userData, setUserData] = useState(useContext(UserContext));
   const [lobbyData, setLobbyData] = useState([]);
   const [questionsData, setQuestionsData] = useState([]);
   const [userAsMenteeData, setUserAsMenteeData] = useState([]);
   const [userAsMentorData, setUserAsMentorData] = useState([]);
+  const [posted, setPosted] = useState();
 
   const getLobbyData = async () => {
     const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
@@ -30,6 +32,18 @@ export default function SingleLobby() {
     } else {
       getLobbyData();
     }
+    //dummy data from question routersss
+    // const listQuestions = async () => {
+    //   try {
+    //     const data = await axios.get("http://localhost:3000/question");
+    //     console.log(data.data);
+    //     setQuestionsList(data.data);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+
+    // listQuestions();
   }, []);
 
   const getQuestionsData = async () => {
@@ -41,7 +55,7 @@ export default function SingleLobby() {
 
   useEffect(() => {
     getQuestionsData();
-  }, [lobbyData]);
+  }, [lobbyData, posted]);
 
   const getUserStatsData = async () => {
     const responseAsMentee = await axios.get(
@@ -75,12 +89,15 @@ export default function SingleLobby() {
       <h1>{lobbyData.name} Lobby</h1>
       <h4>{lobbyData.numberOnline} People Online</h4>
       <div>
-        {questionsData.map((question) => {
+        {questionsData.map((question, i) => {
           return (
             <div key={question.id}>
               {question.menteeIdAlias.username}: {question.title} tokens
               offered: {question.tokensOffered}
-              <button>go to question</button>
+              {/* darren this is a button to link to each individual question */}
+              <Link to={`/questions/${question.id}`} key={question.id}>
+                <button> Question{i + 1}</button>
+              </Link>
               <br />
               <br />
             </div>
@@ -88,16 +105,27 @@ export default function SingleLobby() {
         })}
       </div>
       <div>
-        <button>post a new question!</button>
+        <PostQuestion
+          lobbyId={lobbyId}
+          userData={userData}
+          posted={posted}
+          setPosted={setPosted}
+        />
       </div>
       <br /> <br />
       <div>general chat</div>
       <br /> <br />
       <div>
-        your current tokens: {userData.tokens} <br />
-        questions answered: {userAsMentorData}
-        <br />
-        questions asked: {userAsMenteeData}
+        {userData ? (
+          <p>
+            your current tokens: {userData.tokens} <br />
+            questions answered: {userAsMentorData}
+            <br />
+            questions asked: {userAsMenteeData}
+          </p>
+        ) : (
+          <p>loading...</p>
+        )}
       </div>
     </div>
   );

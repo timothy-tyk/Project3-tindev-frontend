@@ -1,0 +1,71 @@
+import React from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../App.js";
+function PostQuestion(props) {
+  const [userData, setUserData] = useState(useContext(UserContext));
+  const [title, setTitle] = useState("");
+  const [details, setDetails] = useState("");
+  const [tokensOffered, setTokensOffered] = useState();
+
+  //hard coded
+  const navigate = useNavigate();
+  const postQuestion = async () => {
+    //axios post request to questions router, controller will create into questions model
+    //  menteeId: menteeId,
+    //   title: title,
+    //   details: details,
+    //   tokensOffered: tokensOffered,
+    //  lobbyId: lobbyId,
+    //   status: status,
+    //reset input values
+    //navigate to that question index
+    const menteeId = props.userData.id;
+    const lobbyId = props.lobbyId;
+    const submitBody = { title, details, tokensOffered, menteeId, lobbyId };
+    axios.post("http://localhost:3000/question", submitBody).then((res) => {
+      setTitle("");
+      setDetails("");
+      setTokensOffered("");
+      alert("u have posted a question");
+      props.setPosted(!props.posted);
+      // navigate(`/lobbies/${lobbyId}`);
+      //or navigate to the individual question id
+    });
+  };
+  return (
+    <div>
+      <button onClick={(e) => props.setPosted(!props.posted)}>
+        Post a question
+      </button>
+      {props.posted && (
+        <div>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Title?"
+          />
+          <input
+            type="text"
+            value={details}
+            onChange={(e) => setDetails(e.target.value)}
+            placeholder="Description"
+          />
+          <input
+            type="text"
+            value={tokensOffered}
+            onChange={(e) => setTokensOffered(e.target.value)}
+            placeholder="Tokens Offer?"
+          />
+          <button type="submit" onClick={postQuestion}>
+            Post Question
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default PostQuestion;

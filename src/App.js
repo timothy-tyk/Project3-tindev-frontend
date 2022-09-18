@@ -5,12 +5,14 @@ import "./App.css";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import SingleLobby from "./components/SingleLobby";
-import Questions from "./components/Questions";
+import Questions from "./components/SingleQuestion";
 import Profile from "./components/Profile";
 import Dashboard from "./components/Dashboard";
 import { useAuth0 } from "@auth0/auth0-react";
 import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history.js";
-
+import PostQuestion from "./components/PostQuestion";
+import SingleQuestion from "./components/SingleQuestion";
+import Chatroom from "./components/Chatroom";
 export const UserContext = createContext();
 
 export default function App() {
@@ -37,7 +39,8 @@ export default function App() {
             <Link to="/dashboard">Dashboard</Link>
             <Link to="/profile">Profile</Link>
             <Link to="/questions">Questions</Link>
-            <Link to="/lobby">Lobby</Link>
+            {/* /lobby path not needed here */}
+            {/* <Link to="/lobby">Lobby</Link> */}
             {user ? (
               <button
                 onClick={() => {
@@ -62,8 +65,21 @@ export default function App() {
               path="/profile"
               element={<Profile handleSignIn={handleUserData} />}
             />
-            <Route path="/questions" element={<Questions />} />
+            {/*Tim: i change the /question route element here to PostQuestion & added questionId}
+            {/* <Route path="/questions" element={<Questions />} /> */}
+            {/* /lobby path not needed here */}
+            {/* <Route path="/lobby" element={<SingleLobby />} /> */}
             <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
+            <Route path="/questions" element={<PostQuestion />} />
+            <Route path="/questions/:questionId" element={<SingleQuestion />} />
+            <Route
+              path="/questions/:questionId/chatroom"
+              element={<Chatroom />}
+            />
+            {/* Proposed new routes */}
+            {/* <Route path="/lobbies/:lobbyId/newquestion" element={<PostQuestion />} />
+            <Route path="/lobbies/:lobbyId/questions/:questionId" element={<SingleQuestion />} />
+            <Route path="/lobbies/:lobbyId/questions/:questionId/chatroom" element={<Chatroom />} /> */}
           </Routes>
         </header>
       </div>
