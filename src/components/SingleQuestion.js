@@ -1,8 +1,9 @@
 import React from "react";
-import { useEffect, useState, useContext, UserContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { UserContext } from "../App";
 
 export default function Questions() {
   const [userData, setUserData] = useState(useContext(UserContext));

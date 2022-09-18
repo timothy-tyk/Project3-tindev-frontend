@@ -1,5 +1,6 @@
 import React from "react";
-import { useEffect, useState, useContext, UserContext } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "../App.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
@@ -25,6 +26,7 @@ export default function SingleLobby() {
     } else {
       getLobbyData();
     }
+
     const listQuestions = async () => {
       try {
         const data = await axios.get("http://localhost:3000/question");

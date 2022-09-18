@@ -1,7 +1,8 @@
 import React from "react";
-import { useState, useContext, UserContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { UserContext } from "../App.js";
 function PostQuestion() {
   const [userData, setUserData] = useState(useContext(UserContext));
   const [title, setTitle] = useState("");

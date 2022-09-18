@@ -67,8 +67,14 @@ export default function App() {
             {/* <Route path="/questions" element={<Questions />} /> */}
             <Route path="/lobby" element={<SingleLobby />} />
             <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
-            <Route path="/questions" element={<PostQuestion />} />
-            <Route path="/questions/:questionId" element={<SingleQuestion />} />
+            <Route
+              path="/lobbies/:lobbyId/questions"
+              element={<PostQuestion />}
+            />
+            <Route
+              path="/lobbies/:lobbyId/questions/:questionId"
+              element={<SingleQuestion />}
+            />
           </Routes>
         </header>
       </div>
