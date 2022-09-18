@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../App.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
+import { UserContext } from "../App";
+
 export default function SingleLobby() {
   const [userData, setUserData] = useState(useContext(UserContext));
   const [questionsList, setQuestionsList] = useState();
@@ -12,13 +14,18 @@ export default function SingleLobby() {
   const { lobbyId } = useParams();
   const navigate = useNavigate();
 
+  const [userData, setUserData] = useState(useContext(UserContext));
   const [lobbyData, setLobbyData] = useState([]);
+  const [questionsData, setQuestionsData] = useState([]);
+  const [userAsMenteeData, setUserAsMenteeData] = useState([]);
+  const [userAsMentorData, setUserAsMentorData] = useState([]);
 
   const getLobbyData = async () => {
     const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
-    console.log(response);
+    // console.log(response);
     setLobbyData(response.data);
   };
+
   useEffect(() => {
     console.log(user);
     if (!user) {
@@ -40,27 +47,101 @@ export default function SingleLobby() {
     listQuestions();
   }, []);
 
+  const getQuestionsData = async () => {
+    const response = await axios.get(
+      `${BACKEND_URL}/lobbies/${lobbyId}/questions`
+    );
+    setQuestionsData(response.data);
+  };
+
+  useEffect(() => {
+    getQuestionsData();
+  }, [lobbyData]);
+
+  const getUserStatsData = async () => {
+    const responseAsMentee = await axios.get(
+      `${BACKEND_URL}/lobbies/${lobbyId}/mentee/${userData.id}`
+    );
+
+    const responseAsMentor = await axios.get(
+      `${BACKEND_URL}/lobbies/${lobbyId}/mentor/${userData.id}`
+    );
+    // const responseAsMentor = await axios.get(
+    //   `${BACKEND_URL}/lobbies/${lobbyId}/usermentor`,
+    //   {
+    //     userId: userData.id,
+    //   }
+    // );
+
+    console.log(responseAsMentee.data);
+    console.log(responseAsMentor.data);
+    setUserAsMenteeData(responseAsMentee.data.length);
+    setUserAsMentorData(responseAsMentor.data.length);
+  };
+
+  useEffect(() => {
+    console.log("qd:", questionsData);
+    getUserStatsData();
+  }, [questionsData]);
+
   return (
     <div>
       {" "}
       <h1>{lobbyData.name} Lobby</h1>
       <h4>{lobbyData.numberOnline} People Online</h4>
-      {/*Darren: can paste ur lobby retrieval here, just include the link to questions*/}
-      <p>Questions:</p>
       <div>
-        {questionsList
-          ? questionsList.map((item, i) => (
-              <div>
-                Title: {item.title} posted by {user.nickname}
-                <br></br>Token offer:{item.tokensOffered}
-                <Link to={`/questions/${item.id}`} key={item.id}>
-                  Question{i + 1}
-                </Link>
-              </div>
-            ))
-          : "no qns yet"}{" "}
+        {questionsData.map((question) => {
+          return (
+            <div key={question.id}>
+              {question.menteeIdAlias.username}: {question.title} tokens
+              offered: {question.tokensOffered}
+              {/* darren this is a button */}
+              <Link to={`/questions/${item.id}`} key={item.id}>
+                <button> Question{i + 1}</button>
+              </Link>
+              <br />
+              <br />
+            </div>
+          );
+        })}
       </div>
-      <button onClick={(e) => navigate("/questions")}>Post a question</button>
+      <div>
+        <button onClick={(e) => navigate("/questions")}>Post a question</button>
+      </div>
+      <br /> <br />
+      <div>general chat</div>
+      <br /> <br />
+      <div>
+        your current tokens: {userData.tokens} <br />
+        questions answered: {userAsMentorData}
+        <br />
+        questions asked: {userAsMenteeData}
+      </div>
     </div>
   );
 }
+
+// export default function SingleLobby() {
+//   const [userData, setUserData] = useState(useContext(UserContext));
+//   const { user } = useAuth0();
+//   const navigate = useNavigate();
+//   useEffect(() => {
+//     if (!user) {
+//       navigate("/");
+//     } else {
+//       console.log("hello", userData);
+//     }
+//   }, []);
+
+//   return (
+//     <div>
+//       {" "}
+//       <p>Single Lobby</p>
+//     </div>
+//   );
+// }
+
+//components needed:
+// 1) questions + post a new question button
+// 2) general chat
+// 3) user info - tokens, questions answered and asked
