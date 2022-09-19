@@ -18,33 +18,49 @@ export default function SingleLobby() {
   const [userAsMenteeData, setUserAsMenteeData] = useState([]);
   const [userAsMentorData, setUserAsMentorData] = useState([]);
   const [posted, setPosted] = useState();
+  const [numberOnline, setNumberOnline] = useState(0);
 
   const getLobbyData = async () => {
     const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
-    // console.log(response);
     setLobbyData(response.data);
   };
 
   useEffect(() => {
-    console.log(user);
     if (!user) {
       navigate("/");
     } else {
       getLobbyData();
     }
-    //dummy data from question routersss
-    // const listQuestions = async () => {
-    //   try {
-    //     const data = await axios.get("http://localhost:3000/question");
-    //     console.log(data.data);
-    //     setQuestionsList(data.data);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-
-    // listQuestions();
   }, []);
+
+  const updateUserLocation = async () => {
+    const body = {
+      userId: userData.id,
+      lobbyName: lobbyData.name,
+    };
+    axios
+      .put(`${BACKEND_URL}/lobbies/${lobbyId}/${userData.id}`, body)
+      .then((res) => {
+        // console.log("res", res.data);
+      });
+  };
+
+  useEffect(() => {
+    updateUserLocation();
+    getNumberOnline();
+
+    const interval = setInterval(() => {
+      getNumberOnline();
+    }, 10000);
+  }, [lobbyData]);
+
+  const getNumberOnline = async () => {
+    const lobbyName = lobbyData.name;
+    const response = await axios.get(
+      `${BACKEND_URL}/lobbies/${lobbyId}/${lobbyName}/numberOnline`
+    );
+    setNumberOnline(response.data.length);
+  };
 
   const getQuestionsData = async () => {
     const response = await axios.get(
@@ -65,46 +81,49 @@ export default function SingleLobby() {
     const responseAsMentor = await axios.get(
       `${BACKEND_URL}/lobbies/${lobbyId}/mentor/${userData.id}`
     );
-    // const responseAsMentor = await axios.get(
-    //   `${BACKEND_URL}/lobbies/${lobbyId}/usermentor`,
-    //   {
-    //     userId: userData.id,
-    //   }
-    // );
 
-    console.log(responseAsMentee.data);
-    console.log(responseAsMentor.data);
     setUserAsMenteeData(responseAsMentee.data.length);
     setUserAsMentorData(responseAsMentor.data.length);
   };
 
   useEffect(() => {
-    console.log("qd:", questionsData);
+    // console.log("qd:", questionsData);
+    // console.log("ld", lobbyData);
+    // console.log("ud", userData);
     getUserStatsData();
   }, [questionsData]);
+
+  useEffect(() => {}, [questionsData]);
 
   return (
     <div>
       {" "}
       <h1>{lobbyData.name} Lobby</h1>
-      <h4>{lobbyData.numberOnline} People Online</h4>
+      {numberOnline > 0 &&
+        (numberOnline > 1 ? (
+          <h4>{numberOnline} people Online</h4>
+        ) : (
+          <h4>{numberOnline} person Online</h4>
+        ))}
       <div>
         {questionsData &&
           questionsData.map((question, i) => {
             return (
-              <div key={question.id}>
-                {question.menteeIdAlias.username}: {question.title} tokens
-                offered: {question.tokensOffered}
-                {/* darren this is a button to link to each individual question */}
-                <Link
-                  to={`/lobbies/${lobbyId}/questions/${question.id}`}
-                  key={question.id}
-                >
-                  <button> Question{i + 1}</button>
-                </Link>
-                <br />
-                <br />
-              </div>
+              !question.solved && (
+                <div key={question.id}>
+                  {question.menteeIdAlias.username}: {question.title} tokens
+                  offered: {question.tokensOffered}
+                  {/* darren this is a button to link to each individual question */}
+                  <Link
+                    to={`/lobbies/${lobbyId}/questions/${question.id}`}
+                    key={question.id}
+                  >
+                    <button> Question{i + 1}</button>
+                  </Link>
+                  <br />
+                  <br />
+                </div>
+              )
             );
           })}
       </div>
