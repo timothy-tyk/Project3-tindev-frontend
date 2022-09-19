@@ -8,6 +8,8 @@ import axios from "axios";
 export default function Dashboard(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
   const [userQuestions, setUserQuestions] = useState([]);
+  const [showQuestions, setShowQuestions] = useState(false);
+  const [questionsList, setQuestionsList] = useState();
   const [availableLobbies, setAvailableLobbies] = useState([]);
   const [lobbiesJoined, setLobbiesJoined] = useState([]);
   const [showAvailableLobbies, setShowAvailableLobbies] = useState(false);
@@ -55,6 +57,7 @@ export default function Dashboard(props) {
     const response = await axios.get(
       `${BACKEND_URL}/users/${userData.id}/lobbies`
     );
+    console.log(response);
     setLobbiesJoined(response.data);
   };
   const joinLobby = async (lobbyId) => {
@@ -80,6 +83,26 @@ export default function Dashboard(props) {
   let questionsAsked = userQuestions.filter(
     (question) => question.menteeId == userData.id
   );
+  console.log(questionsAsked);
+  // let displayQuestionsList = questionsList.map((question) => {
+  //   return (
+  //     <div key={question.id}>
+  //       <p>Asked By: {question.menteeId}</p>
+  //       <p>Title: {question.title}</p>
+  //       <Link to={`/lobbies/${question.lobbyId}/questions/${question.id}`}>
+  //         Go To Question
+  //       </Link>
+  //     </div>
+  //   );
+  // });
+
+  const openQuestionsList = (type) => {
+    if (type == "answered") {
+      setQuestionsList(questionsAnswered);
+    } else {
+      setQuestionsList(questionsAsked);
+    }
+  };
 
   return (
     <div>
@@ -97,9 +120,41 @@ export default function Dashboard(props) {
           <p>Bio : {userData.bio}</p>
           <p>Tokens : {userData.tokens}</p>
           <p>
-            Activity Ratio: {questionsAnswered.length} Questions Answered /{" "}
-            {questionsAsked.length} Questions Asked
+            Activity Ratio:{" "}
+            <button
+              onClick={() => {
+                setShowQuestions(!showQuestions);
+                openQuestionsList("answered");
+              }}
+            >
+              {questionsAnswered.length} Questions Answered{" "}
+            </button>
+            /
+            <button
+              onClick={() => {
+                setShowQuestions(!showQuestions);
+                openQuestionsList("asked");
+              }}
+            >
+              {questionsAsked.length} Questions Asked
+            </button>
           </p>
+          {showQuestions && questionsList
+            ? questionsList.map((question) => {
+                return (
+                  <div key={question.id}>
+                    <p>Asked By: {question.menteeId}</p>
+                    <p>Answered By:{question.mentorId}</p>
+                    <p>Title: {question.title}</p>
+                    <Link
+                      to={`/lobbies/${question.lobbyId}/questions/${question.id}`}
+                    >
+                      Go To Question
+                    </Link>
+                  </div>
+                );
+              })
+            : null}
           <br />
           <button
             onClick={() => {
