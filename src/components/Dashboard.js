@@ -7,10 +7,12 @@ import axios from "axios";
 
 export default function Dashboard(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
-  const [userUpdate, setUserUpdate] = useState(false);
+  const [userQuestions, setUserQuestions] = useState([]);
   const [availableLobbies, setAvailableLobbies] = useState([]);
   const [lobbiesJoined, setLobbiesJoined] = useState([]);
   const [showAvailableLobbies, setShowAvailableLobbies] = useState(false);
+  const [lobbyInfo, setLobbyInfo] = useState({});
+  const [showLobbyInfo, setShowLobbyInfo] = useState();
   const { logout, user } = useAuth0();
   const navigate = useNavigate();
 
@@ -24,8 +26,16 @@ export default function Dashboard(props) {
     } else {
       props.handleUpdateUser(userData);
       joinedLobbies();
+      getUserQuestions();
     }
   }, []);
+
+  const getUserQuestions = async () => {
+    const response = await axios.get(
+      `${BACKEND_URL}/questions/users/${userData.id}`
+    );
+    setUserQuestions(response.data);
+  };
 
   // Lobby Join Functionality
   const openLobbyList = async () => {
@@ -57,6 +67,18 @@ export default function Dashboard(props) {
     props.handleUpdateUser(updatedUserData.data);
   };
 
+  const getLobbyInfo = async (lobbyId) => {
+    const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
+    setLobbyInfo(response.data);
+  };
+
+  let questionsAnswered = userQuestions.filter(
+    (question) => question.mentorId == userData.id
+  );
+  let questionsAsked = userQuestions.filter(
+    (question) => question.menteeId == userData.id
+  );
+
   return (
     <div>
       {" "}
@@ -72,6 +94,10 @@ export default function Dashboard(props) {
           <p>Email : {userData.email}</p>
           <p>Bio : {userData.bio}</p>
           <p>Tokens : {userData.tokens}</p>
+          <p>
+            Activity Ratio: {questionsAnswered.length} Questions Answered /{" "}
+            {questionsAsked.length} Questions Asked
+          </p>
           <br />
           <button
             onClick={() => {
@@ -86,9 +112,24 @@ export default function Dashboard(props) {
               ? lobbiesJoined.map(({ lobby }) => {
                   return (
                     <div key={lobby.id}>
-                      <button>
-                        <Link to={`/lobbies/${lobby.id}`}>{lobby.name}</Link>
+                      <button
+                        onClick={() => {
+                          setShowLobbyInfo(lobby.id);
+                          getLobbyInfo(lobby.id);
+                        }}
+                      >
+                        {lobby.name}
                       </button>
+                      {lobby.id == showLobbyInfo &&
+                      Object.keys(lobbyInfo).length > 0 ? (
+                        <div>
+                          <p>
+                            {lobbyInfo.numberOnline} people online!
+                            {lobbyInfo.questions.length} unanswered questions!{" "}
+                            <Link to={`/lobbies/${lobby.id}`}>Enter Lobby</Link>
+                          </p>
+                        </div>
+                      ) : null}
                     </div>
                   );
                 })

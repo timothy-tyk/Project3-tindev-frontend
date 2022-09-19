@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from "react";
 import { useEffect, useState } from "react";
-import logo from "./logo.png";
 import "./App.css";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
