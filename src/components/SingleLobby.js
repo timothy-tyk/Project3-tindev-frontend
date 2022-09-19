@@ -6,6 +6,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
 import PostQuestion from "./PostQuestion.js";
+import SingleLobbyNumberDisplay from "./SingleLobbyNumberDisplay.js";
 
 export default function SingleLobby() {
   const [questionsList, setQuestionsList] = useState();
@@ -47,20 +48,20 @@ export default function SingleLobby() {
 
   useEffect(() => {
     updateUserLocation();
-    getNumberOnline();
+    // getNumberOnline();
 
-    const interval = setInterval(() => {
-      getNumberOnline();
-    }, 10000);
+    // const interval = setInterval(() => {
+    //   getNumberOnline();
+    // }, 10000);
   }, [lobbyData]);
 
-  const getNumberOnline = async () => {
-    const lobbyName = lobbyData.name;
-    const response = await axios.get(
-      `${BACKEND_URL}/lobbies/${lobbyId}/${lobbyName}/numberOnline`
-    );
-    setNumberOnline(response.data.length);
-  };
+  // const getNumberOnline = async () => {
+  //   const lobbyName = lobbyData.name;
+  //   const response = await axios.get(
+  //     `${BACKEND_URL}/lobbies/${lobbyId}/${lobbyName}/numberOnline`
+  //   );
+  //   setNumberOnline(response.data.length);
+  // };
 
   const getQuestionsData = async () => {
     const response = await axios.get(
@@ -99,12 +100,13 @@ export default function SingleLobby() {
     <div>
       {" "}
       <h1>{lobbyData.name} Lobby</h1>
-      {numberOnline > 0 &&
+      <SingleLobbyNumberDisplay lobbyData={lobbyData} lobbyId={lobbyId} />
+      {/* {numberOnline > 0 &&
         (numberOnline > 1 ? (
           <h4>{numberOnline} people Online</h4>
         ) : (
           <h4>{numberOnline} person Online</h4>
-        ))}
+        ))} */}
       <div>
         {questionsData &&
           questionsData.map((question, i) => {
