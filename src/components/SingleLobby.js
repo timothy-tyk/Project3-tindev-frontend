@@ -99,7 +99,12 @@ export default function SingleLobby() {
     <div>
       {" "}
       <h1>{lobbyData.name} Lobby</h1>
-      <h4>{numberOnline} People Online</h4>
+      {numberOnline > 0 &&
+        (numberOnline > 1 ? (
+          <h4>{numberOnline} people Online</h4>
+        ) : (
+          <h4>{numberOnline} person Online</h4>
+        ))}
       <div>
         {questionsData &&
           questionsData.map((question, i) => {
