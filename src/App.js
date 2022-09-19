@@ -5,6 +5,7 @@ import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import SingleLobby from "./components/SingleLobby";
 import Questions from "./components/SingleQuestion";
+import EditProfile from "./components/EditProfile";
 import Profile from "./components/Profile";
 import Dashboard from "./components/Dashboard";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -36,7 +37,7 @@ export default function App() {
           <nav className="topNav">
             <Link to="/">Landing Page</Link>
             <Link to="/dashboard">Dashboard</Link>
-            <Link to="/profile">Profile</Link>
+            {/* <Link to="/editprofile">Profile</Link> */}
             {/* Questions accessed from dashboard */}
             {/* <Link to="/questions">Questions</Link> */}
             {/* /lobby path not needed here */}
@@ -62,7 +63,11 @@ export default function App() {
               element={<Dashboard handleUpdateUser={handleUserData} />}
             />
             <Route
-              path="/profile"
+              path="/editprofile"
+              element={<EditProfile handleSignIn={handleUserData} />}
+            />
+            <Route
+              path="/users/:profileId"
               element={<Profile handleSignIn={handleUserData} />}
             />
             {/*Tim: i change the /question route element here to PostQuestion & added questionId}
