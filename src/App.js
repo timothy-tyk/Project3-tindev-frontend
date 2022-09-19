@@ -38,7 +38,8 @@ export default function App() {
             <Link to="/">Landing Page</Link>
             <Link to="/dashboard">Dashboard</Link>
             <Link to="/profile">Profile</Link>
-            <Link to="/questions">Questions</Link>
+            {/* Questions accessed from dashboard */}
+            {/* <Link to="/questions">Questions</Link> */}
             {/* /lobby path not needed here */}
             {/* <Link to="/lobby">Lobby</Link> */}
             {user ? (
@@ -69,17 +70,22 @@ export default function App() {
             {/* <Route path="/questions" element={<Questions />} /> */}
             {/* /lobby path not needed here */}
             {/* <Route path="/lobby" element={<SingleLobby />} /> */}
-            <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
-            <Route path="/questions" element={<PostQuestion />} />
+            {/* <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
             <Route path="/questions/:questionId" element={<SingleQuestion />} />
             <Route
               path="/questions/:questionId/chatroom"
               element={<Chatroom />}
-            />
+            /> */}
             {/* Proposed new routes */}
-            {/* <Route path="/lobbies/:lobbyId/newquestion" element={<PostQuestion />} />
-            <Route path="/lobbies/:lobbyId/questions/:questionId" element={<SingleQuestion />} />
-            <Route path="/lobbies/:lobbyId/questions/:questionId/chatroom" element={<Chatroom />} /> */}
+            <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
+            <Route
+              path="/lobbies/:lobbyId/questions/:questionId"
+              element={<SingleQuestion />}
+            />
+            <Route
+              path="/lobbies/:lobbyId/questions/:questionId/chatroom"
+              element={<Chatroom />}
+            />
           </Routes>
         </header>
       </div>

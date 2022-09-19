@@ -15,10 +15,15 @@ export default function Questions() {
   const [question, setQuestion] = useState();
   const [editable, setEditable] = useState();
   const [edited, setEdited] = useState();
+  const [lobbyId, setLobbyId] = useState();
   // Update question index in state if needed to trigger data retrieval
   const params = useParams();
   if (questionId !== params.questionId) {
     setQuestionId(params.questionId);
+
+    if (lobbyId !== params.lobbyId) {
+      setLobbyId(params.lobbyId);
+    }
   }
   useEffect(() => {
     console.log(user);
@@ -38,7 +43,7 @@ export default function Questions() {
           }
           if (response.data[0].mentorId === userData.id) {
             alert("u are the mentor for this question! routing to chatroom");
-            navigate(`/questions/${questionId}/chatroom`);
+            navigate(`/lobbies/${lobbyId}/questions/${questionId}/chatroom`);
           }
         });
     }

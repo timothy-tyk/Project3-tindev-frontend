@@ -8,6 +8,12 @@ import { UserContext } from "../App.js";
 function EditMentor(props) {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(useContext(UserContext));
+  const [lobbyId, setLobbyId] = useState();
+
+  const params = useParams();
+  if (lobbyId !== params.lobbyId) {
+    setLobbyId(params.lobbyId);
+  }
   const updateMentor = async () => {
     const submitBody = {
       mentorId: userData.id,
@@ -19,7 +25,7 @@ function EditMentor(props) {
       .then((res) => {
         alert("u have accepted the question! Going to chatroom now!");
 
-        navigate(`/questions/${props.question.id}/chatroom`);
+        navigate(`/lobbies/${lobbyId}/questions/${props.question.id}/chatroom`);
       });
   };
   return (
