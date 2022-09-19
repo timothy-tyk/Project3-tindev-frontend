@@ -166,6 +166,10 @@ export default function Dashboard(props) {
           </div>
         </div>
       ) : null}
+      <div>
+        <p>Lobbies:</p>
+        <p>Insert Lobbies here</p>
+      </div>
     </div>
   );
 }
