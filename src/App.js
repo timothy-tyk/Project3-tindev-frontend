@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from "react";
 import { useEffect, useState } from "react";
-import logo from "./logo.png";
 import "./App.css";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
@@ -9,7 +8,6 @@ import Questions from "./components/Questions";
 import Profile from "./components/Profile";
 import Dashboard from "./components/Dashboard";
 import { useAuth0 } from "@auth0/auth0-react";
-import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history.js";
 
 export const UserContext = createContext();
 
