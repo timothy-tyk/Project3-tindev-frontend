@@ -16,6 +16,7 @@ export default function Questions() {
   const [editable, setEditable] = useState();
   const [edited, setEdited] = useState();
   const [lobbyId, setLobbyId] = useState();
+  const [available, setAvailable] = useState(true);
   // Update question index in state if needed to trigger data retrieval
   const params = useParams();
   if (questionId !== params.questionId) {
@@ -38,8 +39,15 @@ export default function Questions() {
           console.log(response, "response");
           console.log(response.data, "response.data");
           setQuestion(response.data[0]);
+          if (response.data[0].solved === true) {
+            setAvailable(false);
+          }
           if (response.data[0].menteeId === userData.id) {
             setEditable(true);
+          }
+          if (response.data[0].mentorId !== null) {
+            //there is a mentor so both parties cant edit and cant accept
+            setAvailable(false);
           }
           if (response.data[0].mentorId === userData.id) {
             alert("u are the mentor for this question! routing to chatroom");
@@ -103,25 +111,29 @@ export default function Questions() {
             <h6>Question Id: {questionId}</h6>
             <p>
               {" "}
-              status:{question.status ? "true" : "false"}, tokens Offer:{" "}
+              status:{question.solved ? "Solved" : "Not solved"}, tokens Offer:{" "}
               {question.tokensOffered}{" "}
             </p>
           </div>
         )}
       </p>
-      {editable ? (
-        <div>
-          {" "}
+      {/* if u are the mentee, u can edit
+        but if there is a mentor, cannot be edited, editable=false
+        if it is solved, unable to accept any mentors, available=false */}
+      <div>
+        {editable && available && (
           <EditSingleQuestion
             question={question}
             edited={edited}
             setEdited={setEdited}
           />
-          <EditSolved question={question} />
-        </div>
-      ) : (
-        <EditMentor question={question} />
-      )}
+        )}
+        {editable && available && (
+          <EditSolved question={question} setAvailable={setAvailable} />
+        )}{" "}
+      </div>
+      {available && <EditMentor question={question} />}
+      {!available && "Question has been solved! CLOSED"}
       <button onClick={(e) => navigate(-1)}>Go back</button>
     </div>
   );
