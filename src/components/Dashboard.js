@@ -32,7 +32,7 @@ export default function Dashboard(props) {
 
   const getUserQuestions = async () => {
     const response = await axios.get(
-      `${BACKEND_URL}/questions/users/${userData.id}`
+      `${BACKEND_URL}/question/users/${userData.id}`
     );
     setUserQuestions(response.data);
   };
@@ -40,10 +40,12 @@ export default function Dashboard(props) {
   // Lobby Join Functionality
   const openLobbyList = async () => {
     const lobbies = await axios.get(`${BACKEND_URL}/lobbies`);
+    console.log("lobbies", lobbies);
     if (userData.lobbiesJoin) {
       let availLobbies = lobbies.data.filter(
         (lobby) => !userData.lobbiesJoin.includes(lobby.id)
       );
+      console.log(availLobbies, "availLobbies");
       setAvailableLobbies(availLobbies);
     } else {
       setAvailableLobbies(lobbies.data);

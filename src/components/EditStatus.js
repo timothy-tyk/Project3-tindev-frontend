@@ -10,8 +10,7 @@ function EditStatus(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
   const updateMentor = async () => {
     const submitBody = {
-      //edit status here!
-      status: false,
+      //backend solved will be true!
       questionId: props.question.id,
     };
 
@@ -19,7 +18,7 @@ function EditStatus(props) {
       .put("http://localhost:3000/question/updateStatus", submitBody)
       .then((res) => {
         alert("u have marked it as solved! question is closed");
-        navigate(-2);
+        navigate(-1);
       });
   };
   return (

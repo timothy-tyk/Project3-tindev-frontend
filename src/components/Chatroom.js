@@ -37,8 +37,8 @@ function Chatroom() {
             <h6>Question Id: {questionId}</h6>
             <p>
               {" "}
-              status:{question.status ? "true" : "false"}, tokens Offer:{" "}
-              {question.tokensOffered}{" "}
+              status:{question.solved ? "solved" : "not solved yet"}, tokens
+              Offer: {question.tokensOffered}{" "}
             </p>
             <p>** INSERT CHAT MSG / SOCKET IO HERE ***</p>
           </div>

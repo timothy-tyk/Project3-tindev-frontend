@@ -89,23 +89,24 @@ export default function SingleLobby() {
       <h1>{lobbyData.name} Lobby</h1>
       <h4>{lobbyData.numberOnline} People Online</h4>
       <div>
-        {questionsData.map((question, i) => {
-          return (
-            <div key={question.id}>
-              {question.menteeIdAlias.username}: {question.title} tokens
-              offered: {question.tokensOffered}
-              {/* darren this is a button to link to each individual question */}
-              <Link
-                to={`/lobbies/${lobbyId}/questions/${question.id}`}
-                key={question.id}
-              >
-                <button> Question{i + 1}</button>
-              </Link>
-              <br />
-              <br />
-            </div>
-          );
-        })}
+        {questionsData &&
+          questionsData.map((question, i) => {
+            return (
+              <div key={question.id}>
+                {question.menteeIdAlias.username}: {question.title} tokens
+                offered: {question.tokensOffered}
+                {/* darren this is a button to link to each individual question */}
+                <Link
+                  to={`/lobbies/${lobbyId}/questions/${question.id}`}
+                  key={question.id}
+                >
+                  <button> Question{i + 1}</button>
+                </Link>
+                <br />
+                <br />
+              </div>
+            );
+          })}
       </div>
       <div>
         <PostQuestion
