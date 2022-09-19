@@ -108,7 +108,7 @@ export default function Dashboard(props) {
           </button>
           <div>
             <h4>Lobbies</h4>
-            {lobbiesJoined.length > 0
+            {lobbiesJoined && lobbiesJoined.length > 0
               ? lobbiesJoined.map(({ lobby }) => {
                   return (
                     <div key={lobby.id}>
