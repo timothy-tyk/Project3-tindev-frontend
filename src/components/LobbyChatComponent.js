@@ -41,17 +41,11 @@ export default function LobbyChatComponent(props) {
       ...chatMessages,
       { senderName: userData.username, message: currentMessage, room: lobbyId },
     ]);
+    setCurrentMessage("");
   };
 
   return (
     <div>
-      <button
-        onClick={() => {
-          console.log(chatMessages);
-        }}
-      >
-        click console
-      </button>
       <div>
         {chatMessages.length > 0 ? (
           <div>
@@ -73,6 +67,7 @@ export default function LobbyChatComponent(props) {
       <div>
         <input
           placeholder="Message here..."
+          value={currentMessage}
           onChange={(e) => {
             setCurrentMessage(e.target.value);
           }}
