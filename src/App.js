@@ -15,9 +15,6 @@ import SingleQuestion from "./components/SingleQuestion";
 import Chatroom from "./components/Chatroom";
 import axios from "axios";
 import { BACKEND_URL } from "./constants";
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:3000");
 
 export const UserContext = createContext();
 
@@ -41,10 +38,6 @@ export default function App() {
       logout();
     });
   };
-
-  useEffect(() => {
-    socket.emit("reply");
-  });
 
   const handleLogout = () => {
     updateUserLocationOnLogOut();
