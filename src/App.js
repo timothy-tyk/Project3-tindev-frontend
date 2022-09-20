@@ -13,6 +13,8 @@ import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history.js";
 import PostQuestion from "./components/PostQuestion";
 import SingleQuestion from "./components/SingleQuestion";
 import Chatroom from "./components/Chatroom";
+import axios from "axios";
+import { BACKEND_URL } from "./constants";
 export const UserContext = createContext();
 
 export default function App() {
@@ -26,8 +28,18 @@ export default function App() {
     setUserData(data);
   };
 
+  const updateUserLocationOnLogOut = async () => {
+    const body = {
+      userId: userData.id,
+    };
+    axios.put(`${BACKEND_URL}/lobbies/logout`, body).then((res) => {
+      console.log("res success", res.data);
+      logout();
+    });
+  };
+
   const handleLogout = () => {
-    logout();
+    updateUserLocationOnLogOut();
   };
 
   return (
