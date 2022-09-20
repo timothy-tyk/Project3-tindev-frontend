@@ -7,19 +7,19 @@ import axios from "axios";
 import { BACKEND_URL } from "../constants";
 import PostQuestion from "./PostQuestion.js";
 import SingleLobbyNumberDisplay from "./SingleLobbyNumberDisplay.js";
+import LobbyChatComponent from "./LobbyChatComponent.js";
 
 export default function SingleLobby() {
-  const [questionsList, setQuestionsList] = useState();
   const { user } = useAuth0();
   const { lobbyId } = useParams();
   const navigate = useNavigate();
+  // eslint-disable-next-line
   const [userData, setUserData] = useState(useContext(UserContext));
   const [lobbyData, setLobbyData] = useState([]);
   const [questionsData, setQuestionsData] = useState([]);
   const [userAsMenteeData, setUserAsMenteeData] = useState([]);
   const [userAsMentorData, setUserAsMentorData] = useState([]);
   const [posted, setPosted] = useState();
-  const [numberOnline, setNumberOnline] = useState(0);
 
   const getLobbyData = async () => {
     const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
@@ -32,6 +32,7 @@ export default function SingleLobby() {
     } else {
       getLobbyData();
     }
+    // eslint-disable-next-line
   }, []);
 
   const updateUserLocation = async () => {
@@ -41,27 +42,13 @@ export default function SingleLobby() {
     };
     axios
       .put(`${BACKEND_URL}/lobbies/${lobbyId}/${userData.id}`, body)
-      .then((res) => {
-        // console.log("res", res.data);
-      });
+      .then((res) => {});
   };
 
   useEffect(() => {
     updateUserLocation();
-    // getNumberOnline();
-
-    // const interval = setInterval(() => {
-    //   getNumberOnline();
-    // }, 10000);
+    // eslint-disable-next-line
   }, [lobbyData]);
-
-  // const getNumberOnline = async () => {
-  //   const lobbyName = lobbyData.name;
-  //   const response = await axios.get(
-  //     `${BACKEND_URL}/lobbies/${lobbyId}/${lobbyName}/numberOnline`
-  //   );
-  //   setNumberOnline(response.data.length);
-  // };
 
   const getQuestionsData = async () => {
     const response = await axios.get(
@@ -72,6 +59,7 @@ export default function SingleLobby() {
 
   useEffect(() => {
     getQuestionsData();
+    // eslint-disable-next-line
   }, [lobbyData, posted]);
 
   const getUserStatsData = async () => {
@@ -88,25 +76,15 @@ export default function SingleLobby() {
   };
 
   useEffect(() => {
-    // console.log("qd:", questionsData);
-    // console.log("ld", lobbyData);
-    // console.log("ud", userData);
     getUserStatsData();
+    // eslint-disable-next-line
   }, [questionsData]);
-
-  useEffect(() => {}, [questionsData]);
 
   return (
     <div>
       {" "}
       <h1>{lobbyData.name} Lobby</h1>
       <SingleLobbyNumberDisplay lobbyData={lobbyData} lobbyId={lobbyId} />
-      {/* {numberOnline > 0 &&
-        (numberOnline > 1 ? (
-          <h4>{numberOnline} people Online</h4>
-        ) : (
-          <h4>{numberOnline} person Online</h4>
-        ))} */}
       <div>
         {questionsData &&
           questionsData.map((question, i) => {
@@ -115,7 +93,6 @@ export default function SingleLobby() {
                 <div key={question.id}>
                   {question.menteeIdAlias.username}: {question.title} tokens
                   offered: {question.tokensOffered}
-                  {/* darren this is a button to link to each individual question */}
                   <Link
                     to={`/lobbies/${lobbyId}/questions/${question.id}`}
                     key={question.id}
@@ -138,7 +115,13 @@ export default function SingleLobby() {
         />
       </div>
       <br /> <br />
-      <div>general chat</div>
+      <div>
+        <LobbyChatComponent
+          userData={userData}
+          lobbyId={lobbyId}
+          lobbyData={lobbyData}
+        />
+      </div>
       <br /> <br />
       <div>
         {userData ? (
@@ -155,28 +138,3 @@ export default function SingleLobby() {
     </div>
   );
 }
-
-// export default function SingleLobby() {
-//   const [userData, setUserData] = useState(useContext(UserContext));
-//   const { user } = useAuth0();
-//   const navigate = useNavigate();
-//   useEffect(() => {
-//     if (!user) {
-//       navigate("/");
-//     } else {
-//       console.log("hello", userData);
-//     }
-//   }, []);
-
-//   return (
-//     <div>
-//       {" "}
-//       <p>Single Lobby</p>
-//     </div>
-//   );
-// }
-
-//components needed:
-// 1) questions + post a new question button
-// 2) general chat
-// 3) user info - tokens, questions answered and asked
