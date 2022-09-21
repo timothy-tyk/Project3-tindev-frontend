@@ -10,7 +10,6 @@ function Chatroom() {
   const [userData, setUserData] = useState(useContext(UserContext));
   const [role, setRole] = useState();
   const [questionId, setQuestionId] = useState();
-  const userData = useContext(UserContext);
   const [question, setQuestion] = useState();
   const navigate = useNavigate();
 
