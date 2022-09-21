@@ -15,6 +15,7 @@ import SingleQuestion from "./components/xSingleQuestion";
 import Chatroom from "./components/Chatroom";
 import axios from "axios";
 import { BACKEND_URL } from "./constants";
+import SingleQuestionTwo from "./components/SingleQuestionTwo";
 
 export const UserContext = createContext();
 
@@ -97,7 +98,7 @@ export default function App() {
             <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
             <Route
               path="/lobbies/:lobbyId/questions/:questionId"
-              element={<SingleQuestion />}
+              element={<SingleQuestionTwo />}
             />
             <Route
               path="/lobbies/:lobbyId/questions/:questionId/chatroom"
