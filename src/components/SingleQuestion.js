@@ -96,6 +96,7 @@ export default function Questions() {
             {/* {displayText} */}
             <h6>Question Id: {questionId}</h6>
             <p>
+              {" "}
               status:{question.solved ? "Solved" : "Not solved"}, tokens Offer:{" "}
               {question.tokensOffered}{" "}
             </p>
