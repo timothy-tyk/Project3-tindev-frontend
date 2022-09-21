@@ -7,19 +7,15 @@ import { UserContext } from "../App";
 import EditSingleQuestion from "./EditSingleQuestion";
 import EditMentor from "./EditMentor";
 import EditSolved from "./EditSolved";
-import {
-  Editor,
-  EditorState,
-  editorState,
-  getDefaultKeyBinding,
-  RichUtils,
-} from "draft-js";
+import { EditorState, Editor } from "draft-js";
 //draft.js
 import "./RichText.css";
 import "../../node_modules/draft-js/dist/Draft.css";
-import { convertFromRaw } from "draft-js";
+import { convertFromRaw, ContentState } from "draft-js";
+import RichTextEditor from "./RichTextEditor";
+import RichTextDisplay from "./RichTextDisplay";
 
-export default function Questions() {
+export default function SingleQuestionTwo() {
   const [userData, setUserData] = useState(useContext(UserContext));
   const { user } = useAuth0();
   const navigate = useNavigate();
@@ -30,6 +26,7 @@ export default function Questions() {
   const [edited, setEdited] = useState();
   const [lobbyId, setLobbyId] = useState();
   const [mentorExist, setMentorExist] = useState();
+
   // Update question index in state if needed to trigger data retrieval
   const params = useParams();
   if (questionId !== params.questionId) {
@@ -49,8 +46,9 @@ export default function Questions() {
       axios
         .get(`http://localhost:3000/question/${questionId}`)
         .then((response) => {
-          console.log(response, "response");
           console.log(response.data, "response.data");
+          console.log(response.data[0].details);
+
           setQuestion(response.data[0]);
 
           if (response.data[0].solved === true) {
@@ -71,44 +69,39 @@ export default function Questions() {
     }
   }, [edited]);
 
-  let displayText;
-  if (question) {
-    console.log(question, "question");
-    displayText = editorState.createWithContent(
-      convertFromRaw(JSON.parse(question.details))
-    );
-  }
+  useEffect(() => {
+    if (question) {
+      console.log(question.details);
+      const contentState = convertFromRaw(JSON.parse(question.details));
+      // console.log(contentState);
+      // const contentDataState = ContentState.createFromBlockArray(contentState);
+      // const editorDataState = EditorState.createWithContent(contentDataState);
+      // console.log(editorState);
+      // setQuestionText(editorDataState);
+    } else console.log("no question yet");
+  }, [question]);
 
-  //EditorState.createWithContent(question.details)
   return (
     <div>
-      {" "}
-      <p>
-        {question && (
-          <div>
-            <h1>
-              {question.title} by Id{question.menteeId}: Username:
-              {question.menteeIdAlias.username}
-            </h1>
-            {displayText}
-            {/* convertFromRaw(JSON.parse(content here)) */}
-            {/* <h6> {convertFromRaw(JSON.parse(question.details))} </h6> */}
-            {/* {displayText} */}
-            <h6>Question Id: {questionId}</h6>
-            <p>
-              status:{question.solved ? "Solved" : "Not solved"}, tokens Offer:{" "}
-              {question.tokensOffered}{" "}
-            </p>
-            {question.imgUrl && (
-              <img
-                className="questionpic"
-                alt="qns img"
-                src={question.imgUrl}
-              />
-            )}
-          </div>
-        )}
-      </p>
+      {question && (
+        <div>
+          <h1>
+            {question.title} by Id{question.menteeId}: Username:
+            {question.menteeIdAlias.username}
+          </h1>
+          <h6>Question Id: {questionId}</h6>
+          <h6>Description: </h6>
+          <RichTextDisplay richText={question.details} />
+          <p>
+            status:{question.solved ? "Solved" : "Not solved"}, tokens Offer:{" "}
+            {question.tokensOffered}
+          </p>
+          {question.imgUrl && (
+            <img className="questionpic" alt="qns img" src={question.imgUrl} />
+          )}
+        </div>
+      )}
+
       {/* if u are the mentee, u can edit
         but if there is a mentor, cannot be edited, editable=false
         if it is solved, unable to accept any mentors, available=false */}
