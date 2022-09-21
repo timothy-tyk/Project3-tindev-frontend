@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import QuestionChatComponent from "./QuestionChatComponent";
+import { UserContext } from "../App";
 
 function Chatroom() {
   const [questionId, setQuestionId] = useState();
+  const userData = useContext(UserContext);
   const [question, setQuestion] = useState();
   const navigate = useNavigate();
   const params = useParams();
@@ -40,7 +43,7 @@ function Chatroom() {
               status:{question.solved ? "solved" : "not solved yet"}, tokens
               Offer: {question.tokensOffered}{" "}
             </p>
-            <p>** INSERT CHAT MSG / SOCKET IO HERE ***</p>
+            <QuestionChatComponent userData={userData} />
           </div>
         )}
       </div>
