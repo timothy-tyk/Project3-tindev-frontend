@@ -10,6 +10,7 @@ import {
 import "./RichText.css";
 import "../../node_modules/draft-js/dist/Draft.css";
 import { convertToRaw } from "draft-js";
+import draftToMarkdown from "draftjs-to-markdown";
 
 // const blocks = convertToRaw(editorState.getCurrentContent()).blocks;
 // const value = blocks
@@ -34,7 +35,7 @@ import { convertToRaw } from "draft-js";
 //     else newText += block + "\n";
 //   }
 // }
-
+let markup;
 class RichTextEditor extends React.Component {
   constructor(props) {
     super(props);
@@ -43,6 +44,10 @@ class RichTextEditor extends React.Component {
     this.onChange = (editorState) => {
       // JSON.stringify(convertToRaw(the content here))
       this.setState({ editorState });
+      const rawContent = convertToRaw(
+        this.state.editorState.getCurrentContent()
+      );
+      markup = draftToMarkdown(rawContent);
       const blocks = JSON.stringify(
         convertToRaw(this.state.editorState.getCurrentContent())
       );
@@ -132,7 +137,8 @@ class RichTextEditor extends React.Component {
             spellCheck={true}
           />
         </div>
-        <button>see text </button>
+        {markup}
+        {/* <div dangerouslySetInnerHTML={{__html:}}> </div> */}
       </div>
     );
   }
