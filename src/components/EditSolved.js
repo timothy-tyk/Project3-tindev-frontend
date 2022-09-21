@@ -5,7 +5,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../App.js";
 
-function EditStatus(props) {
+function EditSolved(props) {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(useContext(UserContext));
   const updateMentor = async () => {
@@ -28,4 +28,4 @@ function EditStatus(props) {
   );
 }
 
-export default EditStatus;
+export default EditSolved;
