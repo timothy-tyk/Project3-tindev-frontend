@@ -3,12 +3,6 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../App.js";
-// import SlateEditor from "./SlateEditor.js";
-// Import the Slate editor factory.
-import { createEditor } from "slate";
-
-// Import the Slate components and React plugin.
-import { Slate, Editable, withReact } from "slate-react";
 import {
   getDownloadURL,
   getStorage,
@@ -26,7 +20,6 @@ const initialValue = [
 ];
 
 function PostQuestion(props) {
-  const [editor] = useState(() => withReact(createEditor()));
   const [userData, setUserData] = useState(useContext(UserContext));
   const [title, setTitle] = useState("");
   const [details, setDetails] = useState("");
@@ -90,8 +83,6 @@ function PostQuestion(props) {
       setTokensOffered("");
       alert("u have posted a question");
       props.setPosted(!props.posted);
-      // navigate(`/lobbies/${lobbyId}`);
-      //or navigate to the individual question id
     });
   };
   return (
@@ -128,18 +119,11 @@ function PostQuestion(props) {
               setFileInputValue(e.target.files[0].name);
             }}
           />
-          <Slate editor={editor} value={initialValue}>
-            <Editable
-              onKeyDown={(event) => {
-                console.log(event.key);
-                console.log(value);
-              }}
-            />
-          </Slate>
+
           <RichTextEditor getRichText={(item) => getRichText(item)} />
 
           <button type="submit" onClick={postQuestion}>
-            Post Question
+            submit
           </button>
         </div>
       )}

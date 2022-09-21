@@ -8,6 +8,7 @@ import { BACKEND_URL } from "../constants";
 import PostQuestion from "./PostQuestion.js";
 import SingleLobbyNumberDisplay from "./SingleLobbyNumberDisplay.js";
 import LobbyChatComponent from "./LobbyChatComponent.js";
+import PostQuestionTwo from "./PostQuestionTwo.js";
 
 export default function SingleLobby() {
   const { user } = useAuth0();
@@ -106,7 +107,7 @@ export default function SingleLobby() {
           })}
       </div>
       <div>
-        <PostQuestion
+        <PostQuestionTwo
           lobbyId={lobbyId}
           userData={userData}
           posted={posted}
