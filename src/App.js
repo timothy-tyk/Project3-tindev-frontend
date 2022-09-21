@@ -5,6 +5,7 @@ import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import SingleLobby from "./components/SingleLobby";
 import Questions from "./components/SingleQuestion";
+import EditProfile from "./components/EditProfile";
 import Profile from "./components/Profile";
 import Dashboard from "./components/Dashboard";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -12,6 +13,9 @@ import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history.js";
 import PostQuestion from "./components/PostQuestion";
 import SingleQuestion from "./components/SingleQuestion";
 import Chatroom from "./components/Chatroom";
+import axios from "axios";
+import { BACKEND_URL } from "./constants";
+
 export const UserContext = createContext();
 
 export default function App() {
@@ -25,8 +29,18 @@ export default function App() {
     setUserData(data);
   };
 
+  const updateUserLocationOnLogOut = async () => {
+    const body = {
+      userId: userData.id,
+    };
+    axios.put(`${BACKEND_URL}/lobbies/logout`, body).then((res) => {
+      console.log("res success", res.data);
+      logout();
+    });
+  };
+
   const handleLogout = () => {
-    logout();
+    updateUserLocationOnLogOut();
   };
 
   return (
@@ -36,7 +50,7 @@ export default function App() {
           <nav className="topNav">
             <Link to="/">Landing Page</Link>
             <Link to="/dashboard">Dashboard</Link>
-            <Link to="/profile">Profile</Link>
+            {/* <Link to="/editprofile">Profile</Link> */}
             {/* Questions accessed from dashboard */}
             {/* <Link to="/questions">Questions</Link> */}
             {/* /lobby path not needed here */}
@@ -62,7 +76,11 @@ export default function App() {
               element={<Dashboard handleUpdateUser={handleUserData} />}
             />
             <Route
-              path="/profile"
+              path="/editprofile"
+              element={<EditProfile handleSignIn={handleUserData} />}
+            />
+            <Route
+              path="/users/:profileId"
               element={<Profile handleSignIn={handleUserData} />}
             />
             {/*Tim: i change the /question route element here to PostQuestion & added questionId}

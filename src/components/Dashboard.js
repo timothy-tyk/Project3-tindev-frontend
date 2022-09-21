@@ -8,11 +8,14 @@ import axios from "axios";
 export default function Dashboard(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
   const [userQuestions, setUserQuestions] = useState([]);
+  const [showQuestions, setShowQuestions] = useState(false);
+  const [questionsList, setQuestionsList] = useState();
   const [availableLobbies, setAvailableLobbies] = useState([]);
   const [lobbiesJoined, setLobbiesJoined] = useState([]);
   const [showAvailableLobbies, setShowAvailableLobbies] = useState(false);
   const [lobbyInfo, setLobbyInfo] = useState({});
   const [showLobbyInfo, setShowLobbyInfo] = useState();
+  const [userFriends, setUserFriends] = useState([]);
   const { logout, user } = useAuth0();
   const navigate = useNavigate();
 
@@ -27,14 +30,37 @@ export default function Dashboard(props) {
       props.handleUpdateUser(userData);
       joinedLobbies();
       getUserQuestions();
+      getFriends();
     }
   }, []);
 
+  // Get Questions associated to the current User
   const getUserQuestions = async () => {
     const response = await axios.get(
       `${BACKEND_URL}/question/users/${userData.id}`
     );
-    setUserQuestions(response.data);
+    let questions = response.data;
+    let questionsData = [];
+    for (let question of questions) {
+      question = await axios.get(`${BACKEND_URL}/question/${question.id}`);
+      questionsData.push(question.data[0]);
+    }
+    setUserQuestions(questionsData);
+  };
+
+  let questionsAnswered = userQuestions.filter(
+    (question) => question.mentorId == userData.id
+  );
+  let questionsAsked = userQuestions.filter(
+    (question) => question.menteeId == userData.id
+  );
+
+  const openQuestionsList = (type) => {
+    if (type == "answered") {
+      setQuestionsList(questionsAnswered);
+    } else {
+      setQuestionsList(questionsAsked);
+    }
   };
 
   // Lobby Join Functionality
@@ -74,17 +100,22 @@ export default function Dashboard(props) {
     setLobbyInfo(response.data);
   };
 
-  let questionsAnswered = userQuestions.filter(
-    (question) => question.mentorId == userData.id
-  );
-  let questionsAsked = userQuestions.filter(
-    (question) => question.menteeId == userData.id
-  );
+  const getFriends = async () => {
+    let friends = [];
+    if (userData.friendsList.length > 0) {
+      for (let userId of userData.friendsList) {
+        console.log(userId);
+        const response = await axios.get(`${BACKEND_URL}/users/${userId}`);
+        friends.push(response.data);
+      }
+      setUserFriends(friends);
+    }
+  };
 
   return (
     <div>
       {" "}
-      <p>DASHBOARD</p>
+      <h1>USER DASHBOARD</h1>
       {userData ? (
         <div>
           <img
@@ -97,9 +128,47 @@ export default function Dashboard(props) {
           <p>Bio : {userData.bio}</p>
           <p>Tokens : {userData.tokens}</p>
           <p>
-            Activity Ratio: {questionsAnswered.length} Questions Answered /{" "}
-            {questionsAsked.length} Questions Asked
+            Activity Ratio:{" "}
+            <button
+              onClick={() => {
+                setShowQuestions(!showQuestions);
+                getUserQuestions();
+                openQuestionsList("answered");
+              }}
+            >
+              {questionsAnswered.length} Questions Answered{" "}
+            </button>
+            /
+            <button
+              onClick={() => {
+                setShowQuestions(!showQuestions);
+                openQuestionsList("asked");
+              }}
+            >
+              {questionsAsked.length} Questions Asked
+            </button>
           </p>
+          {showQuestions && questionsList
+            ? questionsList.map((question) => {
+                return (
+                  <div key={question.id}>
+                    <p>Asked By: {question.menteeIdAlias.username}</p>
+                    <p>
+                      Answered By:
+                      {question.mentorIdAlias
+                        ? question.mentorIdAlias.username
+                        : null}
+                    </p>
+                    <p>Title: {question.title}</p>
+                    <Link
+                      to={`/lobbies/${question.lobbyId}/questions/${question.id}`}
+                    >
+                      Go To Question
+                    </Link>
+                  </div>
+                );
+              })
+            : null}
           <br />
           <button
             onClick={() => {
@@ -169,8 +238,19 @@ export default function Dashboard(props) {
         </div>
       ) : null}
       <div>
-        <p>Lobbies:</p>
-        <p>Insert Lobbies here</p>
+        <h3>Friends</h3>
+        {userFriends && userFriends.length > 0
+          ? userFriends.map((friend) => {
+              return (
+                <div key={friend.id}>
+                  <Link to={`/users/${friend.id}`}>
+                    <p>{friend.username}</p>
+                  </Link>
+                  {friend.online ? <p>Online</p> : null}
+                </div>
+              );
+            })
+          : null}
       </div>
     </div>
   );
