@@ -84,8 +84,6 @@ function PostQuestion(props) {
       setTokensOffered("");
       alert("u have posted a question");
       props.setPosted(!props.posted);
-      // navigate(`/lobbies/${lobbyId}`);
-      //or navigate to the individual question id
     });
   };
   return (
@@ -126,7 +124,7 @@ function PostQuestion(props) {
           <RichTextEditor getRichText={(item) => getRichText(item)} />
 
           <button type="submit" onClick={postQuestion}>
-            Post Question
+            submit
           </button>
         </div>
       )}

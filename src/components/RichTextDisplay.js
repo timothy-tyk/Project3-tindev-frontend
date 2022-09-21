@@ -8,10 +8,9 @@ import {
 } from "draft-js";
 import "./RichText.css";
 import "../../node_modules/draft-js/dist/Draft.css";
-import { convertToRaw } from "draft-js";
-import draftToMarkdown from "draftjs-to-markdown";
+import { convertToRaw, convertFromRaw } from "draft-js";
 
-class RichTextEditor extends React.Component {
+class RichTextDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = { editorState: EditorState.createEmpty() };
@@ -85,26 +84,19 @@ class RichTextEditor extends React.Component {
     return (
       <div>
         <div className="RichEditor-root">
-          <BlockStyleControls
-            editorState={editorState}
-            onToggle={this.toggleBlockType}
+          <Editor
+            blockStyleFn={getBlockStyle}
+            customStyleMap={styleMap}
+            editorState={EditorState.createWithContent(
+              convertFromRaw(JSON.parse(this.props.richText))
+            )}
+            handleKeyCommand={this.handleKeyCommand}
+            keyBindingFn={this.mapKeyToEditorCommand}
+            onChange={this.onChange}
+            ref="editor"
+            spellCheck={true}
+            readOnly={true}
           />
-          <InlineStyleControls
-            editorState={editorState}
-            onToggle={this.toggleInlineStyle}
-          />
-          <div className={className} onClick={this.focus}>
-            <Editor
-              blockStyleFn={getBlockStyle}
-              customStyleMap={styleMap}
-              editorState={editorState}
-              handleKeyCommand={this.handleKeyCommand}
-              keyBindingFn={this.mapKeyToEditorCommand}
-              onChange={this.onChange}
-              ref="editor"
-              spellCheck={true}
-            />
-          </div>
         </div>
       </div>
     );
@@ -213,11 +205,4 @@ const InlineStyleControls = (props) => {
     </div>
   );
 };
-export default RichTextEditor;
-
-{
-  /* const rawContent = convertToRaw(
-        this.state.editorState.getCurrentContent()
-      );
-      markup = draftToMarkdown(rawContent); */
-}
+export default RichTextDisplay;
