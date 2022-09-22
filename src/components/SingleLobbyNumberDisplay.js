@@ -5,7 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
-import PostQuestion from "./PostQuestion.js";
+import PostQuestion from "./xPostQuestion.js";
 
 export default function SingleLobbyNumberDisplay(props) {
   const [numberOnline, setNumberOnline] = useState(0);

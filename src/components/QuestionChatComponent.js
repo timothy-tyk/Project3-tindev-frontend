@@ -3,30 +3,30 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 import { BACKEND_URL } from "../constants";
+import { useParams } from "react-router-dom";
 
 const socket = io("http://localhost:3000");
 
-export default function LobbyChatComponent(props) {
+export default function QuestionChatComponent(props) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([{}]);
   const userData = props.userData;
-  const lobbyId = props.lobbyId;
-  const lobbyName = props.lobbyData.name;
+  console.log(props.userData);
+  const { questionId } = useParams();
 
   useEffect(() => {
     //when user joins the lobby and this chat component is refreshed, send the lobbyId to backend
-    socket.emit("join_room", { room: lobbyId });
+    socket.emit("join_question", { question: questionId });
     // eslint-disable-next-line
-    // socket.emit("send_message", {});
     getChatLogs();
   }, []);
 
   useEffect(() => {
-    socket.on("received_message", (data) => {
+    socket.on("received_question_message", (data) => {
       let newMessage = {
         username: data.username,
         message: data.message,
-        room: data.room,
+        questionId: data.questionId,
         date: data.date,
       };
       setChatMessages((chatMessages) => [...chatMessages, newMessage]);
@@ -37,44 +37,38 @@ export default function LobbyChatComponent(props) {
   }, [socket]);
 
   const getChatLogs = async () => {
-    const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
-    const chatLog = response.data.messages;
+    const response = await axios.get(`${BACKEND_URL}/message/${questionId}`);
+    console.log(response.data);
     let messages = [];
-    if (chatLog) {
-      chatLog.forEach((log) => {
-        messages.push(JSON.parse(log));
-      });
-      setChatMessages(messages);
-    }
+    response.data.forEach((message) => {
+      let messageObject = {
+        username: message.user.username,
+        date: message.createdAt.toLocaleString(),
+        message: message.messageContent,
+        questionId: questionId,
+      };
+      messages.push(messageObject);
+    });
+    setChatMessages(messages);
   };
 
   const sendMessage = async () => {
     //user sends a message which includes username, message, and room(i.e.lobbyId)
-    socket.emit("send_message", {
+    socket.emit("send_question_message", {
       username: userData.username,
       message: currentMessage,
-      room: lobbyId,
+      questionId: questionId,
       date: new Date().toLocaleString(),
     });
     //add message to the database
-    let newMessage = JSON.stringify({
-      username: userData.username,
-      date: new Date().toLocaleString(),
+    const output = await axios.post(`${BACKEND_URL}/message/${questionId}`, {
+      questionId: questionId,
+      userId: userData.id,
       message: currentMessage,
-      room: lobbyId,
     });
-    const dbMessages = await axios.post(
-      `${BACKEND_URL}/lobbies/${lobbyId}/chat`,
-      {
-        message: newMessage,
-      }
-    );
+    console.log(output);
     getChatLogs();
-    //set chat messages to the same value as what was emited to backend
-    // setChatMessages((chatMessages) => [
-    //   ...chatMessages,
-    //   { userame: userData.username, message: currentMessage, room: lobbyId,  },
-    // ]);
+
     setCurrentMessage("");
   };
 
@@ -94,18 +88,6 @@ export default function LobbyChatComponent(props) {
                   );
                 })
               : null}
-            {/* {chatMessages
-              .filter((e, i) => i !== 0)
-              .map((message, index) => {
-                return (
-                  message.room === lobbyId && (
-                    <div key={index}>
-                      {message.username} : {message.message}, room=
-                      {message.room}
-                    </div>
-                  )
-                );
-              })} */}
           </div>
         ) : null}
       </div>
