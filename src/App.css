@@ -7,8 +7,12 @@
   pointer-events: none;
 }
 
+.landinglogo {
+  width: 50vw;
+  height: auto;
+}
 .App-header {
-  background-color: #282c34;
+  background-color: #000;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

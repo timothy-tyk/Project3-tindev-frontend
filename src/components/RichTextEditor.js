@@ -9,6 +9,7 @@ import {
 import "./RichText.css";
 import "../../node_modules/draft-js/dist/Draft.css";
 import { convertToRaw } from "draft-js";
+import draftToMarkdown from "draftjs-to-markdown";
 
 class RichTextEditor extends React.Component {
   constructor(props) {
@@ -213,3 +214,10 @@ const InlineStyleControls = (props) => {
   );
 };
 export default RichTextEditor;
+
+{
+  /* const rawContent = convertToRaw(
+        this.state.editorState.getCurrentContent()
+      );
+      markup = draftToMarkdown(rawContent); */
+}
