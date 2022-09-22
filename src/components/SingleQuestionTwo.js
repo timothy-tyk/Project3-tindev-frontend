@@ -73,11 +73,6 @@ export default function SingleQuestionTwo() {
     if (question) {
       console.log(question.details);
       const contentState = convertFromRaw(JSON.parse(question.details));
-      // console.log(contentState);
-      // const contentDataState = ContentState.createFromBlockArray(contentState);
-      // const editorDataState = EditorState.createWithContent(contentDataState);
-      // console.log(editorState);
-      // setQuestionText(editorDataState);
     } else console.log("no question yet");
   }, [question]);
 
@@ -101,10 +96,6 @@ export default function SingleQuestionTwo() {
           )}
         </div>
       )}
-
-      {/* if u are the mentee, u can edit
-        but if there is a mentor, cannot be edited, editable=false
-        if it is solved, unable to accept any mentors, available=false */}
       <div>
         {userIsMentee && !mentorExist && (
           <EditSingleQuestion

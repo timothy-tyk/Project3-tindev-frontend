@@ -11,6 +11,7 @@ import {
 } from "firebase/storage";
 import { set, push, ref as databaseRef } from "firebase/database";
 import { storage, database } from "../DB/firebase";
+import { Button, Typography } from "@mui/material";
 
 function PostQuestionTwo(props) {
   const [postStatus, setPostStatus] = useState(false);
@@ -84,7 +85,11 @@ function PostQuestionTwo(props) {
   return (
     <div>
       <div>
-        <button onClick={postNew}>Post a new question</button>
+        <Button variant="outlined" onClick={postNew}>
+          <Typography sx={{ color: "neongreen.main", fontSize: "1.2rem" }}>
+            Post a new question
+          </Typography>
+        </Button>
         <br />
       </div>
 

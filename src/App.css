@@ -33,3 +33,9 @@
   width: 40vw;
   height: auto;
 }
+
+/* remove all underlines from */
+
+a {
+  text-decoration: none;
+}
