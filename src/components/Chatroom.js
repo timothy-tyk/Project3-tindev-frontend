@@ -4,6 +4,7 @@ import axios from "axios";
 import { UserContext } from "../App";
 import SendReview from "./SendReview";
 import Review from "./Review";
+import QuestionChatComponent from "./QuestionChatComponent";
 
 function Chatroom() {
   const [userData, setUserData] = useState(useContext(UserContext));
@@ -82,9 +83,33 @@ function Chatroom() {
               status:{question.solved ? "solved" : "not solved yet"}, tokens
               Offer: {question.tokensOffered}{" "}
             </p>
-            <p>** INSERT CHAT MSG / SOCKET IO HERE ***</p>
+            <QuestionChatComponent userData={userData} />
           </div>
         )}
+      </div>
+      <div>
+        {" "}
+        {/* If there is a review, show the review, if not show the form */}
+        {showReview && (
+          <Review
+            questionId={questionId}
+            role={role}
+            revieweeId={revieweeId}
+            reviewerId={reviewerId}
+          />
+        )}
+        {/* {showReview && (
+          <SendReview
+            questionId={questionId}
+            userIsMentee={userIsMentee}
+            userIsMentor={userIsMentor}
+            revieweeId={revieweeId}
+            reviewerId={reviewerId}
+            userData={userData}
+            role={role}
+          />
+        )} */}
+        {/* {reviewExist ? <: "review dont exist"} */}
       </div>
       <div>
         {" "}
