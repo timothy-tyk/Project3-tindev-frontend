@@ -3,7 +3,8 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
-
+import { Button, Container, Box, Typography } from "@mui/material";
+import logo from "../images/Tindev.png";
 export default function LandingPage(props) {
   const {
     isAuthenticated,
@@ -49,15 +50,22 @@ export default function LandingPage(props) {
 
   return (
     <div>
-      {" "}
-      <p>LANDING PAGE</p>
-      <button
-        onClick={() => {
-          handleLogin();
-        }}
-      >
-        Sign Up / Login
-      </button>
+      <Container maxWidth="sm">
+        <Box>
+          <Typography color="secondary"> {`</>`} </Typography>
+          <Typography color="primary"> TINDEV </Typography>
+          <Typography color="secondary"> TINDEV</Typography>
+          <p>LANDING PAGE</p>
+          <img className="landinglogo" src={logo} alt="tindev" />
+          <button
+            onClick={() => {
+              handleLogin();
+            }}
+          >
+            Sign Up / Login
+          </button>
+        </Box>
+      </Container>
     </div>
   );
 }
