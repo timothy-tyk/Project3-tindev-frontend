@@ -26,7 +26,6 @@ export default function App() {
   const [userData, setUserData] = useState();
 
   const handleUserData = (data) => {
-    console.log("updating user data", data);
     setUserData(data);
   };
 
@@ -82,19 +81,8 @@ export default function App() {
             />
             <Route
               path="/users/:profileId"
-              element={<Profile handleSignIn={handleUserData} />}
+              element={<Profile handleUpdateUser={handleUserData} />}
             />
-            {/*Tim: i change the /question route element here to PostQuestion & added questionId}
-            {/* <Route path="/questions" element={<Questions />} /> */}
-            {/* /lobby path not needed here */}
-            {/* <Route path="/lobby" element={<SingleLobby />} /> */}
-            {/* <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
-            <Route path="/questions/:questionId" element={<SingleQuestion />} />
-            <Route
-              path="/questions/:questionId/chatroom"
-              element={<Chatroom />}
-            /> */}
-            {/* Proposed new routes */}
             <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
             <Route
               path="/lobbies/:lobbyId/questions/:questionId"

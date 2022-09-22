@@ -16,13 +16,10 @@ export default function Dashboard(props) {
   const [lobbyInfo, setLobbyInfo] = useState({});
   const [showLobbyInfo, setShowLobbyInfo] = useState();
   const [userFriends, setUserFriends] = useState([]);
+  const [userReviews, setUserReviews] = useState([]);
   const { logout, user } = useAuth0();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    console.log("logout");
-    logout();
-  };
   useEffect(() => {
     if (!user) {
       navigate("/");
@@ -31,6 +28,7 @@ export default function Dashboard(props) {
       joinedLobbies();
       getUserQuestions();
       getFriends();
+      getReviews();
     }
   }, []);
 
@@ -103,14 +101,26 @@ export default function Dashboard(props) {
   const getFriends = async () => {
     let friends = [];
     if (userData.friendsList.length > 0) {
-      for (let userId of userData.friendsList) {
-        console.log(userId);
-        const response = await axios.get(`${BACKEND_URL}/users/${userId}`);
+      for (let friendId of userData.friendsList) {
+        const response = await axios.get(`${BACKEND_URL}/users/${friendId}`);
         friends.push(response.data);
       }
       setUserFriends(friends);
     }
   };
+
+  const getReviews = async () => {
+    const reviews = await axios.get(
+      `${BACKEND_URL}/review/user/${userData.id}`
+    );
+    setUserReviews(reviews.data);
+  };
+  let userReviewsListReviewer = userReviews.filter(
+    (review) => review.reviewerId == userData.id
+  );
+  let userReviewsListReviewee = userReviews.filter(
+    (review) => review.revieweeId == userData.id
+  );
 
   return (
     <div>
@@ -239,18 +249,49 @@ export default function Dashboard(props) {
       ) : null}
       <div>
         <h3>Friends</h3>
-        {userFriends && userFriends.length > 0
-          ? userFriends.map((friend) => {
+        {userFriends && userFriends.length > 0 ? (
+          userFriends.map((friend) => {
+            return (
+              <div key={friend.id}>
+                <Link to={`/users/${friend.id}`}>
+                  <p>{friend.username}</p>
+                </Link>
+                {friend.online ? <p>Online</p> : null}
+              </div>
+            );
+          })
+        ) : (
+          <p>No Friends Yet</p>
+        )}
+      </div>
+      <div>
+        <h3>Reviews</h3>
+        {userReviews && userReviews.length > 0 ? (
+          <div>
+            <h5>As Reviewer</h5>
+            {userReviewsListReviewer.map((review) => {
               return (
-                <div key={friend.id}>
-                  <Link to={`/users/${friend.id}`}>
-                    <p>{friend.username}</p>
-                  </Link>
-                  {friend.online ? <p>Online</p> : null}
+                <div>
+                  <p>Question Id:{review.questionId}</p>
+                  <p>Reviewee:{review.revieweeIdAlias.username}</p>
+                  <p>Details:{review.reviewContent}</p>
                 </div>
               );
-            })
-          : null}
+            })}
+            <h5>As Reviewee</h5>
+            {userReviewsListReviewee.map((review) => {
+              return (
+                <div>
+                  <p>Question Id:{review.questionId}</p>
+                  <p>Reviewer:{review.reviewerIdAlias.username}</p>
+                  <p>Details:{review.reviewContent}</p>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p>No Reviews Yet</p>
+        )}
       </div>
     </div>
   );
