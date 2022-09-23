@@ -9,6 +9,7 @@ import PostQuestion from "./xPostQuestion.js";
 import SingleLobbyNumberDisplay from "./SingleLobbyNumberDisplay.js";
 import LobbyChatComponent from "./LobbyChatComponent.js";
 import PostQuestionTwo from "./PostQuestionTwo.js";
+import PostQuestionPopup from "./PostQuestionPopup.js";
 
 export default function SingleLobby() {
   const { user } = useAuth0();
@@ -107,12 +108,13 @@ export default function SingleLobby() {
           })}
       </div>
       <div>
-        <PostQuestionTwo
+        {/* <PostQuestionTwo
           lobbyId={lobbyId}
           userData={userData}
           posted={posted}
           setPosted={setPosted}
-        />
+        /> */}
+        <PostQuestionPopup setPosted={setPosted} posted={posted} />
       </div>
       <br /> <br />
       <div>

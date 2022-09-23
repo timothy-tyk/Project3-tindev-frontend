@@ -54,14 +54,6 @@ function Chatroom() {
             setRole("MENTOR");
           }
         });
-      // retrieving reviews
-      // axios.get(`http://localhost:3000/review/${questionId}`).then((review) => {
-      //   console.log(review.data, "review.data");
-      //   if (review) {
-      //     setReviewExist(true);
-      //     setReview(review.data);
-      //   }
-      // });
     }
 
     console.log(params, "params");
@@ -87,30 +79,7 @@ function Chatroom() {
           </div>
         )}
       </div>
-      <div>
-        {" "}
-        {/* If there is a review, show the review, if not show the form */}
-        {showReview && (
-          <Review
-            questionId={questionId}
-            role={role}
-            revieweeId={revieweeId}
-            reviewerId={reviewerId}
-          />
-        )}
-        {/* {showReview && (
-          <SendReview
-            questionId={questionId}
-            userIsMentee={userIsMentee}
-            userIsMentor={userIsMentor}
-            revieweeId={revieweeId}
-            reviewerId={reviewerId}
-            userData={userData}
-            role={role}
-          />
-        )} */}
-        {/* {reviewExist ? <: "review dont exist"} */}
-      </div>
+
       <div>
         {" "}
         {/* If there is a review, show the review, if not show the form */}

@@ -12,4 +12,11 @@ export const theme = createTheme({
       main: "#333333",
     },
   },
+  question: {
+    field: {
+      marginTop: 20,
+      marginBottom: 20,
+      display: "block",
+    },
+  },
 });

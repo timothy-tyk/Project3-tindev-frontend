@@ -87,6 +87,7 @@ class RichTextDisplay extends React.Component {
           <Editor
             blockStyleFn={getBlockStyle}
             customStyleMap={styleMap}
+            //grab the JSON string from Database and set it as the state to display
             editorState={EditorState.createWithContent(
               convertFromRaw(JSON.parse(this.props.richText))
             )}
@@ -95,6 +96,7 @@ class RichTextDisplay extends React.Component {
             onChange={this.onChange}
             ref="editor"
             spellCheck={true}
+            //read only - just to display
             readOnly={true}
           />
         </div>
