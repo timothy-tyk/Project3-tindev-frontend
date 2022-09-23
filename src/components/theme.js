@@ -20,5 +20,8 @@ export const theme = createTheme({
     hotpink: {
       main: "#FF69B4",
     },
+    offwhite: {
+      main: "#E8DACC",
+    },
   },
 });

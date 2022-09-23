@@ -86,7 +86,7 @@ function PostQuestionTwo(props) {
     <div>
       <div>
         <Button variant="outlined" onClick={postNew}>
-          <Typography sx={{ color: "neongreen.main", fontSize: "1.2rem" }}>
+          <Typography sx={{ color: "primary", fontSize: "1.2rem" }}>
             Post a new question
           </Typography>
         </Button>

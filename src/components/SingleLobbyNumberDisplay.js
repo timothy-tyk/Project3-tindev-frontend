@@ -40,6 +40,6 @@ export default function SingleLobbyNumberDisplay(props) {
           : ` ${numberOnline} Person Online`)}
     </span>
   ) : (
-    <span>Loading number of online users...</span>
+    <span>loading...</span>
   );
 }
