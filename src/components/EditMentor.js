@@ -4,6 +4,7 @@ import { useState, useContext } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../App.js";
+import { Button } from "@mui/material";
 
 function EditMentor(props) {
   const navigate = useNavigate();
@@ -30,7 +31,9 @@ function EditMentor(props) {
   };
   return (
     <div>
-      <button onClick={updateMentor}>Accept</button>
+      <Button variant="outlined" color="secondary" onClick={updateMentor}>
+        Accept
+      </Button>
     </div>
   );
 }

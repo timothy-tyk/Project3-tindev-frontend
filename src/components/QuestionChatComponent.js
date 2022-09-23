@@ -1,10 +1,10 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 import { BACKEND_URL } from "../constants";
 import { useParams } from "react-router-dom";
-
+import { Box, Grid, Typography } from "@mui/material";
 const socket = io("http://localhost:3000");
 
 export default function QuestionChatComponent(props) {
@@ -13,7 +13,7 @@ export default function QuestionChatComponent(props) {
   const userData = props.userData;
   console.log(props.userData);
   const { questionId } = useParams();
-
+  const messagesEndRef = useRef(null);
   useEffect(() => {
     //when user joins the lobby and this chat component is refreshed, send the lobbyId to backend
     socket.emit("join_question", { question: questionId });
@@ -75,21 +75,60 @@ export default function QuestionChatComponent(props) {
   return (
     <div>
       <div>
-        {chatMessages.length > 0 ? (
-          <div>
-            {chatMessages && Object.keys(chatMessages[0]).length > 0
-              ? chatMessages.map((message, index) => {
-                  return (
-                    <div key={index}>
-                      <p>
-                        {message.date} | {message.username}:{message.message}
-                      </p>
-                    </div>
-                  );
-                })
-              : null}
-          </div>
-        ) : null}
+        <Grid
+          container
+          className="scroll"
+          sx={{
+            p: 4,
+            overflowY: "auto",
+            maxHeight: "400px",
+            borderTop: 1,
+            borderBottom: 1,
+            borderColor: "#555",
+          }}
+        >
+          {chatMessages.length > 0 ? (
+            <Grid container>
+              {chatMessages && Object.keys(chatMessages[0]).length > 0
+                ? chatMessages.map((message, index) => {
+                    return (
+                      <div key={index}>
+                        {message.userId === userData.id ? (
+                          <Grid
+                            ref={messagesEndRef}
+                            item
+                            xs={12}
+                            key={index}
+                            display="flex"
+                            sx={{ pl: 2, py: 1 }}
+                            justifyContent="flex-end"
+                          >
+                            <Typography color="secondary">
+                              {message.username}: {message.message}
+                            </Typography>
+                          </Grid>
+                        ) : (
+                          <Grid
+                            ref={messagesEndRef}
+                            item
+                            xs={12}
+                            key={index}
+                            display="flex"
+                            sx={{ pl: 2, py: 1 }}
+                            justifyContent="flex-start"
+                          >
+                            <Typography color="primary">
+                              {message.username}: {message.message}
+                            </Typography>
+                          </Grid>
+                        )}{" "}
+                      </div>
+                    );
+                  })
+                : null}
+            </Grid>
+          ) : null}{" "}
+        </Grid>{" "}
       </div>
       <div>
         <input
@@ -104,3 +143,48 @@ export default function QuestionChatComponent(props) {
     </div>
   );
 }
+
+//before styling
+// (
+//     <div>
+//       <div>
+//           <Grid
+//           container
+//           className="scroll"
+//           sx={{
+//             p: 4,
+//             overflowY: "auto",
+//             maxHeight: "400px",
+//             borderTop: 1,
+//             borderBottom: 1,
+//             borderColor: "#555",
+//           }}
+//         ></Grid>
+//         {chatMessages.length > 0 ? (
+//           <Grid container>
+//             {chatMessages && Object.keys(chatMessages[0]).length > 0
+//               ? chatMessages.map((message, index) => {
+//                   return (
+//                     <div key={index}>
+//                       <p>
+//                         {message.date} | {message.username}:{message.message}
+//                       </p>
+//                     </div>
+//                   );
+//                 })
+//               : null}
+//           </div>
+//         ) : null}
+//       </div>
+//       <div>
+//         <input
+//           placeholder="Message here..."
+//           value={currentMessage}
+//           onChange={(e) => {
+//             setCurrentMessage(e.target.value);
+//           }}
+//         />
+//         <button onClick={sendMessage}>Send Message</button>
+//       </div>
+//     </div>
+//   );

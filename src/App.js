@@ -47,7 +47,8 @@ export default function App() {
     <UserContext.Provider value={userData}>
       <div className="App">
         <header className="App-header">
-          <nav className="topNav" style={{ visibility: "hidden" }}>
+          <div className="main"> </div>
+          <nav className="topNav">
             <Link to="/">Landing Page</Link>
             <Link to="/dashboard">Dashboard</Link>
             {/* <Link to="/editprofile">Profile</Link> */}
