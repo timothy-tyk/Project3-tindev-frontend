@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../App.js";
 import RichTextEditor from "./RichTextEditor.js";
-
+import { Button } from "@mui/material";
 function EditSingleQuestion(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
   const [title, setTitle] = useState(props.question.title);
@@ -38,9 +38,13 @@ function EditSingleQuestion(props) {
   };
   return (
     <div>
-      <button onClick={(e) => props.setEdited(!props.edited)}>
+      <Button
+        variant="outlined"
+        onClick={(e) => props.setEdited(!props.edited)}
+      >
         Edit question
-      </button>
+      </Button>
+
       {props.edited && (
         <div>
           <input
@@ -59,9 +63,9 @@ function EditSingleQuestion(props) {
             onChange={(e) => setTokensOffered(e.target.value)}
             placeholder="Tokens Offer?"
           />
-          <button type="submit" onClick={postQuestion}>
+          <Button variant="outlined" type="submit" onClick={postQuestion}>
             Submit
-          </button>
+          </Button>
         </div>
       )}
     </div>
