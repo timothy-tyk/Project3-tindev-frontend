@@ -39,7 +39,6 @@ export default function Profile(props) {
 
   const getProfileData = async (profileId) => {
     const profile = await axios.get(`${BACKEND_URL}/users/${profileId}`);
-    console.log(profile.data);
     setProfileData(profile.data);
   };
 
@@ -76,6 +75,16 @@ export default function Profile(props) {
       `${BACKEND_URL}/users/${profileId}/lobbies`
     );
     setLobbiesJoined(response.data);
+  };
+
+  // Add Friend
+  const addFriend = async () => {
+    const add = await axios.post(`${BACKEND_URL}/users/${profileId}/add`, {
+      userId: userData.id,
+    });
+    const newUserInfo = await axios.get(`${BACKEND_URL}/users/${userData.id}`);
+    setUserData(newUserInfo.data);
+    props.handleUpdateUser(newUserInfo.data);
   };
 
   return (
@@ -158,6 +167,19 @@ export default function Profile(props) {
             })
           : null}
       </div>
+      {userData.id !== profileData.id ? (
+        <button
+          disabled={
+            userData.friendsList &&
+            userData.friendsList.includes(profileData.id)
+          }
+          onClick={() => {
+            addFriend();
+          }}
+        >
+          Add Friend
+        </button>
+      ) : null}
     </div>
   );
 }

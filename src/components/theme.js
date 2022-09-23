@@ -11,6 +11,18 @@ export const theme = createTheme({
     tertiary: {
       main: "#333333",
     },
+    electric: {
+      main: "#1F51FF",
+    },
+    neongreen: {
+      main: "#31ED31",
+    },
+    hotpink: {
+      main: "#FF69B4",
+    },
+    offwhite: {
+      main: "#E8DACC",
+    },
   },
   question: {
     field: {

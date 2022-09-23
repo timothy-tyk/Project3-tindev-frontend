@@ -5,6 +5,7 @@ import { UserContext } from "../App";
 import SendReview from "./SendReview";
 import Review from "./Review";
 import QuestionChatComponent from "./QuestionChatComponent";
+import RichTextDisplay from "./RichTextDisplay";
 
 function Chatroom() {
   const [userData, setUserData] = useState(useContext(UserContext));
@@ -68,7 +69,7 @@ function Chatroom() {
               {question.title} by Id{question.menteeId}: Username:
               {question.menteeIdAlias.username}
             </h1>
-            <h6> {question.details} </h6>
+            <RichTextDisplay richText={question.details} />
             <h6>Question Id: {questionId}</h6>
             <p>
               {" "}
@@ -79,7 +80,6 @@ function Chatroom() {
           </div>
         )}
       </div>
-
       <div>
         {" "}
         {/* If there is a review, show the review, if not show the form */}
@@ -91,18 +91,6 @@ function Chatroom() {
             reviewerId={reviewerId}
           />
         )}
-        {/* {showReview && (
-          <SendReview
-            questionId={questionId}
-            userIsMentee={userIsMentee}
-            userIsMentor={userIsMentor}
-            revieweeId={revieweeId}
-            reviewerId={reviewerId}
-            userData={userData}
-            role={role}
-          />
-        )} */}
-        {/* {reviewExist ? <: "review dont exist"} */}
       </div>
       <button onClick={(e) => navigate(-2)}>Go back to previous lobby</button>
     </div>

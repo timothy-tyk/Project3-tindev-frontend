@@ -14,7 +14,6 @@ function Review(props) {
   const [canReview, setCanReview] = useState(true);
   const [rating, setRating] = useState();
   const { lobbyId } = useParams();
-  //hard coded
   const navigate = useNavigate();
 
   useEffect(() => {

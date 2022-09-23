@@ -33,3 +33,128 @@
   width: 40vw;
   height: auto;
 }
+
+/* remove all underlines from */
+
+a {
+  text-decoration: none;
+}
+
+/* LOBBY STYLING */
+.userInfoHolder {
+  background-image: url("./images/lobbyuserinfoholder2.png");
+  background-size: 100% 100%;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.userNameDisplay {
+  position: absolute;
+  top: -10%;
+  height: 100%;
+  width: 100%;
+}
+
+.userStatsDisplay {
+  position: absolute;
+  top: -30%;
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-evenly;
+  align-content: center;
+  align-items: center;
+}
+
+.questionDisplayContainer {
+  background-color: #22212198;
+  border: 1px solid #e8dacc;
+  padding: 1em;
+  border-radius: 10px;
+}
+
+.singleQuestionDisplayContainer {
+  background: linear-gradient(#1a6723 0 0) no-repeat var(--p, 200%) 100% / 200%
+    var(--p, 0.08em);
+  transition: 0.3s var(--t, 0s),
+    background-position 0.3s calc(0.3s - var(--t, 0s));
+}
+
+.singleQuestionDisplayContainer:hover {
+  cursor: pointer;
+  --p: 100%;
+  --t: 0.3s;
+}
+
+.singleQuestionDisplayContainerSolved {
+  background: linear-gradient(#3d0707 0 0) no-repeat var(--p, 200%) 100% / 200%
+    var(--p, 0.08em);
+  transition: 0.3s var(--t, 0s),
+    background-position 0.3s calc(0.3s - var(--t, 0s));
+}
+.singleQuestionDisplayContainerSolved:hover {
+  --p: 100%;
+  --t: 0.3s;
+}
+
+.dotSolved {
+  height: 0.6em;
+  width: 0.6em;
+  background-color: #c52323;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dotNotSolved {
+  height: 0.6em;
+  width: 0.6em;
+  background-color: #1e9d4c;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* width */
+.scroll::-webkit-scrollbar {
+  width: 10px;
+  border: 1px solid #000000;
+  border-radius: 30px;
+}
+
+/* Track */
+.scroll::-webkit-scrollbar-track {
+  background: #555;
+  border: 1px solid #000000;
+  border-radius: 30px;
+  margin: 10px;
+}
+
+/* Handle */
+.scroll::-webkit-scrollbar-thumb {
+  background: #cfff04;
+  border: 1px solid #000000;
+  border-radius: 30px;
+}
+
+/* Handle on hover */
+.scroll::-webkit-scrollbar-thumb:hover {
+  background: #cfff04;
+  border: 1px solid #000000;
+  border-radius: 30px;
+}
+
+.chatInputField {
+  background-color: #1f1d1d;
+  color: white;
+  border: 1px solid #e600ff;
+  border-radius: 10px;
+  width: 100%;
+  height: 10vh;
+  text-align: left;
+  padding-left: 15px;
+  padding-bottom: 12vh;
+  margin: 10px 0 20px 0;
+}
+
+/* END OF LOBBY STYLING */

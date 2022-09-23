@@ -13,7 +13,7 @@ import {
 } from "firebase/storage";
 import { set, push, ref as databaseRef } from "firebase/database";
 import { storage, database } from "../DB/firebase";
-// import question from "../../../Project3-tindev-backend/db/models/question.js";
+import { Button, Typography } from "@mui/material";
 
 function PostQuestionTwo(props) {
   const [postStatus, setPostStatus] = useState(false);
