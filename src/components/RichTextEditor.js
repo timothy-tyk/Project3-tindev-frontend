@@ -26,7 +26,7 @@ class RichTextEditor extends React.Component {
       //   .join("\n");
       console.log(this.state.editorState, "editor state");
       console.log(blocks, "blocks");
-      // console.log(value, "dog cheese");
+      // pass it back up to send back to DB here
       this.props.getRichText(blocks);
     };
     this.handleKeyCommand = this._handleKeyCommand.bind(this);

@@ -24,4 +24,11 @@ export const theme = createTheme({
       main: "#E8DACC",
     },
   },
+  question: {
+    field: {
+      marginTop: 20,
+      marginBottom: 20,
+      display: "block",
+    },
+  },
 });

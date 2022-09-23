@@ -13,6 +13,7 @@ import { Container } from "@mui/system";
 import tokenImage from "../images/token.png";
 import backIcon from "../images/backIcon.png";
 import onlineUsersIcon from "../images/onlineUsersIcon.png";
+import PostQuestionPopup from "./PostQuestionPopup.js";
 
 export default function SingleLobby() {
   const { user } = useAuth0();
@@ -443,12 +444,7 @@ export default function SingleLobby() {
       </Grid>
 
       <Grid item xs={12} sx={{ my: 3, border: 1, borderRadius: "10px", py: 3 }}>
-        <PostQuestionTwo
-          lobbyId={lobbyId}
-          userData={userData}
-          posted={posted}
-          setPosted={setPosted}
-        />
+        <PostQuestionPopup setPosted={setPosted} posted={posted} />
       </Grid>
       <Grid container sx={{ border: 1, p: 2, mb: 2 }} borderRadius="10px">
         <Grid

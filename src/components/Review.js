@@ -11,7 +11,7 @@ function Review(props) {
   const [reviewSent, setReviewSent] = useState(false);
   const [reviewContent, setReviewContent] = useState("");
   const [inputText, setInputText] = useState("");
-  const [canReview, setCanReview] = useState(false);
+  const [canReview, setCanReview] = useState(true);
   const [rating, setRating] = useState();
   const { lobbyId } = useParams();
   const navigate = useNavigate();
@@ -30,8 +30,9 @@ function Review(props) {
             setReviewContent(review.data);
             for (let i = 0; i < review.data.length; i++) {
               if (review.data[i].reviewerId === userData.id) {
+                console.log("my user exist in review");
                 setCanReview(false);
-              } else setCanReview(true);
+              }
             }
           }
           console.log(canReview, "canreview?");
@@ -64,7 +65,7 @@ function Review(props) {
       <div>
         <p>Hello review section here </p>
 
-        {!reviewExist || canReview ? (
+        {canReview ? (
           <div>
             <h5>Send a review </h5>
             <input

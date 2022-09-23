@@ -14,6 +14,7 @@ import "../../node_modules/draft-js/dist/Draft.css";
 import { convertFromRaw, ContentState } from "draft-js";
 import RichTextEditor from "./RichTextEditor";
 import RichTextDisplay from "./RichTextDisplay";
+import KickMentor from "./KickMentor";
 
 export default function SingleQuestionTwo() {
   const [userData, setUserData] = useState(useContext(UserContext));
@@ -25,7 +26,8 @@ export default function SingleQuestionTwo() {
   const [solved, setSolved] = useState();
   const [edited, setEdited] = useState();
   const [lobbyId, setLobbyId] = useState();
-  const [mentorExist, setMentorExist] = useState();
+  const [mentorExist, setMentorExist] = useState(false);
+  const [kicked, setKicked] = useState(false);
 
   // Update question index in state if needed to trigger data retrieval
   const params = useParams();
@@ -36,6 +38,17 @@ export default function SingleQuestionTwo() {
       setLobbyId(params.lobbyId);
     }
   }
+
+  const previousMentors = [];
+  const getMentorList = async () => {
+    if (question) {
+      for (let userId of question.mentorList) {
+        console.log(userId, "userId of mentor List");
+        previousMentors.push(userId);
+      }
+    }
+  };
+
   useEffect(() => {
     console.log(user);
     if (!user) {
@@ -58,6 +71,10 @@ export default function SingleQuestionTwo() {
             //there is a mentor so both parties cant edit and cant accept
             setMentorExist(true);
           }
+          if (response.data[0].mentorId === null) {
+            //there is a mentor so both parties cant edit and cant accept
+            setMentorExist(false);
+          }
           if (response.data[0].mentorId === userData.id) {
             alert("u are the mentor for this question! routing to chatroom");
             navigate(`/lobbies/${lobbyId}/questions/${questionId}/chatroom`);
@@ -65,16 +82,19 @@ export default function SingleQuestionTwo() {
           if (response.data[0].menteeId === userData.id) {
             setUserIsMentee(true);
           }
+          getMentorList();
         });
+      console.log(userIsMentee, "user is mentee");
+      console.log("mentor exist", mentorExist);
     }
-  }, [edited]);
+  }, [edited, kicked]);
 
   useEffect(() => {
     if (question) {
       console.log(question.details);
       const contentState = convertFromRaw(JSON.parse(question.details));
     } else console.log("no question yet");
-  }, [question]);
+  }, [question, kicked]);
 
   return (
     <div>
@@ -86,6 +106,7 @@ export default function SingleQuestionTwo() {
           </h1>
           <h6>Question Id: {questionId}</h6>
           <h6>Description: </h6>
+
           <RichTextDisplay richText={question.details} />
           <p>
             status:{question.solved ? "Solved" : "Not solved"}, tokens Offer:{" "}
@@ -96,8 +117,11 @@ export default function SingleQuestionTwo() {
           )}
         </div>
       )}
+      {/* if u are the mentee, u can edit
+        but if there is a mentor, cannot be edited, editable=false
+        if it is solved, unable to accept any mentors, available=false */}
       <div>
-        {userIsMentee && !mentorExist && (
+        {userIsMentee && !solved && !mentorExist && (
           <EditSingleQuestion
             question={question}
             edited={edited}
@@ -109,7 +133,14 @@ export default function SingleQuestionTwo() {
       {!mentorExist && !userIsMentee && !solved && (
         <EditMentor question={question} />
       )}
-      {mentorExist && solved && "Question has been solved! CLOSED"}
+      {mentorExist && solved && "Question has been solved!"}
+      {userIsMentee && mentorExist && !solved && (
+        <KickMentor
+          questionId={question.id}
+          kicked={kicked}
+          setKicked={setKicked}
+        />
+      )}
       {userIsMentee && mentorExist && (
         <div>
           You already have a mentor{" "}
