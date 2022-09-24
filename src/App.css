@@ -123,6 +123,7 @@ a {
     background-position 0.3s calc(0.3s - var(--t, 0s));
 }
 .singleQuestionDisplayContainerSolved:hover {
+  cursor: help;
   --p: 100%;
   --t: 0.3s;
 }
