@@ -87,57 +87,61 @@ export default function QuestionChatComponent(props) {
             borderColor: "#555",
           }}
         >
-          {chatMessages.length > 0 ? (
-            <Grid container>
-              {chatMessages && Object.keys(chatMessages[0]).length > 0
-                ? chatMessages.map((message, index) => {
-                    return (
-                      <div key={index}>
-                        {message.userId === userData.id ? (
-                          <Grid
-                            ref={messagesEndRef}
-                            item
-                            xs={12}
-                            key={index}
-                            display="flex"
-                            sx={{ pl: 2, py: 1 }}
-                            justifyContent="flex-end"
-                          >
-                            <Typography color="secondary">
-                              {message.username}: {message.message}
-                            </Typography>
-                          </Grid>
-                        ) : (
-                          <Grid
-                            ref={messagesEndRef}
-                            item
-                            xs={12}
-                            key={index}
-                            display="flex"
-                            sx={{ pl: 2, py: 1 }}
-                            justifyContent="flex-start"
-                          >
-                            <Typography color="primary">
-                              {message.username}: {message.message}
-                            </Typography>
-                          </Grid>
-                        )}{" "}
-                      </div>
-                    );
-                  })
-                : null}
-            </Grid>
-          ) : null}{" "}
-        </Grid>{" "}
+          efesfesfesfes hello
+        </Grid>
+
+        {chatMessages.length > 0 ? (
+          <Grid container>
+            {chatMessages && Object.keys(chatMessages[0]).length > 0
+              ? chatMessages.map((message, index) => {
+                  return (
+                    <div key={index}>
+                      {message.userId === userData.id ? (
+                        <Grid
+                          ref={messagesEndRef}
+                          item
+                          xs={12}
+                          key={index}
+                          display="flex"
+                          sx={{ pl: 2, py: 1 }}
+                          justifyContent="flex-end"
+                        >
+                          <Typography color="secondary">
+                            {message.username}: {message.message}
+                          </Typography>
+                        </Grid>
+                      ) : (
+                        <Grid
+                          ref={messagesEndRef}
+                          item
+                          xs={12}
+                          key={index}
+                          display="flex"
+                          sx={{ pl: 2, py: 1 }}
+                          justifyContent="flex-start"
+                        >
+                          <Typography color="primary">
+                            {message.username}: {message.message}
+                          </Typography>
+                        </Grid>
+                      )}
+                    </div>
+                  );
+                })
+              : null}
+          </Grid>
+        ) : null}
       </div>
       <div>
-        <input
-          placeholder="Message here..."
-          value={currentMessage}
-          onChange={(e) => {
-            setCurrentMessage(e.target.value);
-          }}
-        />
+        <Grid container>
+          <input
+            placeholder="Message here..."
+            value={currentMessage}
+            onChange={(e) => {
+              setCurrentMessage(e.target.value);
+            }}
+          />
+        </Grid>
         <button onClick={sendMessage}>Send Message</button>
       </div>
     </div>
