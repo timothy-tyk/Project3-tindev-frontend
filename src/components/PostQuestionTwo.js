@@ -97,7 +97,7 @@ function PostQuestionTwo(props) {
       setText("");
       setPostStatus(!postStatus);
       props.handleClose();
-      // props.setPosted(!props.posted);
+      props.setPosted(!props.posted);
     });
   };
 

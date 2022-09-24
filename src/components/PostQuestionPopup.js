@@ -95,6 +95,8 @@ Overview
             userData={props.userData}
             lobbyId={props.lobbyId}
             handleClose={handleClose}
+            setPosted={props.setPosted}
+            posted={props.posted}
           />
         </DialogContent>
         <DialogActions>
