@@ -448,7 +448,12 @@ export default function SingleLobby() {
       </Grid>
 
       <Grid item xs={12} sx={{ my: 3, border: 1, borderRadius: "10px", py: 3 }}>
-        <PostQuestionPopup setPosted={setPosted} posted={posted} />
+        <PostQuestionPopup
+          setPosted={setPosted}
+          posted={posted}
+          userData={userData}
+          lobbyId={lobbyId}
+        />
       </Grid>
       <Grid container sx={{ border: 1, p: 2, mb: 2 }} borderRadius="10px">
         <Grid

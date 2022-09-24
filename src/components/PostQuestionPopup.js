@@ -91,7 +91,11 @@ Overview
           </Typography>
         </BootstrapDialogTitle>
         <DialogContent dividers>
-          <PostQuestionTwo />
+          <PostQuestionTwo
+            userData={props.userData}
+            lobbyId={props.lobbyId}
+            handleClose={handleClose}
+          />
         </DialogContent>
         <DialogActions>
           <Button autoFocus color="tertiary" onClick={handleClose}>
