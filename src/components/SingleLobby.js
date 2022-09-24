@@ -404,10 +404,10 @@ export default function SingleLobby() {
             >
               <Typography color="offwhite.main" fontSize={"0.7em"}>
                 {userAsMentorData}
-                {userAsMentorData < 2 ? (
-                  <span> Questions Answered</span>
-                ) : (
+                {userAsMentorData === 1 ? (
                   <span> Question Answered</span>
+                ) : (
+                  <span> Questions Answered</span>
                 )}
               </Typography>
             </Grid>
@@ -417,11 +417,11 @@ export default function SingleLobby() {
               sx={{ display: "flex", justifyContent: "flex-end", pr: 3 }}
             >
               <Typography color="offwhite.main" fontSize={"0.7em"}>
-                {userAsMenteeData}{" "}
-                {userAsMenteeData > 2 ? (
-                  <span> Questions Posted</span>
-                ) : (
+                {userAsMenteeData}
+                {userAsMenteeData === 1 ? (
                   <span> Question Posted</span>
+                ) : (
+                  <span> Questions Posted</span>
                 )}
               </Typography>
             </Grid>
