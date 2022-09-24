@@ -165,6 +165,7 @@ export default function SingleLobby() {
             return question.solved ? (
               <Grid
                 container
+                key={question.id}
                 className="singleQuestionDisplayContainerSolved"
                 sx={{ border: 1, p: 2, mb: 2 }}
                 alignItems="center"
@@ -226,6 +227,7 @@ export default function SingleLobby() {
             ) : (
               <Grid
                 container
+                key={question.id}
                 className="singleQuestionDisplayContainer"
                 sx={{ border: 1, p: 2, mb: 2 }}
                 alignItems="center"
@@ -291,7 +293,7 @@ export default function SingleLobby() {
   }
 
   return (
-    <Container sx={{ height: "100%" }} columnSpacing={{ xs: 10 }}>
+    <Container sx={{ height: "100%" }}>
       {/* Lobby Header container */}
       <Grid
         container
@@ -339,7 +341,6 @@ export default function SingleLobby() {
             alignItems: "center",
             justifyContent: "flex-end",
           }}
-          wrap="nowrap"
         >
           <Avatar
             alt="people"
@@ -403,10 +404,10 @@ export default function SingleLobby() {
             >
               <Typography color="offwhite.main" fontSize={"0.7em"}>
                 {userAsMentorData}
-                {userAsMentorData < 2 ? (
-                  <span> Questions Answered</span>
-                ) : (
+                {userAsMentorData === 1 ? (
                   <span> Question Answered</span>
+                ) : (
+                  <span> Questions Answered</span>
                 )}
               </Typography>
             </Grid>
@@ -416,11 +417,11 @@ export default function SingleLobby() {
               sx={{ display: "flex", justifyContent: "flex-end", pr: 3 }}
             >
               <Typography color="offwhite.main" fontSize={"0.7em"}>
-                {userAsMenteeData}{" "}
-                {userAsMenteeData > 2 ? (
-                  <span> Questions Posted</span>
-                ) : (
+                {userAsMenteeData}
+                {userAsMenteeData === 1 ? (
                   <span> Question Posted</span>
+                ) : (
+                  <span> Questions Posted</span>
                 )}
               </Typography>
             </Grid>
