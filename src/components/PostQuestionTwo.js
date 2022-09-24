@@ -96,8 +96,8 @@ function PostQuestionTwo(props) {
       setTokensOffered("");
       setText("");
       setPostStatus(!postStatus);
-
-      props.setPosted(!props.posted);
+      props.handleClose();
+      // props.setPosted(!props.posted);
     });
   };
 
