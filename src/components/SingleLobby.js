@@ -170,6 +170,9 @@ export default function SingleLobby() {
                 alignItems="center"
                 wrap="nowrap"
                 borderRadius="10px"
+                onClick={() =>
+                  navigate(`/lobbies/${lobbyId}/questions/${question.id}`)
+                }
               >
                 <Grid
                   item
