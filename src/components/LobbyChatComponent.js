@@ -125,7 +125,10 @@ export default function LobbyChatComponent(props) {
                             justifyContent="flex-end"
                           >
                             <Typography color="secondary">
-                              {message.username}: {message.message}
+                              <span style={{ color: "#fff" }}>
+                                {message.message} :
+                              </span>
+                              {message.username}
                             </Typography>
                           </Grid>
                         ) : (
@@ -138,8 +141,11 @@ export default function LobbyChatComponent(props) {
                             sx={{ pl: 2, py: 1 }}
                             justifyContent="flex-start"
                           >
-                            <Typography color="primary">
-                              {message.username}: {message.message}
+                            <Typography color="secondary">
+                              {message.username}
+                              <span style={{ color: "#fff" }}>
+                                : {message.message}
+                              </span>
                             </Typography>
                           </Grid>
                         )}
