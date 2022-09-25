@@ -69,6 +69,7 @@ function PostQuestionTwo(props) {
     setTitleError(false);
     setTextError(false);
     setTokenError(false);
+
     if (title == "") {
       setTitleError(true);
     }
@@ -79,26 +80,28 @@ function PostQuestionTwo(props) {
       setTextError(true);
     }
 
-    //send it to DB as a string
-    const menteeId = props.userData.id;
-    const lobbyId = props.lobbyId;
-    const submitBody = {
-      title,
-      text,
-      tokensOffered,
-      menteeId,
-      lobbyId,
-      imageUrl,
-    };
-    console.log(submitBody, "submitBody");
-    axios.post("http://localhost:3000/question", submitBody).then((res) => {
-      setTitle("");
-      setTokensOffered("");
-      setText("");
-      setPostStatus(!postStatus);
-      props.handleClose();
-      props.setPosted(!props.posted);
-    });
+    if (!titleError && !tokenError && !textError) {
+      //send it to DB as a string
+      const menteeId = props.userData.id;
+      const lobbyId = props.lobbyId;
+      const submitBody = {
+        title,
+        text,
+        tokensOffered,
+        menteeId,
+        lobbyId,
+        imageUrl,
+      };
+      console.log(submitBody, "submitBody");
+      axios.post("http://localhost:3000/question", submitBody).then((res) => {
+        setTitle("");
+        setTokensOffered("");
+        setText("");
+        setPostStatus(!postStatus);
+        props.handleClose();
+        props.setPosted(!props.posted);
+      });
+    }
   };
 
   return (
