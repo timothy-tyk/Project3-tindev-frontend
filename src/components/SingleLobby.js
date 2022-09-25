@@ -39,7 +39,7 @@ export default function SingleLobby() {
       getLobbyData();
     }
     // eslint-disable-next-line
-  }, []);
+  }, [posted]);
 
   const updateUserLocation = async () => {
     if (userData) {

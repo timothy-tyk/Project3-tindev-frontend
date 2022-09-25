@@ -17,7 +17,10 @@ import RichTextEditor from "./RichTextEditor";
 import RichTextDisplay from "./RichTextDisplay";
 import KickMentor from "./KickMentor";
 import { Container, Avatar } from "@mui/material";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import {
+  Divider,
+  Box,
   ButtonGroup,
   Button,
   Card,
@@ -27,14 +30,15 @@ import {
   Typography,
 } from "@mui/material";
 export default function SingleQuestionTwo() {
-  const [userData, setUserData] = useState(useContext(UserContext));
   const { user } = useAuth0();
+  const [userData, setUserData] = useState(useContext(UserContext));
+
   const navigate = useNavigate();
   const [questionId, setQuestionId] = useState();
   const [question, setQuestion] = useState();
   const [userIsMentee, setUserIsMentee] = useState();
   const [solved, setSolved] = useState();
-  const [edited, setEdited] = useState();
+  const [edited, setEdited] = useState(false);
   const [lobbyId, setLobbyId] = useState();
   const [mentorExist, setMentorExist] = useState(false);
   const [kicked, setKicked] = useState(false);
@@ -42,6 +46,7 @@ export default function SingleQuestionTwo() {
   // Update question index in state if needed to trigger data retrieval
   const params = useParams();
   if (questionId !== params.questionId) {
+    console.log(params.questionId);
     setQuestionId(params.questionId);
 
     if (lobbyId !== params.lobbyId) {
@@ -115,7 +120,7 @@ export default function SingleQuestionTwo() {
   }
 
   useEffect(() => {
-    console.log(user);
+    console.log(userData);
     if (!user) {
       navigate("/");
     }
@@ -162,101 +167,227 @@ export default function SingleQuestionTwo() {
   }, [question, kicked]);
 
   return (
-    <Container maxWidth="sm">
-      <Grid container>
-        <Grid
-          item
-          sx={{
-            padding: 5,
-            border: 1,
-            borderColor: "secondary",
-            borderRadius: "10px",
-
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {question && (
-            <div>
-              <Typography variant="h1">{question.title} </Typography>
-              <Typography variant="subtitle">
-                by {question.menteeIdAlias.username}
-              </Typography>
-              <Typography variant="caption">
-                {" "}
-                {`${time_ago(new Date(question.createdAt))}`}
-              </Typography>
-              <Grid container pt={4}>
-                <Grid item xs sx={{ pr: 3 }}>
-                  <Typography variant="subtitle">
-                    status:
-                    <span
-                      className={question.solved ? "dotSolved" : "dotNotSolved"}
-                    ></span>
-                  </Typography>
-                </Grid>
-                <Grid item xs>
-                  <Chip
-                    avatar={
-                      <Avatar
-                        alt="token"
-                        src={tokenImage}
-                        sx={{ width: 0.08, height: 0.7 }}
-                      />
-                    }
-                    label={`Tokens Offer:${question.tokensOffered}`}
-                    variant="outlined"
-                    color="secondary"
-                  />
-                </Grid>
-              </Grid>
-              <h6>Description: </h6>
-              <RichTextDisplay richText={question.details} />
-
-              {question.imgUrl && (
-                <img
-                  className="questionpic"
-                  alt="qns img"
-                  src={question.imgUrl}
-                />
-              )}
-            </div>
-          )}{" "}
-        </Grid>
-      </Grid>
+    <Box height="100vh" width="100vw">
       <div>
-        {/* if u are the mentee, u can edit
-        but if there is a mentor, cannot be edited, editable=false
-        if it is solved, unable to accept any mentors, available=false */}
-        <div>
-          {userIsMentee && !solved && <EditSolved question={question} />}{" "}
-        </div>
-        {!mentorExist && !userIsMentee && !solved && (
-          <EditMentor question={question} />
-        )}
-        {mentorExist && solved && "Question has been solved!"}
-        {userIsMentee && mentorExist && !solved && (
-          <KickMentor
-            questionId={question.id}
-            kicked={kicked}
-            setKicked={setKicked}
-          />
-        )}
-        {userIsMentee && mentorExist && (
-          <div>
-            You already have a mentor{" "}
-            <button
-              onClick={(e) =>
-                navigate(`/lobbies/${lobbyId}/questions/${questionId}/chatroom`)
-              }
-            >
-              Go to chatroom
-            </button>
-          </div>
-        )}
-        <button onClick={(e) => navigate(-1)}>Go back</button>
+        <Box>
+          <Grid container direction="row" spacing="2" height="100vh">
+            <Grid container>
+              <Grid item xs={3} alignContent="flex-start">
+                <Button
+                  variant="outlined"
+                  startIcon={
+                    <ArrowBackOutlinedIcon icon={ArrowBackOutlinedIcon} />
+                  }
+                  onClick={(e) => navigate(-1)}
+                >
+                  LOBBY
+                </Button>
+              </Grid>
+              <Grid container direction="column" alignContent="center">
+                {question && (
+                  <Grid item xs={9}>
+                    <Grid
+                      container
+                      justifyContent="center"
+                      alignContent="center"
+                    >
+                      <Grid item>
+                        <Typography variant="h2"> {question.title}</Typography>{" "}
+                      </Grid>
+                    </Grid>
+                    <Divider variant="middle" color="primary" />
+                    <Grid item>
+                      <Typography variant="caption">
+                        {`Posted by ${question.menteeIdAlias.username} `}
+                      </Typography>
+
+                      <Typography variant="caption">
+                        {`${time_ago(new Date(question.createdAt))}`}
+                      </Typography>
+                    </Grid>
+
+                    <Grid item mt={10} mb={10}>
+                      <RichTextDisplay richText={question.details} />
+                    </Grid>
+                    <Grid item>
+                      {question.imgUrl && (
+                        <img
+                          className="questionpic"
+                          alt="qns img"
+                          src={question.imgUrl}
+                        />
+                      )}
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="subtitle" mr={3}>
+                        Status:{" "}
+                        <span
+                          className={
+                            question.solved ? "dotSolved" : "dotNotSolved"
+                          }
+                        ></span>
+                      </Typography>
+                      <Chip
+                        avatar={
+                          <Avatar
+                            alt="token"
+                            src={tokenImage}
+                            sx={{ width: 0.08, height: 0.7 }}
+                          />
+                        }
+                        label={`Bounty: ${question.tokensOffered}`}
+                        variant="outlined"
+                        color="primary"
+                      />
+                    </Grid>
+                  </Grid>
+                )}
+              </Grid>
+            </Grid>
+            <Grid container justifyContent="center">
+              <Grid item>
+                {userIsMentee && !solved && <EditSolved question={question} />}
+              </Grid>
+              <Grid item>
+                {question && !mentorExist && !userIsMentee && !solved && (
+                  <EditSingleQuestion
+                    question={question}
+                    edited={edited}
+                    setEdited={setEdited}
+                  />
+                )}
+              </Grid>
+              <Grid item>
+                {userIsMentee && mentorExist && !solved && (
+                  <KickMentor
+                    questionId={question.id}
+                    kicked={kicked}
+                    setKicked={setKicked}
+                  />
+                )}
+              </Grid>
+              <Grid item>
+                {userIsMentee && mentorExist && (
+                  <div>
+                    You already have a mentor{" "}
+                    <button
+                      onClick={(e) =>
+                        navigate(
+                          `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
+                        )
+                      }
+                    >
+                      Go to chatroom
+                    </button>
+                  </div>
+                )}
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
       </div>
-    </Container>
+    </Box>
   );
 }
+
+// <Container maxWidth="sm">
+//    <Grid container>
+//        <Grid
+
+//           item
+//           sx={{
+//             padding: 5,
+//             border: 1,
+//             borderColor: "secondary",
+//             borderRadius: "10px",
+
+//             display: "flex",
+//             alignItems: "center",
+//             justifyContent: "center",
+//           }}
+//         >
+//           {question && (
+//             <div>
+//               <Typography variant="h1">{question.title} </Typography>
+//               <Typography variant="subtitle">
+//                 by {question.menteeIdAlias.username}
+//               </Typography>
+//               <Typography variant="caption">
+//                 {" "}
+//                 {`${time_ago(new Date(question.createdAt))}`}
+//               </Typography>
+//               <Grid container pt={4}>
+//                 <Grid item xs sx={{ pr: 3 }}>
+//                   <Typography variant="subtitle">
+//                     status:
+//                     <span
+//                       className={question.solved ? "dotSolved" : "dotNotSolved"}
+//                     ></span>
+//                   </Typography>
+//                 </Grid>
+//                 <Grid item xs>
+//                   <Chip
+//                     avatar={
+//                       <Avatar
+//                         alt="token"
+//                         src={tokenImage}
+//                         sx={{ width: 0.08, height: 0.7 }}
+//                       />
+//                     }
+//                     label={`Tokens Offer:${question.tokensOffered}`}
+//                     variant="outlined"
+//                     color="secondary"
+//                   />
+//                 </Grid>
+//               </Grid>
+//               <h6>Description: </h6>
+//               <RichTextDisplay richText={question.details} />
+
+//               {question.imgUrl && (
+//                 <img
+//                   className="questionpic"
+//                   alt="qns img"
+//                   src={question.imgUrl}
+//                 />
+//               )}
+//             </div>
+//           )}{" "}
+//         </Grid>
+//       </Grid>
+//       <div>
+//         {/* if u are the mentee, u can edit
+//         but if there is a mentor, cannot be edited, editable=false
+//         if it is solved, unable to accept any mentors, available=false */}
+//         <div>
+//           {userIsMentee && !solved && <EditSolved question={question} />}{" "}
+//         </div>
+//         {question && !mentorExist && !userIsMentee && !solved && (
+//           <EditSingleQuestion
+//             question={question}
+//             edited={edited}
+//             setEdited={setEdited}
+//           />
+//         )}
+//         {mentorExist && solved && "Question has been solved!"}
+//         {userIsMentee && mentorExist && !solved && (
+//           <KickMentor
+//             questionId={question.id}
+//             kicked={kicked}
+//             setKicked={setKicked}
+//           />
+//         )}
+//         {userIsMentee && mentorExist && (
+//           <div>
+//             You already have a mentor{" "}
+//             <button
+//               onClick={(e) =>
+//                 navigate(`/lobbies/${lobbyId}/questions/${questionId}/chatroom`)
+//               }
+//             >
+//               Go to chatroom
+//             </button>
+//           </div>
+//         )}
+//         <button onClick={(e) => navigate(-1)}>Go back</button>
+//       </div>
+//     </Container>

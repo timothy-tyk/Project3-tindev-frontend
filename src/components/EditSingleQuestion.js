@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -15,6 +15,9 @@ function EditSingleQuestion(props) {
   const { lobbyId } = useParams();
 
   const navigate = useNavigate();
+  useEffect(() => {
+    console.log({ title }, { text }, { tokensOffered });
+  }, []);
 
   const getRichText = async (item) => {
     setText(item);
@@ -49,7 +52,7 @@ function EditSingleQuestion(props) {
         <div>
           <input
             type="text"
-            value={title}
+            value={props.question.title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title?"
           />
