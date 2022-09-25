@@ -4,18 +4,17 @@ import "./App.css";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import SingleLobby from "./components/SingleLobby";
-import Questions from "./components/xSingleQuestion";
 import EditProfile from "./components/EditProfile";
 import Profile from "./components/Profile";
 import Dashboard from "./components/Dashboard";
 import { useAuth0 } from "@auth0/auth0-react";
-import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history.js";
-import PostQuestion from "./components/xPostQuestion";
-import SingleQuestion from "./components/xSingleQuestion";
 import Chatroom from "./components/Chatroom";
 import axios from "axios";
 import { BACKEND_URL } from "./constants";
 import SingleQuestionTwo from "./components/SingleQuestionTwo";
+
+//MUI
+import { AppBar, Typography, Grid, Button } from "@mui/material";
 
 export const UserContext = createContext();
 
@@ -47,24 +46,29 @@ export default function App() {
     <UserContext.Provider value={userData}>
       <div className="App">
         <header className="App-header">
-          <nav className="topNav">
-            <Link to="/">Landing Page</Link>
-            <Link to="/dashboard">Dashboard</Link>
-            {/* <Link to="/editprofile">Profile</Link> */}
-            {/* Questions accessed from dashboard */}
-            {/* <Link to="/questions">Questions</Link> */}
-            {/* /lobby path not needed here */}
-            {/* <Link to="/lobby">Lobby</Link> */}
-            {user ? (
-              <button
-                onClick={() => {
-                  handleLogout();
-                }}
-              >
-                Logout
-              </button>
-            ) : null}
-          </nav>
+          <AppBar className="topNav" color="black">
+            <Grid container>
+              <Grid item xs={6} className="links left-link">
+                <Button>
+                  <Link className="links left-link" to="/dashboard">
+                    <Typography color="primary">Tindev</Typography>
+                  </Link>
+                </Button>
+              </Grid>
+              <Grid item xs={6} className="links right-link">
+                {user ? (
+                  <Button
+                    className="links"
+                    onClick={() => {
+                      handleLogout();
+                    }}
+                  >
+                    Logout
+                  </Button>
+                ) : null}
+              </Grid>
+            </Grid>
+          </AppBar>
 
           <Routes>
             <Route

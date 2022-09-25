@@ -4,6 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { BACKEND_URL } from "../constants";
 import axios from "axios";
+import DashboardFriends from "./DashboardFriends";
+
+//Mui
+import { Typography, Card, Grid, Button, Avatar } from "@mui/material";
+
+//Sub Components
+import DashboardLobbies from "./DashboardLobbies";
+import DashboardQuestions from "./DashboardQuestions";
+import DashboardReviews from "./DashboardReviews";
 
 export default function Dashboard(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
@@ -25,274 +34,248 @@ export default function Dashboard(props) {
       navigate("/");
     } else {
       props.handleUpdateUser(userData);
-      joinedLobbies();
-      getUserQuestions();
-      getFriends();
-      getReviews();
+      // joinedLobbies();
+      // getUserQuestions();
     }
   }, []);
 
   // Get Questions associated to the current User
-  const getUserQuestions = async () => {
-    const response = await axios.get(
-      `${BACKEND_URL}/question/users/${userData.id}`
-    );
-    let questions = response.data;
-    let questionsData = [];
-    for (let question of questions) {
-      question = await axios.get(`${BACKEND_URL}/question/${question.id}`);
-      questionsData.push(question.data[0]);
-    }
-    setUserQuestions(questionsData);
-  };
+  // const getUserQuestions = async () => {
+  //   const response = await axios.get(
+  //     `${BACKEND_URL}/question/users/${userData.id}`
+  //   );
+  //   let questions = response.data;
+  //   let questionsData = [];
+  //   for (let question of questions) {
+  //     question = await axios.get(`${BACKEND_URL}/question/${question.id}`);
+  //     questionsData.push(question.data[0]);
+  //   }
+  //   setUserQuestions(questionsData);
+  // };
 
-  let questionsAnswered = userQuestions.filter(
-    (question) => question.mentorId == userData.id
-  );
-  let questionsAsked = userQuestions.filter(
-    (question) => question.menteeId == userData.id
-  );
+  // let questionsAnswered = userQuestions.filter(
+  //   (question) => question.mentorId == userData.id
+  // );
+  // let questionsAsked = userQuestions.filter(
+  //   (question) => question.menteeId == userData.id
+  // );
 
-  const openQuestionsList = (type) => {
-    if (type == "answered") {
-      setQuestionsList(questionsAnswered);
-    } else {
-      setQuestionsList(questionsAsked);
-    }
-  };
+  // const openQuestionsList = (type) => {
+  //   if (type == "answered") {
+  //     setQuestionsList(questionsAnswered);
+  //   } else {
+  //     setQuestionsList(questionsAsked);
+  //   }
+  // };
 
   // Lobby Join Functionality
-  const openLobbyList = async () => {
-    const lobbies = await axios.get(`${BACKEND_URL}/lobbies`);
-    console.log("lobbies", lobbies);
-    if (userData.lobbiesJoin) {
-      let availLobbies = lobbies.data.filter(
-        (lobby) => !userData.lobbiesJoin.includes(lobby.id)
-      );
-      console.log(availLobbies, "availLobbies");
-      setAvailableLobbies(availLobbies);
-    } else {
-      setAvailableLobbies(lobbies.data);
-    }
-  };
-  const joinedLobbies = async () => {
-    const response = await axios.get(
-      `${BACKEND_URL}/users/${userData.id}/lobbies`
-    );
-    setLobbiesJoined(response.data);
-  };
-  const joinLobby = async (lobbyId) => {
-    const updatedUserData = await axios.post(
-      `${BACKEND_URL}/users/${userData.id}/joinlobby/${lobbyId}`,
-      { prevLobbies: userData.lobbiesJoin }
-    );
-    setUserData(updatedUserData.data);
-    joinedLobbies();
-    openLobbyList();
-    setShowAvailableLobbies(false);
-    props.handleUpdateUser(updatedUserData.data);
-  };
+  // const openLobbyList = async () => {
+  //   const lobbies = await axios.get(`${BACKEND_URL}/lobbies`);
+  //   console.log("lobbies", lobbies);
+  //   if (userData.lobbiesJoin) {
+  //     let availLobbies = lobbies.data.filter(
+  //       (lobby) => !userData.lobbiesJoin.includes(lobby.id)
+  //     );
+  //     console.log(availLobbies, "availLobbies");
+  //     setAvailableLobbies(availLobbies);
+  //   } else {
+  //     setAvailableLobbies(lobbies.data);
+  //   }
+  // };
+  // const joinedLobbies = async () => {
+  //   const response = await axios.get(
+  //     `${BACKEND_URL}/users/${userData.id}/lobbies`
+  //   );
+  //   setLobbiesJoined(response.data);
+  // };
+  // const joinLobby = async (lobbyId) => {
+  //   const updatedUserData = await axios.post(
+  //     `${BACKEND_URL}/users/${userData.id}/joinlobby/${lobbyId}`,
+  //     { prevLobbies: userData.lobbiesJoin }
+  //   );
+  //   setUserData(updatedUserData.data);
+  //   joinedLobbies();
+  //   openLobbyList();
+  //   setShowAvailableLobbies(false);
+  //   props.handleUpdateUser(updatedUserData.data);
+  // };
 
-  const getLobbyInfo = async (lobbyId) => {
-    const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
-    setLobbyInfo(response.data);
-  };
+  // const getLobbyInfo = async (lobbyId) => {
+  //   const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
+  //   setLobbyInfo(response.data);
+  // };
 
-  const getFriends = async () => {
-    let friends = [];
-    if (userData.friendsList.length > 0) {
-      for (let friendId of userData.friendsList) {
-        const response = await axios.get(`${BACKEND_URL}/users/${friendId}`);
-        friends.push(response.data);
-      }
-      setUserFriends(friends);
-    }
-  };
-
-  const getReviews = async () => {
-    const reviews = await axios.get(
-      `${BACKEND_URL}/review/user/${userData.id}`
-    );
-    setUserReviews(reviews.data);
-  };
-  let userReviewsListReviewer = userReviews.filter(
-    (review) => review.reviewerId == userData.id
-  );
-  let userReviewsListReviewee = userReviews.filter(
-    (review) => review.revieweeId == userData.id
-  );
+  // const getFriends = async () => {
+  //   let friends = [];
+  //   if (userData.friendsList.length > 0) {
+  //     for (let friendId of userData.friendsList) {
+  //       const response = await axios.get(`${BACKEND_URL}/users/${friendId}`);
+  //       friends.push(response.data);
+  //     }
+  //     setUserFriends(friends);
+  //   }
+  // };
 
   return (
-    <div>
-      {" "}
-      <h1>USER DASHBOARD</h1>
+    <div className="container">
+      <Card>
+        <Grid container spacing={1}>
+          <Grid item xs={8}>
+            <Card className="dashboard-top-left" variant="outlined">
+              <Typography variant="h1" color="primary">
+                Dashboard
+              </Typography>
+            </Card>
+          </Grid>
+          <Grid item xs={4}>
+            <Card className="dashboard-top-right" variant="outlined">
+              <Card className="dashboard-top-right-row1">
+                <Button variant="contained">Friends</Button>
+                <Button variant="contained">Leaderboard</Button>
+                <Button variant="contained">Logout</Button>
+              </Card>
+              <Card className="dashboard-top-right-row2" variant="outlined">
+                <Typography variant="h3" color="primary" align="left">
+                  Friends
+                </Typography>
+                <DashboardFriends user={userData} />
+              </Card>
+            </Card>
+          </Grid>
+        </Grid>
+      </Card>
       {userData ? (
-        <div>
-          <img
-            className="profilepic"
-            alt={userData.profilepicture}
-            src={userData.profilepicture}
-          />
-          <p>Username : {userData.username}</p>
-          <p>Email : {userData.email}</p>
-          <p>Bio : {userData.bio}</p>
-          <p>Tokens : {userData.tokens}</p>
-          <p>
-            Activity Ratio:{" "}
-            <button
-              onClick={() => {
-                setShowQuestions(!showQuestions);
-                getUserQuestions();
-                openQuestionsList("answered");
-              }}
-            >
-              {questionsAnswered.length} Questions Answered{" "}
-            </button>
-            /
-            <button
-              onClick={() => {
-                setShowQuestions(!showQuestions);
-                openQuestionsList("asked");
-              }}
-            >
-              {questionsAsked.length} Questions Asked
-            </button>
-          </p>
-          {showQuestions && questionsList
-            ? questionsList.map((question) => {
-                return (
-                  <div key={question.id}>
-                    <p>Asked By: {question.menteeIdAlias.username}</p>
-                    <p>
-                      Answered By:
-                      {question.mentorIdAlias
-                        ? question.mentorIdAlias.username
-                        : null}
-                    </p>
-                    <p>Title: {question.title}</p>
-                    <Link
-                      to={`/lobbies/${question.lobbyId}/questions/${question.id}`}
-                    >
-                      Go To Question
-                    </Link>
-                  </div>
-                );
-              })
-            : null}
-          <br />
-          <button
-            onClick={() => {
-              navigate("/profile");
-            }}
-          >
-            Edit Profile
-          </button>
-          <div>
-            <h4>Lobbies</h4>
-            {lobbiesJoined && lobbiesJoined.length > 0
-              ? lobbiesJoined.map(({ lobby }) => {
-                  return (
-                    <div key={lobby.id}>
-                      <button
-                        onClick={() => {
-                          setShowLobbyInfo(lobby.id);
-                          getLobbyInfo(lobby.id);
+        <Card>
+          <Grid container spacing={1}>
+            <Grid item xs={8}>
+              <Grid container spacing={1}>
+                <Grid item xs={8}>
+                  <Card variant="outlined" className="dashboard-bottom-left">
+                    <div>
+                      <Typography variant="h1" color="primary" align="left">
+                        Profile
+                      </Typography>
+                      {/* <Card> */}
+
+                      <Avatar
+                        className="profilepic"
+                        alt={userData.profilepicture}
+                        src={userData.profilepicture}
+                        sx={{
+                          width: "5vw",
+                          height: "auto",
+                          marginLeft: "2vw",
                         }}
+                      />
+                      <Grid container>
+                        <Typography
+                          variant="h2"
+                          align="left"
+                          marginTop="1vw"
+                          marginLeft="1vw"
+                        >
+                          {userData.username}
+                        </Typography>
+                        {/* </Card> */}
+                        {/* <Card sx={{ marginTop: "1vh" }}> */}
+                        <Typography
+                          variant="h6"
+                          align="left"
+                          sx={{ marginLeft: "1vw", marginTop: "2vw" }}
+                        >
+                          ({userData.email})
+                        </Typography>
+                      </Grid>
+                      {/* </Card> */}
+                      {/* <Card sx={{ marginTop: "1vh" }}> */}
+                      <Typography
+                        variant="h5"
+                        align="left"
+                        sx={{ marginLeft: "1vw" }}
                       >
-                        {lobby.name}
-                      </button>
-                      {lobby.id == showLobbyInfo &&
-                      Object.keys(lobbyInfo).length > 0 ? (
-                        <div>
-                          <p>
-                            {lobbyInfo.numberOnline} people online!
-                            {lobbyInfo.questions.length} unanswered questions!{" "}
-                            <Link to={`/lobbies/${lobby.id}`}>Enter Lobby</Link>
-                          </p>
-                        </div>
-                      ) : null}
-                    </div>
-                  );
-                })
-              : null}
-            <button
-              onClick={() => {
-                openLobbyList();
-                setShowAvailableLobbies(true);
-              }}
-            >
-              + Add
-            </button>
-            <div>
-              {showAvailableLobbies && availableLobbies.length > 0
-                ? availableLobbies.map((lobby) => {
-                    return (
-                      <div key={lobby.id}>
-                        <button>
-                          <Link to={`/lobbies/${lobby.id}`}>{lobby.name}</Link>
-                        </button>
-                        <button
+                        <i>{userData.bio}</i>
+                      </Typography>
+                      {/* </Card> */}
+
+                      <br />
+                      <Grid
+                        sx={{ display: "flex", justifyContent: "flex-end" }}
+                      >
+                        <Button
+                          variant="outlined"
                           onClick={() => {
-                            joinLobby(lobby.id);
+                            navigate("/editprofile");
                           }}
                         >
-                          Join
-                        </button>
-                        <p>{lobby.numberOnline} online</p>
+                          Edit Profile
+                        </Button>
+                      </Grid>
+                    </div>
+                  </Card>
+                </Grid>
+
+                <Grid item xs={4}>
+                  <Card
+                    variant="outlined"
+                    className="dashboard-bottom-left-right"
+                  >
+                    <DashboardReviews user={userData} />
+                    {/* <div>
+                    <h3>Reviews</h3>
+                    {userReviews && userReviews.length > 0 ? (
+                      <div>
+                        <h5>As Reviewer</h5>
+                        {userReviewsListReviewer.map((review) => {
+                          return (
+                            <div>
+                              <p>Question Id:{review.questionId}</p>
+                              <p>Reviewee:{review.revieweeIdAlias.username}</p>
+                              <p>Details:{review.reviewContent}</p>
+                            </div>
+                          );
+                        })}
+                        <h5>As Reviewee</h5>
+                        {userReviewsListReviewee.map((review) => {
+                          return (
+                            <div>
+                              <p>Question Id:{review.questionId}</p>
+                              <p>Reviewer:{review.reviewerIdAlias.username}</p>
+                              <p>Details:{review.reviewContent}</p>
+                            </div>
+                          );
+                        })}
                       </div>
-                    );
-                  })
-                : null}
-            </div>
-          </div>
-        </div>
+                    ) : (
+                      <p>No Reviews Yet</p>
+                    )}
+                  </div> */}
+                  </Card>
+                  <Card
+                    variant="outlined"
+                    className="dashboard-bottom-left-right"
+                  >
+                    <DashboardQuestions user={userData} />
+                  </Card>
+                  <Card
+                    variant="outlined"
+                    className="dashboard-bottom-left-right"
+                  >
+                    <Typography variant="h3" align="left" color="primary">
+                      Tokens
+                    </Typography>
+                    <Typography variant="h5">{userData.tokens}</Typography>
+                  </Card>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={4}>
+              <Card variant="outlined" className="dashboard-bottom-right">
+                <DashboardLobbies user={userData} />
+              </Card>
+            </Grid>
+          </Grid>
+        </Card>
       ) : null}
-      <div>
-        <h3>Friends</h3>
-        {userFriends && userFriends.length > 0 ? (
-          userFriends.map((friend) => {
-            return (
-              <div key={friend.id}>
-                <Link to={`/users/${friend.id}`}>
-                  <p>{friend.username}</p>
-                </Link>
-                {friend.online ? <p>Online</p> : null}
-              </div>
-            );
-          })
-        ) : (
-          <p>No Friends Yet</p>
-        )}
-      </div>
-      <div>
-        <h3>Reviews</h3>
-        {userReviews && userReviews.length > 0 ? (
-          <div>
-            <h5>As Reviewer</h5>
-            {userReviewsListReviewer.map((review) => {
-              return (
-                <div>
-                  <p>Question Id:{review.questionId}</p>
-                  <p>Reviewee:{review.revieweeIdAlias.username}</p>
-                  <p>Details:{review.reviewContent}</p>
-                </div>
-              );
-            })}
-            <h5>As Reviewee</h5>
-            {userReviewsListReviewee.map((review) => {
-              return (
-                <div>
-                  <p>Question Id:{review.questionId}</p>
-                  <p>Reviewer:{review.reviewerIdAlias.username}</p>
-                  <p>Details:{review.reviewContent}</p>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <p>No Reviews Yet</p>
-        )}
-      </div>
     </div>
   );
 }

@@ -14,6 +14,7 @@
 .App-header {
   background-color: #000;
   min-height: 100vh;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,10 +27,115 @@
 }
 /* DASHBOARD */
 .profilepic {
-  width: 15vw;
-  height: auto;
+  width: auto;
+  height: 5vh;
 }
 .questionpic {
   width: 40vw;
   height: auto;
+}
+
+/* Landing Page */
+#demo-svg {
+  align-items: center;
+}
+.container {
+  margin-top: 5vh;
+  width: 95vw;
+}
+.links {
+  text-decoration: none;
+  color: inherit;
+}
+.left-link {
+  display: flex;
+}
+.right-link {
+  display: flex;
+  justify-content: end;
+}
+.svg-container {
+  display: inline-block;
+}
+/* Dashboard */
+.dashboard-top-left {
+  height: 35vh;
+  display: flex;
+  align-items: flex-end;
+}
+.dashboard-top-right {
+  height: 35vh;
+  display: block;
+  justify-content: end;
+}
+.dashboard-top-right-row1 {
+  height: 5vh;
+  display: flex;
+  justify-content: end;
+}
+.dashboard-top-right-row2 {
+  margin-top: 1vh;
+  height: 30vh;
+}
+.dashboard-bottom-left {
+  margin-top: 1vh;
+  height: 60vh;
+  display: block;
+  justify-content: end;
+}
+.dashboard-bottom-right {
+  margin-top: 1vh;
+  height: 60vh;
+}
+.dashboard-bottom-left-right {
+  margin-top: 1vh;
+  height: 33%;
+}
+
+/* Dashboard Friends */
+.friend-box {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: flex-end; */
+}
+.friend-row {
+  display: flex;
+  height: 10vh;
+  align-items: center;
+}
+.friend-grid-row {
+  margin-top: 0px;
+}
+.friend-avatar {
+  height: 5vh;
+  width: auto;
+}
+
+/* Lobbies */
+.lobbies-row {
+  display: flex;
+}
+.lobbies-info {
+  display: flex;
+  justify-content: end;
+  margin-left: 2px;
+  margin-right: auto;
+}
+.lobbies-add-button {
+  display: flex;
+  justify-content: end;
+}
+
+/* Questions */
+.questions-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal */
+/* .modal {
+  width: 60vw;
+} */
+.modal-info-row {
+  display: flex;
 }
