@@ -8,6 +8,9 @@ import EditProfile from "./components/EditProfile";
 import Profile from "./components/Profile";
 import Dashboard from "./components/Dashboard";
 import { useAuth0 } from "@auth0/auth0-react";
+import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history.js";
+import PostQuestion from "./components/xPostQuestion";
+import SingleQuestion from "./components/SingleQuestion";
 import Chatroom from "./components/Chatroom";
 import axios from "axios";
 import { BACKEND_URL } from "./constants";
@@ -46,6 +49,7 @@ export default function App() {
     <UserContext.Provider value={userData}>
       <div className="App">
         <header className="App-header">
+          <div className="main"> </div>
           <AppBar className="topNav" color="black">
             <Grid container>
               <Grid item xs={6} className="links left-link">
@@ -90,7 +94,7 @@ export default function App() {
             <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
             <Route
               path="/lobbies/:lobbyId/questions/:questionId"
-              element={<SingleQuestionTwo />}
+              element={<SingleQuestion />}
             />
             <Route
               path="/lobbies/:lobbyId/questions/:questionId/chatroom"

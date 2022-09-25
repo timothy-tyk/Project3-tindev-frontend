@@ -3,6 +3,8 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../App.js";
 import RichTextEditor from "./RichTextEditor.js";
+
+import { Button, TextField, Container, Alert, AlertTitle } from "@mui/material";
 import {
   getDownloadURL,
   getStorage,
@@ -11,6 +13,7 @@ import {
 } from "firebase/storage";
 import { set, push, ref as databaseRef } from "firebase/database";
 import { storage, database } from "../DB/firebase";
+import { Typography } from "@mui/material";
 
 function PostQuestionTwo(props) {
   const [postStatus, setPostStatus] = useState(false);
@@ -21,7 +24,9 @@ function PostQuestionTwo(props) {
   const [fileInputFile, setFileInputFile] = useState();
   const [fileInputValue, setFileInputValue] = useState();
   const [text, setText] = useState("");
-
+  const [titleError, setTitleError] = useState(false);
+  const [textError, setTextError] = useState(false);
+  const [tokenError, setTokenError] = useState(false);
   const postNew = () => {
     setPostStatus(!postStatus);
   };
@@ -46,6 +51,7 @@ function PostQuestionTwo(props) {
     return imageUrl;
   };
 
+  //set the stringified version into state
   const getRichText = async (item) => {
     setText(item);
     console.log(item, "rich text");
@@ -60,6 +66,20 @@ function PostQuestionTwo(props) {
       imageUrl = null;
     }
 
+    setTitleError(false);
+    setTextError(false);
+    setTokenError(false);
+    if (title == "") {
+      setTitleError(true);
+    }
+    if (tokensOffered > userData.tokens || isNaN(tokensOffered)) {
+      setTokenError(true);
+    }
+    if (text == "") {
+      setTextError(true);
+    }
+
+    //send it to DB as a string
     const menteeId = props.userData.id;
     const lobbyId = props.lobbyId;
     const submitBody = {
@@ -76,58 +96,113 @@ function PostQuestionTwo(props) {
       setTokensOffered("");
       setText("");
       setPostStatus(!postStatus);
-
-      props.setPosted(!props.posted);
+      props.handleClose();
+      // props.setPosted(!props.posted);
     });
   };
 
   return (
     <div>
       <div>
-        <button onClick={postNew}>Post a new question</button>
-        <br />
-      </div>
-
-      {postStatus ? (
-        <div>
-          <form onSubmit={(e) => postNewQuestion(e)}>
-            <label>Question title:</label>
-            <input
-              type="text"
+        <Container size="sm">
+          <form
+            noValidate
+            autoComplete="off"
+            onSubmit={(e) => postNewQuestion(e)}
+          >
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
+              id="standard-basic"
+              label="Question Title"
+              variant="standard"
               value={title}
+              required
+              error={titleError}
+              helperText="Cannot be empty"
               onChange={(e) => setTitle(e.target.value)}
             />
-            <br />
 
-            <label>Tokens Offered:</label>
-            <input
-              type="text"
+            {/* <label>Question title:</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          /> */}
+            <br />
+            <TextField
+              sx={{ mb: 2 }}
+              id="standard-basic"
+              label="Tokens Offered:"
+              variant="standard"
               value={tokensOffered}
+              required
+              error={tokenError}
+              helperText={
+                tokenError
+                  ? `Only numbers allowed. *You only have ${userData.tokens} tokens`
+                  : null
+              }
               onChange={(e) => setTokensOffered(e.target.value)}
             />
-            <br />
 
-            <label>File upload:</label>
-            <input
-              type="file"
-              onChange={(e) => {
-                setImageAdded(true);
-                setFileInputFile(e.target.files[0]);
-                setFileInputValue(e.target.files[0].name);
-              }}
-            />
+            {/* <label>Tokens Offered:</label>
+          <input
+            type="text"
+            value={tokensOffered}
+            onChange={(e) => setTokensOffered(e.target.value)}
+          /> */}
+            <br />
+            <Button
+              variant="contained"
+              component="label"
+              sx={{ mt: 2, mb: 2, mr: 1 }}
+            >
+              Upload File
+              <input
+                sx={{ m: 1 }}
+                hidden
+                type="file"
+                onChange={(e) => {
+                  setImageAdded(true);
+                  setFileInputFile(e.target.files[0]);
+                  setFileInputValue(e.target.files[0].name);
+                }}
+              />
+            </Button>
+            <label>{fileInputValue}</label>
+
+            {/* <input
+            type="file"
+            onChange={(e) => {
+              setImageAdded(true);
+              setFileInputFile(e.target.files[0]);
+              setFileInputValue(e.target.files[0].name);
+            }}
+          /> */}
             <br />
 
             <label>Description</label>
+            {textError && (
+              <Alert severity="warning">
+                <AlertTitle>Warning</AlertTitle>
+                Description cannot be empty
+              </Alert>
+            )}
             <RichTextEditor
               getRichText={(item) => getRichText(item)}
               text={text}
             />
-
-            <input type="submit" value="submit the question" />
+            <Button
+              type="submit"
+              color="secondary"
+              variant="contained"
+              sx={{ mt: 2 }}
+            >
+              Submit
+            </Button>
           </form>
-        </div>
-      ) : null}
+        </Container>
+      </div>
     </div>
   );
 }

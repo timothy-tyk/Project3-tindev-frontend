@@ -6,6 +6,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
 import PostQuestion from "./xPostQuestion.js";
+import { Grid } from "@mui/material";
 
 export default function SingleLobbyNumberDisplay(props) {
   const [numberOnline, setNumberOnline] = useState(0);
@@ -31,39 +32,14 @@ export default function SingleLobbyNumberDisplay(props) {
     return () => clearInterval(interval);
   }, [lobbyData]);
 
-  return (
-    <div>
+  return numberOnline !== 0 ? (
+    <span>
       {numberOnline > 0 &&
-        (numberOnline > 1 ? (
-          <h4>{numberOnline} people Online</h4>
-        ) : (
-          <h4>{numberOnline} person Online</h4>
-        ))}
-    </div>
+        (numberOnline > 1
+          ? `${numberOnline} People Online`
+          : ` ${numberOnline} Person Online`)}
+    </span>
+  ) : (
+    <span>loading...</span>
   );
 }
-
-// export default function SingleLobby() {
-//   const [userData, setUserData] = useState(useContext(UserContext));
-//   const { user } = useAuth0();
-//   const navigate = useNavigate();
-//   useEffect(() => {
-//     if (!user) {
-//       navigate("/");
-//     } else {
-//       console.log("hello", userData);
-//     }
-//   }, []);
-
-//   return (
-//     <div>
-//       {" "}
-//       <p>Single Lobby</p>
-//     </div>
-//   );
-// }
-
-//components needed:
-// 1) questions + post a new question button
-// 2) general chat
-// 3) user info - tokens, questions answered and asked

@@ -4,7 +4,7 @@ import { useState, useContext } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../App.js";
-
+import { Button } from "@mui/material";
 function EditSolved(props) {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(useContext(UserContext));
@@ -23,7 +23,14 @@ function EditSolved(props) {
   };
   return (
     <div>
-      <button onClick={updateMentor}>Solved</button>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={updateMentor}
+        sx={{ m: 2 }}
+      >
+        Solved
+      </Button>
     </div>
   );
 }
