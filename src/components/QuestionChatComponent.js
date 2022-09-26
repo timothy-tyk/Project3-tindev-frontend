@@ -152,7 +152,7 @@ export default function QuestionChatComponent(props) {
             }}
           />
 
-          <Button variant="outlined" onClick={sendMessage}>
+          <Button variant="outlined" onClick={sendMessage} sx={{ mt: "2vh" }}>
             Send Message
           </Button>
         </Grid>
@@ -160,48 +160,3 @@ export default function QuestionChatComponent(props) {
     </div>
   );
 }
-
-//before styling
-// (
-//     <div>
-//       <div>
-//           <Grid
-//           container
-//           className="scroll"
-//           sx={{
-//             p: 4,
-//             overflowY: "auto",
-//             maxHeight: "400px",
-//             borderTop: 1,
-//             borderBottom: 1,
-//             borderColor: "#555",
-//           }}
-//         ></Grid>
-//         {chatMessages.length > 0 ? (
-//           <Grid container>
-//             {chatMessages && Object.keys(chatMessages[0]).length > 0
-//               ? chatMessages.map((message, index) => {
-//                   return (
-//                     <div key={index}>
-//                       <p>
-//                         {message.date} | {message.username}:{message.message}
-//                       </p>
-//                     </div>
-//                   );
-//                 })
-//               : null}
-//           </div>
-//         ) : null}
-//       </div>
-//       <div>
-//         <input
-//           placeholder="Message here..."
-//           value={currentMessage}
-//           onChange={(e) => {
-//             setCurrentMessage(e.target.value);
-//           }}
-//         />
-//         <button onClick={sendMessage}>Send Message</button>
-//       </div>
-//     </div>
-//   );

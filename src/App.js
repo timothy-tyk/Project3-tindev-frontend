@@ -8,18 +8,15 @@ import EditProfile from "./components/EditProfile";
 import Profile from "./components/Profile";
 import Dashboard from "./components/Dashboard";
 import { useAuth0 } from "@auth0/auth0-react";
-import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history.js";
-import PostQuestion from "./components/xPostQuestion";
 import SingleQuestion from "./components/SingleQuestion";
 import Chatroom from "./components/Chatroom";
 import axios from "axios";
 import { BACKEND_URL } from "./constants";
 
-import SingleQuestionTwo from "./components/xSingleQuestionTwo";
-
 //MUI
 import { AppBar, Typography, Grid, Button } from "@mui/material";
 import EditProfileModalDialogs from "./components/EditProfileModal";
+import ReviewModalDialog from "./components/DashboardReviewModal";
 
 export const UserContext = createContext();
 
@@ -106,7 +103,11 @@ export default function App() {
             <Route
               path="/lobbies/:lobbyId/questions/:questionId"
               element={
-                <SingleQuestion refresh={refresh} setRefresh={setRefresh} />
+                <SingleQuestion
+                  refresh={refresh}
+                  setRefresh={setRefresh}
+                  handleUserData={handleUserData}
+                />
               }
             />
             <Route
@@ -115,6 +116,8 @@ export default function App() {
             />
           </Routes>
         </header>
+        <ReviewModalDialog handleUserData={handleUserData} />
+        {/* <Chatroom handleUserData={handleUserData} /> */}
       </div>
     </UserContext.Provider>
   );

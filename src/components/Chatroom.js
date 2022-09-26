@@ -8,6 +8,7 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import tokenImage from "../images/token.png";
 import QuestionChatComponent from "./QuestionChatComponent";
 import RichTextDisplay from "./RichTextDisplay";
+import ProfileModalDialog from "./ProfileModal";
 import {
   Grid,
   Typography,
@@ -17,7 +18,7 @@ import {
   Divider,
   Box,
 } from "@mui/material";
-function Chatroom() {
+function Chatroom(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
   const [role, setRole] = useState();
   const [questionId, setQuestionId] = useState();
@@ -176,7 +177,11 @@ function Chatroom() {
                       <Typography variant="h4"> {question.title}</Typography>{" "}
                     </Grid>
                   </Grid>
-                  <Divider variant="middle" color="primary" />
+                  <Divider
+                    variant="middle"
+                    color="primary.main"
+                    sx={{ marginTop: "2vh" }}
+                  />
                   <Grid item>
                     <Typography variant="caption">
                       {`Posted by ${question.menteeIdAlias.username} `}
@@ -187,7 +192,7 @@ function Chatroom() {
                     </Typography>
                   </Grid>
 
-                  <Grid item mt={2}>
+                  <Grid item mt={8} mb={4}>
                     <RichTextDisplay richText={question.details} />
                   </Grid>
                   <Grid item mt={2}>
@@ -222,8 +227,20 @@ function Chatroom() {
                     />
                   </Grid>
                   {question.mentorId && (
-                    <Typography>
-                      You are talking to {question.mentorIdAlias.username}{" "}
+                    <Typography mt="2vh">
+                      You are talking to{" "}
+                      {/* <ProfileModalDialog
+                        handleUpdateUser={props.handleUserData}
+                        profileId={
+                          userData.id == question.mentorIdAlias.id
+                            ? question.menteeIdAlias.id
+                            : question.mentorIdAlias.id
+                        }
+                        small
+                      /> */}
+                      {userData.id == question.mentorIdAlias.id
+                        ? question.menteeIdAlias.id
+                        : question.mentorIdAlias.id}{" "}
                     </Typography>
                   )}
                 </Grid>

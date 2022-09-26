@@ -12,6 +12,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 
 import { Grid, Card, TextField } from "@mui/material";
+import ProfileModalDialog from "./ProfileModal";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -86,17 +87,56 @@ export default function ReviewModalDialog(props) {
   const displaySearch = searchList.map((review, index) => {
     return (
       <div key={index}>
-        <Card>
-          <Typography gutterBottom className="modal-info-row">
-            Rating: {review.rating}
-            <br />
-            Review: {review.reviewContent}
-            <br />
-            Review For: {review.revieweeIdAlias.username}
-            <br />
-            By:
-            {review.reviewerIdAlias.username}
-          </Typography>
+        <Card sx={{ backgroundColor: "white", border: "solid grey 1px" }}>
+          <Grid container>
+            <Grid item xs={8} className="review-info">
+              <Typography
+                variant="h4"
+                gutterBottom
+                className="modal-info-row"
+                marginLeft="0.5vw"
+                marginTop="0.5vw"
+                color="#000000"
+              >
+                " {review.reviewContent} "
+                <br />
+              </Typography>
+              <Typography
+                gutterBottom
+                marginLeft="0.5vw"
+                color="#000000"
+                sx={{ position: "absolute", bottom: 0 }}
+              >
+                Review For:{" "}
+                {/* <Link
+                  to={`/users/${review.revieweeIdAlias.id}`}
+                  className="links"
+                >
+                  {review.revieweeIdAlias.username}{" "}
+                </Link> */}
+                <ProfileModalDialog
+                  handleUpdateUser={props.handleUserData}
+                  profileId={review.revieweeIdAlias.id}
+                />
+                | By:
+                {/* <Link
+                  to={`/users/${review.reviewerIdAlias.id}`}
+                  className="links"
+                >
+                  {review.reviewerIdAlias.username}
+                </Link> */}
+                <ProfileModalDialog
+                  handleUpdateUser={props.handleUserData}
+                  profileId={review.revieweeIdAlias.id}
+                />
+              </Typography>
+            </Grid>
+            <Grid item xs={4} className="review-rating">
+              <Typography variant="h1" marginRight="1vw" color="#000000">
+                {review.rating}
+              </Typography>
+            </Grid>
+          </Grid>
         </Card>
       </div>
     );
@@ -106,7 +146,7 @@ export default function ReviewModalDialog(props) {
     ? props.reviewList.map((review, index) => {
         return (
           <div key={index}>
-            <Card sx={{ backgroundColor: "white" }}>
+            <Card sx={{ backgroundColor: "white", border: "solid grey 1px" }}>
               <Grid container>
                 <Grid item xs={8} className="review-info">
                   <Typography
@@ -115,6 +155,7 @@ export default function ReviewModalDialog(props) {
                     className="modal-info-row"
                     marginLeft="0.5vw"
                     marginTop="0.5vw"
+                    color="#000000"
                   >
                     " {review.reviewContent} "
                     <br />
@@ -122,26 +163,32 @@ export default function ReviewModalDialog(props) {
                   <Typography
                     gutterBottom
                     marginLeft="0.5vw"
-                    sx={{ position: "absolute", bottom: 0 }}
+                    color="#000000"
+                    sx={{
+                      position: "absolute",
+                      bottom: 0,
+                      display: "flex",
+                      justifyContent: "space-around",
+                    }}
                   >
                     Review For:{" "}
-                    <Link
-                      to={`/users/${review.revieweeIdAlias.id}`}
-                      className="links"
-                    >
-                      {review.revieweeIdAlias.username}{" "}
-                    </Link>
+                    <ProfileModalDialog
+                      handleUpdateUser={props.handleUserData}
+                      profileId={review.revieweeIdAlias.id}
+                      small
+                      sx={{ display: "flex" }}
+                    />
                     | By:
-                    <Link
-                      to={`/users/${review.reviewerIdAlias.id}`}
-                      className="links"
-                    >
-                      {review.reviewerIdAlias.username}
-                    </Link>
+                    <ProfileModalDialog
+                      handleUpdateUser={props.handleUserData}
+                      profileId={review.reviewerIdAlias.id}
+                      small
+                      sx={{ display: "flex" }}
+                    />
                   </Typography>
                 </Grid>
                 <Grid item xs={4} className="review-rating">
-                  <Typography variant="h1" marginRight="1vw">
+                  <Typography variant="h1" marginRight="1vw" color="#000000">
                     {review.rating}
                   </Typography>
                 </Grid>

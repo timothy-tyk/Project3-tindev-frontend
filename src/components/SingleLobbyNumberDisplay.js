@@ -5,7 +5,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
-import PostQuestion from "./xPostQuestion.js";
 import { Grid } from "@mui/material";
 
 export default function SingleLobbyNumberDisplay(props) {
@@ -27,7 +26,7 @@ export default function SingleLobbyNumberDisplay(props) {
     const interval = setInterval(() => {
       getNumberOnline();
       console.log("refreshing number online");
-    }, 10000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [lobbyData]);

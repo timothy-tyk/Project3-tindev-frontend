@@ -9,6 +9,7 @@ import SingleLobbyNumberDisplay from "./SingleLobbyNumberDisplay.js";
 import LobbyChatComponent from "./LobbyChatComponent.js";
 import PostQuestionTwo from "./PostQuestionTwo.js";
 import { Avatar, Button, Grid, Typography, Card } from "@mui/material";
+import EscalatorWarningIcon from "@mui/icons-material/EscalatorWarning";
 import { Container } from "@mui/system";
 import tokenImage from "../images/token.png";
 import backIcon from "../images/backIcon.png";
@@ -173,65 +174,71 @@ export default function SingleLobby(props) {
         {questionsData &&
           questionsData.map((question, i) => {
             return question.solved ? (
-              <Grid
-                container
-                key={question.id}
-                className="singleQuestionDisplayContainerSolved"
-                sx={{ border: 1, p: 2, mb: 2 }}
-                alignItems="center"
-                wrap="nowrap"
-                borderRadius="10px"
-                onClick={() =>
-                  navigate(`/lobbies/${lobbyId}/questions/${question.id}`)
-                }
-              >
+              <Grid container>
                 <Grid
-                  item
-                  xs={3}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    pl: 3,
-                    mr: 5,
-                  }}
+                  container
+                  key={question.id}
+                  className="singleQuestionDisplayContainerSolved"
+                  sx={{ border: 1, p: 2, mb: 2 }}
+                  alignItems="center"
+                  wrap="nowrap"
+                  borderRadius="10px"
+                  onClick={() =>
+                    navigate(`/lobbies/${lobbyId}/questions/${question.id}`)
+                  }
                 >
-                  <Typography color="tertiary.lighter" fontSize={"0.5em"}>
-                    Posted by {question.menteeIdAlias.username}
-                    <br />
-                    {`${time_ago(new Date(question.createdAt))}`}
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={2}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    pl: 1,
-                  }}
-                >
-                  <Avatar
-                    alt="token"
-                    src={tokenImage}
-                    sx={{ width: 0.08, height: 0.7, mr: 2 }}
-                  />
-                  <Typography color="tertiary.lighter" fontSize={"0.7em"}>
-                    {question.tokensOffered}
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={6}
-                  display="flex"
-                  alignContent="flex-start"
-                  sx={{ pl: 7 }}
-                >
-                  <Typography color="tertiary.lighter" fontSize={"0.5em"}>
-                    Subject Title: {question.title}
-                  </Typography>
-                </Grid>
-                <Grid item xs sx={{ pr: 3 }}>
-                  <span className="dotSolved" />
+                  <Grid item xs={1}>
+                    <EscalatorWarningIcon sx={{ display: "none" }} />
+                  </Grid>
+
+                  <Grid
+                    item
+                    xs={3}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      pl: 3,
+                      mr: 5,
+                    }}
+                  >
+                    <Typography color="tertiary.lighter" fontSize={"0.5em"}>
+                      Posted by {question.menteeIdAlias.username}
+                      <br />
+                      {`${time_ago(new Date(question.createdAt))}`}
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={2}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      pl: 1,
+                    }}
+                  >
+                    <Avatar
+                      alt="token"
+                      src={tokenImage}
+                      sx={{ width: 0.08, height: 0.7, mr: 2 }}
+                    />
+                    <Typography color="tertiary.lighter" fontSize={"0.7em"}>
+                      {question.tokensOffered}
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={6}
+                    display="flex"
+                    alignContent="flex-start"
+                    sx={{ pl: 7 }}
+                  >
+                    <Typography color="tertiary.lighter" fontSize={"0.5em"}>
+                      Subject Title: {question.title}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs sx={{ pr: 3 }}>
+                    <span className="dotSolved" />
+                  </Grid>
                 </Grid>
               </Grid>
             ) : (
@@ -247,6 +254,15 @@ export default function SingleLobby(props) {
                   navigate(`/lobbies/${lobbyId}/questions/${question.id}`)
                 }
               >
+                {question.mentorId ? (
+                  <Grid item xs={1}>
+                    <EscalatorWarningIcon />
+                  </Grid>
+                ) : (
+                  <Grid item xs={1}>
+                    <EscalatorWarningIcon sx={{ display: "none" }} />
+                  </Grid>
+                )}
                 <Grid
                   item
                   xs={3}
@@ -326,7 +342,7 @@ export default function SingleLobby(props) {
           sx={{
             border: 1,
             borderColor: "#e8dacc",
-            backgroundColor: "#333333",
+            backgroundColor: "#22212198",
             borderRadius: "10px",
             mx: 1,
             display: "flex",
@@ -349,7 +365,7 @@ export default function SingleLobby(props) {
             borderRadius: "10px",
             display: "flex",
             alignItems: "center",
-            backgroundColor: "#333333",
+            backgroundColor: "#22212198",
             justifyContent: "flex-end",
           }}
         >
@@ -445,19 +461,44 @@ export default function SingleLobby(props) {
         container
         sx={{
           mt: 7,
-          backgroundColor: "#333333",
+          backgroundColor: "#22212198",
         }}
         display="flex"
         className="questionDisplayContainer"
       >
-        <Grid container>
-          <Grid item xs={12} display="flex" sx={{ mb: 3 }} alignItems="center">
+        <Grid container alignItems="center" justifyContent="space-evenly">
+          <Grid
+            item
+            xs={4}
+            display="flex"
+            sx={{ mb: 3 }}
+            alignItems="center"
+            justifyContent="center"
+          >
             <span className="dotNotSolved" />
             <Typography sx={{ ml: 2 }}>Available Questions</Typography>
           </Grid>
-          <Grid item xs={12} display="flex" sx={{ mb: 4 }} alignItems="center">
+          <Grid
+            item
+            xs={4}
+            display="flex"
+            sx={{ mb: 3 }}
+            justifyContent="center"
+            alignItems="center"
+          >
             <span className="dotSolved" />
             <Typography sx={{ ml: 2 }}>Question has been solved</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={4}
+            display="flex"
+            sx={{ mb: 3 }}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <EscalatorWarningIcon />
+            <Typography sx={{ ml: 2 }}>Question in progress</Typography>
           </Grid>
         </Grid>
         {returnQuestions()}
@@ -473,13 +514,13 @@ export default function SingleLobby(props) {
       </Grid>
       <Grid
         container
-        sx={{ border: 1, p: 2, mb: 2, backgroundColor: "#333333" }}
+        sx={{ border: 1, p: 2, mb: 2, backgroundColor: "#22212198" }}
         borderRadius="10px"
       >
         <Grid
           item
           xs
-          bgcolor="#333333"
+          bgcolor="#22212198"
           sx={{ p: 2, mb: 2 }}
           borderRadius="10px"
         >
@@ -493,147 +534,3 @@ export default function SingleLobby(props) {
     </Container>
   );
 }
-
-// <Container sx={{ width: "100vw", height: "100vh" }}>
-//   <Grid
-//     container
-//     columnSpacing={{ xs: 4 }}
-//     sx={{ border: 1, width: "100vw", height: "100vh" }}
-//   >
-//     <Grid
-//       item
-//       xs={8}
-//       sx={{ border: 1, py: 5 }}
-//       display="flex"
-//       alignItems="center"
-//     >
-
-//     </Grid>
-//     <Grid
-//       item
-//       xs={4}
-//       sx={{ border: 1 }}
-//       display="flex"
-//       alignItems="center"
-//       justifyContent="flex-end"
-//     >
-//       <Typography color="neongreen.main">
-
-//       </Typography>
-//       <PeopleAltIcon color="primary" sx={{ px: 2 }} />
-//     </Grid>
-
-//     <Grid
-//       container
-//       sx={{ border: 1 }}
-//       display="flex"
-//       direction="row"
-//       alignItems="spaced-evenly"
-//     >
-
-//     <Grid
-//       item
-//       xs={12}
-//       sx={{ border: 1, py: 5 }}
-//       display="flex"
-//       alignItems="center"
-//       justifyContent="center"
-//     >
-
-//     </Grid>
-//     <Grid container>
-//       <Grid item xs={5} sx={{ border: 1, p: 10 }}>
-
-//       </Grid>
-//       {userData ? (
-//         <Grid
-//           item
-//           xs={7}
-//           sx={{ border: 1 }}
-//           display="flex"
-//           alignItems="center"
-//         >
-//           <Grid
-//             item
-//             xs={4}
-//             sx={{ border: 1, py: 6, px: 1, height: 1 }}
-//             display="flex"
-//             alignItems="center"
-//           >
-//             your current tokens: {userData.tokens}
-//           </Grid>
-//           <Grid
-//             item
-//             xs={4}
-//             sx={{ border: 1, py: 6, px: 1, height: 1 }}
-//             display="flex"
-//             alignItems="center"
-//           >
-//             questions answered: {userAsMentorData}
-//           </Grid>
-//           <Grid
-//             item
-//             xs={4}
-//             sx={{ border: 1, py: 6, px: 1, height: 1 }}
-//             display="flex"
-//             alignItems="center"
-//           >
-//             questions asked: {userAsMenteeData}
-//           </Grid>
-//         </Grid>
-//       ) : (
-//         <p>loading...</p>
-//       )}
-//     </Grid>
-//   </Grid>
-// </Container>
-
-//   questionsData &&
-//     questionsData.map((question, i) => {
-//       return (
-//         <Grid item xs={12} sx={{ border: 1, py: 0 }} key={i}>
-//           <Grid container>
-//             <Grid
-//               item
-//               xs={4}
-//               sx={{ py: 3 }}
-//               display="flex"
-//               justifyContent="center"
-//               alignItems="center"
-//             >
-//               {new Date(question.createdAt).toLocaleDateString()}
-//               <Button variant="outlined">
-
-//               </Button>
-//             </Grid>
-//             <Grid item xs={4} sx={{ py: 3 }}>
-//               <Button variant="outlined">
-//                 <Link
-//                   to={`/lobbies/${lobbyId}/questions/${question.id}`}
-//                   key={question.id}
-//                 >
-//                   <Typography color="hotpink.main">
-//                     {question.title}
-//                   </Typography>
-//                 </Link>
-//               </Button>
-//             </Grid>
-//             <Grid
-//               item
-//               xs={4}
-//               sx={{ py: 3 }}
-//               display="flex"
-//               justifyContent="center"
-//               alignItems="center"
-//             >
-//               <Typography color="hotpink.main">
-//                 Bounty: {question.tokensOffered}
-//               </Typography>
-//               <LocalActivityIcon color="primary" sx={{ px: 1 }} />
-//             </Grid>
-//             {/* darren this is a button to link to each individual question */}
-//           </Grid>
-//         </Grid>
-//       );
-//     });
-// }

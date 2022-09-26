@@ -151,7 +151,7 @@ export default function ProfileModalDialog(props) {
   return (
     <div>
       <Typography
-        variant="h5"
+        variant={props.small ? "body" : "h5"}
         onClick={handleClickOpen}
         sx={{ cursor: "pointer" }}
       >
@@ -245,18 +245,21 @@ export default function ProfileModalDialog(props) {
                           variant="h5"
                           className="profileModal-questions"
                           marginLeft="1vw"
+                          color="#000000"
                         >
                           {question.title}
                         </Typography>
                         <Typography
                           className="profileModal-questions"
                           marginLeft="1vw"
+                          color="#000000"
                         >
                           Asked By: {question.menteeIdAlias.username}
                         </Typography>
                         <Typography
                           className="profileModal-questions"
                           marginLeft="1vw"
+                          color="#000000"
                         >
                           Answered By:
                           {question.mentorIdAlias

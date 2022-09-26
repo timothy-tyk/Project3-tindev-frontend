@@ -124,7 +124,7 @@ export default function LobbyChatComponent(props) {
                             sx={{ pl: 2, py: 1 }}
                             justifyContent="flex-end"
                           >
-                            <Typography color="primary">
+                            <Typography color="primary" variant="h5">
                               <span style={{ color: "#fff" }}>
                                 {message.message}
                               </span>
@@ -141,7 +141,7 @@ export default function LobbyChatComponent(props) {
                             sx={{ pl: 2, py: 1 }}
                             justifyContent="flex-start"
                           >
-                            <Typography color="secondary">
+                            <Typography color="secondary" variant="h5">
                               {message.username}
                               <span style={{ color: "#fff" }}>
                                 : {message.message}
@@ -172,7 +172,7 @@ export default function LobbyChatComponent(props) {
 
       <div>
         <Grid container sx={{ color: "white" }}>
-          <TextField
+          <input
             className="chatInputField"
             placeholder="Message here..."
             inputProps={{ inputProps: { style: { color: "#ffffff" } } }}
