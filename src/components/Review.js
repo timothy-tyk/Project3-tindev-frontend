@@ -161,7 +161,7 @@ function Review(props) {
             </div>
           ) : (
             <Alert severity="success">You already have a review!</Alert>
-          )}{" "}
+          )}
         </Grid>
         <Grid container color="primary" justifyContent="center">
           {reviewContent.length > 0 &&
@@ -171,8 +171,7 @@ function Review(props) {
                 <Grid item xs={10}>
                   <span>
                     <Typography variant="h6">
-                      {" "}
-                      {item.reviewerIdAlias.username}:
+                      {item.reviewerIdAlias.username}'s review:
                     </Typography>
                     <Typography> {item.reviewContent}</Typography>
                   </span>

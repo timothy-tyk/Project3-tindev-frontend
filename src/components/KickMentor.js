@@ -4,7 +4,7 @@ import { useState, useContext } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../App.js";
-
+import { Button } from "@mui/material";
 function KickMentor(props) {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(useContext(UserContext));
@@ -28,7 +28,9 @@ function KickMentor(props) {
   };
   return (
     <div>
-      <button onClick={kickMentor}>Kick Mentor</button>
+      <Button variant="outlined" color="primary" onClick={kickMentor}>
+        Kick Mentor
+      </Button>
     </div>
   );
 }

@@ -62,6 +62,12 @@ function SingleQuestion() {
     }
   }, [questionData]);
 
+  // useEffect(() => {
+  //   if (questionData.menteeId === userData.id) {
+  //     setUserIsMentee(true);
+  //   } else setUserIsMentee(false);
+  // }, [solved]);
+
   function time_ago(time) {
     switch (typeof time) {
       case "number":
@@ -270,8 +276,8 @@ function SingleQuestion() {
       .
       . */}
                     {/* prefix: not yet solved, render if user is the mentor*/}
-                    {(questionData.menteeId === userData.id ||
-                      questionData.mentorId === userData.id) && (
+                    {/* extra chatroom button */}
+                    {questionData.mentorId === userData.id && (
                       <div>
                         <div>
                           <Button
@@ -288,6 +294,7 @@ function SingleQuestion() {
                         </div>
                       </div>
                     )}
+                    {/* extra chatroom button */}
                   </div>
                 )}
               </Grid>
@@ -304,6 +311,7 @@ function SingleQuestion() {
                       <div>
                         <Button
                           variant="outlined"
+                          sx={{ mt: 3 }}
                           color="secondary"
                           onClick={(e) =>
                             navigate(

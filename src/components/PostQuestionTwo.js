@@ -71,6 +71,7 @@ function PostQuestionTwo(props) {
   };
 
   const postNewQuestion = async (e) => {
+    console.log({ titleError, textError, tokenError });
     e.preventDefault();
     console.log(userData);
     let imageUrl;
@@ -84,11 +85,11 @@ function PostQuestionTwo(props) {
     setTextError(false);
     setTokenError(false);
 
-    if (title == "") {
+    if (title === "") {
       setTitleError(true);
     } else if (tokensOffered > userData.tokens || isNaN(tokensOffered)) {
       setTokenError(true);
-    } else if (text == "") {
+    } else if (text === "") {
       setTextError(true);
     } else if (!titleError && !tokenError && !textError) {
       //send it to DB as a string
