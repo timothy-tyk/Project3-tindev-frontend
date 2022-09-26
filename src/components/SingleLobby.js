@@ -15,7 +15,7 @@ import backIcon from "../images/backIcon.png";
 import onlineUsersIcon from "../images/onlineUsersIcon.png";
 import PostQuestionPopup from "./PostQuestionPopup.js";
 
-export default function SingleLobby() {
+export default function SingleLobby(props) {
   const { user } = useAuth0();
   const { lobbyId } = useParams();
   const navigate = useNavigate();
@@ -37,6 +37,7 @@ export default function SingleLobby() {
       navigate("/");
     } else {
       getLobbyData();
+      props.setRefresh(posted);
     }
     // eslint-disable-next-line
   }, [posted]);
@@ -85,9 +86,16 @@ export default function SingleLobby() {
     } else console.log("loading user");
   };
 
+  const newUserData = async () => {
+    const newData = await axios.get(`${BACKEND_URL}/users/${userData.id}`);
+    setUserData(newData.data);
+    console.log("get new user data!");
+  };
+
   useEffect(() => {
     getUserStatsData();
     console.log(questionsData);
+    newUserData();
     // eslint-disable-next-line
   }, [questionsData]);
 
@@ -366,7 +374,7 @@ export default function SingleLobby() {
           <Grid item className="userNameDisplay">
             {/* if userName.length < 13 */}
             <Typography color="secondary" fontSize={"0.9em"}>
-              {userData.username}
+              {userData && userData.username}
             </Typography>
           </Grid>
           <Grid

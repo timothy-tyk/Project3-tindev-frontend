@@ -81,17 +81,19 @@ export default function QuestionChatComponent(props) {
         <Grid
           container
           className="scroll"
+          justifyContent="center"
+          alignContent="center"
           sx={{
             p: 4,
             overflowY: "auto",
-            maxHeight: "50vh",
+            maxHeight: "35vh",
             borderTop: 1,
             borderBottom: 1,
             borderColor: "#555",
           }}
         >
           {chatMessages.length > 0 ? (
-            <Grid container direction="column">
+            <Grid container direction="column" spacing="1">
               {chatMessages && Object.keys(chatMessages[0]).length > 0
                 ? chatMessages.map((message, index) => {
                     return (
@@ -116,7 +118,6 @@ export default function QuestionChatComponent(props) {
                             xs={12}
                             key={index}
                             display="flex"
-                            sx={{ pl: 2, py: 1 }}
                             alignContent="flex-start"
                             justifyContent="flex-start"
                           >
@@ -134,19 +135,26 @@ export default function QuestionChatComponent(props) {
         </Grid>
       </div>
       <div>
-        <Grid container>
+        <Grid
+          container
+          alignItems="center"
+          alignContent="center"
+          justifyContent="center"
+          justify="center"
+        >
           <input
-            className="chatInputField"
+            className="questionChatInputField"
             placeholder="Message here..."
             value={currentMessage}
             onChange={(e) => {
               setCurrentMessage(e.target.value);
             }}
           />
+
+          <Button variant="outlined" onClick={sendMessage}>
+            Send Message
+          </Button>
         </Grid>
-        <Button variant="outlined" onClick={sendMessage}>
-          Send Message
-        </Button>
       </div>
     </div>
   );

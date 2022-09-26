@@ -17,6 +17,7 @@ export default function Dashboard(props) {
   const [showLobbyInfo, setShowLobbyInfo] = useState();
   const [userFriends, setUserFriends] = useState([]);
   const [userReviews, setUserReviews] = useState([]);
+
   const { logout, user } = useAuth0();
   const navigate = useNavigate();
 
@@ -29,8 +30,15 @@ export default function Dashboard(props) {
       getUserQuestions();
       getFriends();
       getReviews();
+      newUserData();
     }
-  }, []);
+  }, [props.refresh]);
+
+  const newUserData = async () => {
+    const newData = await axios.get(`${BACKEND_URL}/users/${userData.id}`);
+    setUserData(newData.data);
+    console.log("get new user data!");
+  };
 
   // Get Questions associated to the current User
   const getUserQuestions = async () => {

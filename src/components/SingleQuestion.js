@@ -5,14 +5,24 @@ import axios from "axios";
 import { UserContext } from "../App.js";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Container } from "@mui/system";
-import { Avatar, Chip, Grid, Typography } from "@mui/material";
+import {
+  Avatar,
+  Chip,
+  Grid,
+  Typography,
+  Box,
+  Button,
+  Divider,
+  Alert,
+} from "@mui/material";
 import tokenImage from "../images/token.png";
 import RichTextDisplay from "./RichTextDisplay.js";
 import EditSolved from "./EditSolved.js";
 import EditMentor from "./EditMentor.js";
 import KickMentor from "./KickMentor.js";
 import EditSingleQuestion from "./EditSingleQuestion.js";
-
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import EditQnsPopup from "./EditQnsPopup.js";
 function SingleQuestion() {
   const params = useParams();
   const { user } = useAuth0();
@@ -25,7 +35,7 @@ function SingleQuestion() {
   const [userIsMentee, setUserIsMentee] = useState();
   const [kicked, setKicked] = useState(false);
   const [editToggle, setEditToggle] = useState();
-  const [edited, setEdited] = useState();
+  const [edited, setEdited] = useState(false);
 
   const getQuestionData = async () => {
     const response = await axios.get(
@@ -38,10 +48,11 @@ function SingleQuestion() {
     if (!user) {
       navigate("/");
     } else {
+      console.log("re-render qns", edited);
       getQuestionData();
     }
     // eslint-disable-next-line
-  }, [edited]);
+  }, [edited, kicked]);
 
   useEffect(() => {
     console.log(questionData);
@@ -114,156 +125,212 @@ function SingleQuestion() {
   }
 
   return (
-    <div>
-      {/* render if question has been solved */}
-      {solved && (
-        <div>
-          {questionData.title}
-          <br />
-          {`${time_ago(new Date(questionData.createdAt))}`}
-          <br />
-          status:
-          <span className="dotSolved"></span>
-          <br />
-          {`Tokens Offer:${questionData.tokensOffered}`}
-          <br />
-          {questionData.details && (
-            <RichTextDisplay richText={questionData.details} />
-          )}
-          <br />
-          {questionData.imgUrl && (
-            <img
-              className="questionpic"
-              alt="qns img"
-              src={questionData.imgUrl}
-            />
-          )}
-          {(questionData.menteeId === userData.id ||
-            questionData.mentorId === userData.id) && (
-            <div>
-              "Question has been solved!"
-              <div>
-                <button
-                  onClick={(e) =>
-                    navigate(
-                      `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
-                    )
-                  }
-                >
-                  Go to chatroom
-                </button>
-              </div>
-            </div>
-          )}
-          <button onClick={(e) => navigate(-1)}>Go back</button>
-        </div>
-      )}
-      {/* .
-      .
-      .
-      .
-      .
-      . */}
-      {/* render if question is not yet solved */}
-      {!solved && (
-        <div>
-          {questionData.title}
-          <br />
-          {`${time_ago(new Date(questionData.createdAt))}`}
-          <br />
-          status:
-          <span className="dotNotSolved"></span>
-          <br />
-          {`Tokens Offer:${questionData.tokensOffered}`}
-          <br />
-          {questionData.details && (
-            <RichTextDisplay richText={questionData.details} />
-          )}
-          <br />
-          {questionData.imgUrl && (
-            <img
-              className="questionpic"
-              alt="qns img"
-              src={questionData.imgUrl}
-            />
-          )}
-          {/* .
-      .
-      .
-      .
-      .
-      . */}
-          {/* prefix: not yet solved, render if user is the person who asked the question aka mentee */}
-          {questionData.menteeId === userData.id && (
-            <div>
-              {!questionData.mentorId && (
-                <EditSingleQuestion
-                  question={questionData}
-                  edited={edited}
-                  setEdited={setEdited}
-                />
-              )}
-
-              <EditSolved question={questionData} />
-              {/* render if mentor exists */}
-              {questionData.mentorId && questionData.mentorId !== userData.id && (
-                <div>
-                  <KickMentor
-                    questionId={questionData.id}
-                    kicked={kicked}
-                    setKicked={setKicked}
-                  />
-                  <button
-                    onClick={(e) =>
-                      navigate(
-                        `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
-                      )
-                    }
-                  >
-                    Go to chatroom
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-          {/* .
-      .
-      .
-      .
-      .
-      . */}
-          {/* prefix: not yet solved, render if user is NOT the person who asked the question, not necessarily mentor YET*/}
-          {questionData.mentorId === null &&
-            questionData.menteeId !== userData.id && (
-              <div>
-                <EditMentor question={questionData} />
-              </div>
-            )}
-          {/* .
-      .
-      .
-      .
-      .
-      . */}
-          {/* prefix: not yet solved, render if user is the mentor*/}
-          {questionData.mentorId === userData.id && (
-            <div>
-              You are the mentor for this question
-              <button
-                onClick={(e) =>
-                  navigate(
-                    `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
-                  )
+    <Box height="100%" width="100%">
+      <div>
+        <Grid container direction="column" spacing="2" height="100%">
+          <Grid container direction="row">
+            {/* start buttons */}
+            <Grid item xs={3} alignContent="flex-start">
+              <Button
+                variant="outlined"
+                startIcon={
+                  <ArrowBackOutlinedIcon icon={ArrowBackOutlinedIcon} />
                 }
+                onClick={(e) => navigate(-1)}
               >
-                Go to chatroom
-              </button>
-            </div>
-          )}
-          <button onClick={(e) => navigate(-1)}>Go back</button>
-        </div>
-      )}
-    </div>
+                LOBBY
+              </Button>
+            </Grid>
+            {/* end buttons */}
+            {/* start qns container */}
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignContent="center"
+            >
+              {questionData && Object.keys(questionData).length > 0 && (
+                <Grid item xs={9}>
+                  <Grid container justifyContent="center" alignContent="center">
+                    <Grid item>
+                      <Typography variant="h3">
+                        {" "}
+                        {questionData.title}
+                      </Typography>{" "}
+                    </Grid>
+                  </Grid>
+                  <Divider variant="middle" color="primary" />
+                  <Grid item>
+                    <Typography variant="caption">
+                      {`Posted by ${questionData.menteeIdAlias.username} `}
+                    </Typography>
+
+                    <Typography variant="caption">
+                      {`${time_ago(new Date(questionData.createdAt))}`}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item mt={4} mb={4}>
+                    <RichTextDisplay richText={questionData.details} />
+                  </Grid>
+                  <Grid item>
+                    {questionData.imgUrl && (
+                      <img
+                        className="questionpic"
+                        alt="qns img"
+                        src={questionData.imgUrl}
+                      />
+                    )}
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle" mr={3}>
+                      Status:{" "}
+                      <span
+                        className={
+                          questionData.solved ? "dotSolved" : "dotNotSolved"
+                        }
+                      ></span>
+                    </Typography>
+                    <Chip
+                      avatar={
+                        <Avatar
+                          alt="token"
+                          src={tokenImage}
+                          sx={{ width: 0.08, height: 0.7 }}
+                        />
+                      }
+                      label={`Bounty: ${questionData.tokensOffered}`}
+                      variant="outlined"
+                      color="primary"
+                    />
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
+            {/* end container for qns */}
+            {/* container for buttons here */}
+            <Grid container justifyContent="center" mt={4}>
+              {/* grid for not solved */}
+              <Grid item>
+                {questionData && !solved && (
+                  <div>
+                    {/* prefix: not yet solved, render if user is the person who asked the question aka mentee */}
+                    {questionData && questionData.menteeId === userData.id && (
+                      <div>
+                        {!questionData.mentorId && (
+                          <EditQnsPopup
+                            question={questionData}
+                            edited={edited}
+                            setEdited={setEdited}
+                          />
+                        )}
+
+                        <EditSolved question={questionData} />
+                        {/* render if mentor exists */}
+                        {questionData.mentorId &&
+                          questionData.mentorId !== userData.id && (
+                            <div>
+                              <KickMentor
+                                questionId={questionData.id}
+                                kicked={kicked}
+                                setKicked={setKicked}
+                              />
+                              <Button
+                                variant="outlined"
+                                color="secondary"
+                                onClick={(e) =>
+                                  navigate(
+                                    `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
+                                  )
+                                }
+                              >
+                                Go to chatroom
+                              </Button>
+                            </div>
+                          )}
+                      </div>
+                    )}
+                    {/* .
+      .
+      .
+      .
+      .
+      . */}
+                    {/* prefix: not yet solved, render if user is NOT the person who asked the question, not necessarily mentor YET*/}
+                    {questionData.mentorId === null &&
+                      questionData.menteeId !== userData.id && (
+                        <div>
+                          <EditMentor question={questionData} />
+                        </div>
+                      )}
+                    {/* .
+      .
+      .
+      .
+      .
+      . */}
+                    {/* prefix: not yet solved, render if user is the mentor*/}
+                    {(questionData.menteeId === userData.id ||
+                      questionData.mentorId === userData.id) && (
+                      <div>
+                        <div>
+                          <Button
+                            variant="outlined"
+                            color="secondary"
+                            onClick={(e) =>
+                              navigate(
+                                `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
+                              )
+                            }
+                          >
+                            Go to chatroom
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </Grid>
+              {/* grid for solved */}
+              <Grid item mb={3}>
+                {solved &&
+                  (questionData.menteeId === userData.id ||
+                    questionData.mentorId === userData.id) && (
+                    <div>
+                      <Alert severity="success">
+                        {" "}
+                        This question has been solved!
+                      </Alert>
+                      <div>
+                        <Button
+                          variant="outlined"
+                          color="secondary"
+                          onClick={(e) =>
+                            navigate(
+                              `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
+                            )
+                          }
+                        >
+                          Go to chatroom
+                        </Button>
+                      </div>
+                    </div>
+                  )}{" "}
+              </Grid>
+            </Grid>
+            {/* GRID CONTAINER FOR SOLVED/ NT SOLVED ends here */}
+          </Grid>
+        </Grid>
+
+        {/* .
+      .
+      .
+      .
+      .
+      . */}
+        {/* render if question is not yet solved */}
+      </div>
+    </Box>
   );
 }
 

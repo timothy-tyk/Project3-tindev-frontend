@@ -126,17 +126,21 @@ function Chatroom() {
   }, []);
 
   return (
-    <Box height="auto" width="100vw">
+    <Box height="100%" width="100vw">
       <div>
         <Grid
           container
+          mt={3}
           direction="row"
           spacing="2"
-          height="100vh"
+          height="auto"
+          maxHeight="100%"
           alignItems="center"
           justifyContent="center"
-          sx={{ overflowY: "auto" }}
+          // sx={{ overflowY: "auto" }}
         >
+          {/* <Grid item xs={12}> */}
+          {/* container for button + question + chat */}
           <Grid container>
             <Grid item xs={2} alignContent="flex-start">
               <Button
@@ -149,12 +153,19 @@ function Chatroom() {
                 LOBBY
               </Button>
             </Grid>
-            <Grid container direction="row" xs={4} alignContent="center">
+            {/* container for qns start here */}
+            <Grid
+              container
+              direction="row"
+              xs={4}
+              justifyContent="center"
+              alignContent="center"
+            >
               {question && (
                 <Grid item xs={8}>
                   <Grid container justifyContent="center" alignContent="center">
                     <Grid item xs={6}>
-                      <Typography variant="h2"> {question.title}</Typography>{" "}
+                      <Typography variant="h4"> {question.title}</Typography>{" "}
                     </Grid>
                   </Grid>
                   <Divider variant="middle" color="primary" />
@@ -168,10 +179,10 @@ function Chatroom() {
                     </Typography>
                   </Grid>
 
-                  <Grid item>
+                  <Grid item mt={2}>
                     <RichTextDisplay richText={question.details} />
                   </Grid>
-                  <Grid item>
+                  <Grid item mt={2}>
                     {question.imgUrl && (
                       <img
                         className="questionpic"
@@ -204,12 +215,17 @@ function Chatroom() {
                   </Grid>
                 </Grid>
               )}
-            </Grid>{" "}
+            </Grid>
+            {/* container for qns end here */}
+            {/* container for chat component starts here*/}
             <Grid
               container
               xs={4}
               sx={{ border: 1, p: 2, mb: 2 }}
               borderRadius="10px"
+              height="70vh"
+              maxHeight="70vh"
+              alignContent="stretch"
             >
               <Grid
                 item
@@ -221,7 +237,24 @@ function Chatroom() {
                 <QuestionChatComponent userData={userData} />
               </Grid>
             </Grid>{" "}
-          </Grid>{" "}
+            {/* container for chat component ends here */}
+            {/* </Grid> */}
+          </Grid>
+          {/* above ending point is for button,qns,chat grid container */}
+          {/* container for reviews start here */}
+          {/* <Grid item> */}
+          <Grid container justifyContent="center" mt="3vh" mb={5}>
+            <Grid item xs={6}>
+              <Review
+                question={question}
+                role={role}
+                revieweeId={revieweeId}
+                reviewerId={reviewerId}
+              />
+            </Grid>
+          </Grid>
+          {/* container for review ends here */}
+          {/* </Grid> */}
         </Grid>
       </div>
     </Box>
