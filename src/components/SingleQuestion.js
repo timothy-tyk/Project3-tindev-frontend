@@ -32,7 +32,6 @@ function SingleQuestion() {
   const [lobbyId, setLobbyId] = useState(params.lobbyId);
   const [questionData, setQuestionData] = useState({});
   const [solved, setSolved] = useState();
-  const [userIsMentee, setUserIsMentee] = useState();
   const [kicked, setKicked] = useState(false);
   const [editToggle, setEditToggle] = useState();
   const [edited, setEdited] = useState(false);
@@ -63,11 +62,11 @@ function SingleQuestion() {
     }
   }, [questionData]);
 
-  useEffect(() => {
-    if (questionData.menteeId === userData.id) {
-      setUserIsMentee(true);
-    } else setUserIsMentee(false);
-  }, [solved]);
+  // useEffect(() => {
+  //   if (questionData.menteeId === userData.id) {
+  //     setUserIsMentee(true);
+  //   } else setUserIsMentee(false);
+  // }, [solved]);
 
   function time_ago(time) {
     switch (typeof time) {
@@ -127,7 +126,14 @@ function SingleQuestion() {
   return (
     <Box height="100%" width="100%">
       <div>
-        <Grid container direction="column" spacing="2" height="100%">
+        <Grid
+          container
+          direction="column"
+          spacing="2"
+          height="100%"
+          mt={5}
+          sx={{ mt: 8 }}
+        >
           <Grid container direction="row">
             {/* start buttons */}
             <Grid item xs={3} alignContent="flex-start">
@@ -230,22 +236,26 @@ function SingleQuestion() {
                       {questionData.mentorId &&
                         questionData.mentorId !== userData.id && (
                           <div>
-                            <KickMentor
-                              questionId={questionData.id}
-                              kicked={kicked}
-                              setKicked={setKicked}
-                            />
-                            <Button
-                              variant="outlined"
-                              color="secondary"
-                              onClick={(e) =>
-                                navigate(
-                                  `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
-                                )
-                              }
-                            >
-                              Go to chatroom
-                            </Button>
+                            <Grid item sx={{ mb: 2 }}>
+                              <Button
+                                variant="outlined"
+                                color="secondary"
+                                onClick={(e) =>
+                                  navigate(
+                                    `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
+                                  )
+                                }
+                              >
+                                Go to chatroom
+                              </Button>
+                            </Grid>
+                            <Grid item>
+                              <KickMentor
+                                questionId={questionData.id}
+                                kicked={kicked}
+                                setKicked={setKicked}
+                              />
+                            </Grid>
                           </div>
                         )}
                     </div>
@@ -270,8 +280,8 @@ function SingleQuestion() {
       .
       . */}
                     {/* prefix: not yet solved, render if user is the mentor*/}
-                    {(questionData.menteeId === userData.id ||
-                      questionData.mentorId === userData.id) && (
+                    {/* extra chatroom button */}
+                    {questionData.mentorId === userData.id && (
                       <div>
                         <div>
                           <Button
@@ -288,6 +298,7 @@ function SingleQuestion() {
                         </div>
                       </div>
                     )}
+                    {/* extra chatroom button */}
                   </div>
                 )}
               </Grid>
@@ -304,6 +315,7 @@ function SingleQuestion() {
                       <div>
                         <Button
                           variant="outlined"
+                          sx={{ mt: 3 }}
                           color="secondary"
                           onClick={(e) =>
                             navigate(
