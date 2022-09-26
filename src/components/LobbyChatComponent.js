@@ -171,10 +171,11 @@ export default function LobbyChatComponent(props) {
       </div>
 
       <div>
-        <Grid container>
-          <input
+        <Grid container sx={{ color: "white" }}>
+          <TextField
             className="chatInputField"
             placeholder="Message here..."
+            inputProps={{ inputProps: { style: { color: "#ffffff" } } }}
             value={currentMessage}
             onChange={(e) => {
               setCurrentMessage(e.target.value);

@@ -215,40 +215,40 @@ function SingleQuestion() {
                 {questionData && !solved && (
                   <div>
                     {/* prefix: not yet solved, render if user is the person who asked the question aka mentee */}
-                    {questionData && questionData.menteeId === userData.id && (
-                      <div>
-                        {!questionData.mentorId && (
-                          <EditQnsPopup
-                            question={questionData}
-                            edited={edited}
-                            setEdited={setEdited}
-                          />
-                        )}
+                    {/* {questionData && questionData.menteeId === userData.id && ( */}
+                    <div>
+                      {!questionData.mentorId && (
+                        <EditQnsPopup
+                          question={questionData}
+                          edited={edited}
+                          setEdited={setEdited}
+                        />
+                      )}
 
-                        <EditSolved question={questionData} />
-                        {/* render if mentor exists */}
-                        {questionData.mentorId &&
-                          questionData.mentorId !== userData.id && (
-                            <div>
-                              <KickMentor
-                                questionId={questionData.id}
-                                kicked={kicked}
-                                setKicked={setKicked}
-                              />
-                              <Button
-                                variant="outlined"
-                                color="secondary"
-                                onClick={(e) =>
-                                  navigate(
-                                    `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
-                                  )
-                                }
-                              >
-                                Go to chatroom
-                              </Button>
-                            </div>
-                          )}
-                      </div>
+                      <EditSolved question={questionData} />
+                      {/* render if mentor exists */}
+                      {questionData.mentorId &&
+                        questionData.mentorId !== userData.id && (
+                          <div>
+                            <KickMentor
+                              questionId={questionData.id}
+                              kicked={kicked}
+                              setKicked={setKicked}
+                            />
+                            <Button
+                              variant="outlined"
+                              color="secondary"
+                              onClick={(e) =>
+                                navigate(
+                                  `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
+                                )
+                              }
+                            >
+                              Go to chatroom
+                            </Button>
+                          </div>
+                        )}
+                    </div>
                     )}
                     {/* .
       .

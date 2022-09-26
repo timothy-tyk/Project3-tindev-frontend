@@ -69,7 +69,9 @@ export default function DashboardReviews(props) {
               {userReviewsListReviewer.length}
             </Typography>
           </Button>
-          <Typography marginTop="1vh">Reviews of Others</Typography>
+          <Typography marginTop="1vh" marginLeft="0.5vw">
+            Reviews of Others
+          </Typography>
         </Grid>
         <Grid item xs={2}>
           <Typography variant="h2">/</Typography>
@@ -87,7 +89,9 @@ export default function DashboardReviews(props) {
               {userReviewsListReviewee.length}
             </Typography>
           </Button>
-          <Typography marginTop="1vh">Reviews of You</Typography>
+          <Typography marginTop="1vh" marginRight="0.5vw">
+            Reviews of You
+          </Typography>
         </Grid>
       </Grid>
       <ReviewModalDialog

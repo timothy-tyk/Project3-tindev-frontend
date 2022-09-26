@@ -15,6 +15,7 @@ import {
   styled,
   Stack,
 } from "@mui/material";
+import ProfileModalDialog from "./ProfileModal";
 
 export default function DashboardFriends(props) {
   const [userData, setUserData] = useState(props.user);
@@ -75,7 +76,11 @@ export default function DashboardFriends(props) {
       {userFriends && userFriends.length > 0 ? (
         userFriends.map((friend, index) => {
           return (
-            <Card key={index} className="friend-row">
+            <Card
+              key={index}
+              className="friend-row"
+              sx={{ border: "solid black 1px" }}
+            >
               <Grid container>
                 <Grid item xs={2} className="friend-row">
                   <Avatar
@@ -88,13 +93,14 @@ export default function DashboardFriends(props) {
                     <StyledBadge overlap="circular" variant="dot"></StyledBadge>
                   ) : null}
                 </Grid>
-                <Grid item xs={4} className="friend-name">
-                  <Link to={`/users/${friend.id}`} className="links">
-                    <Typography variant="h5">{friend.username}</Typography>
-                  </Link>
+                <Grid item xs={6} className="friend-name">
+                  <ProfileModalDialog
+                    handleUpdateUser={props.handleUserData}
+                    profileId={friend.id}
+                  />
                 </Grid>
 
-                <Grid item xs={6} className="friend-name-end">
+                <Grid item xs={4} className="friend-name-end">
                   {friend.online ? (
                     <div>
                       <Typography

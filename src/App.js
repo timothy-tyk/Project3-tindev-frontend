@@ -57,7 +57,9 @@ export default function App() {
               <Grid item xs={6} className="links left-link">
                 <Button>
                   <Link className="links left-link" to="/dashboard">
-                    <Typography color="primary">Tindev</Typography>
+                    <Typography color="primary" fontFamily="DRAB">
+                      Tindev
+                    </Typography>
                   </Link>
                 </Button>
               </Grid>

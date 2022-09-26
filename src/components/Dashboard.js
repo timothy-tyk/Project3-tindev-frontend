@@ -165,6 +165,7 @@ export default function Dashboard(props) {
                 color="primary"
                 align="left"
                 marginLeft="0.5vw"
+                marginBottom="1vh"
               >
                 Friends
               </Typography>
@@ -215,12 +216,17 @@ export default function Dashboard(props) {
                         <Typography
                           variant="h6"
                           align="left"
-                          sx={{ marginLeft: "1vw", marginTop: "2vw" }}
+                          sx={{
+                            marginLeft: "1vw",
+                            marginTop: "2vw",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
                         >
                           ({userData.email})
                         </Typography>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={4} display="flex">
                         <Typography
                           variant="h4"
                           align="right"
@@ -228,12 +234,13 @@ export default function Dashboard(props) {
                             display: "flex",
                             alignItems: "end",
                             marginRight: "1vw",
+                            display: "flex",
                           }}
                         >
                           {userData.rating ? (
                             <p>Rating: {userData.rating} / 5.0</p>
                           ) : (
-                            <i>No Rating yet</i>
+                            <i>No Rating Yet</i>
                           )}
                         </Typography>
                       </Grid>
@@ -293,7 +300,16 @@ export default function Dashboard(props) {
                   >
                     Tokens
                   </Typography>
-                  <Typography variant="h4">{userData.tokens}</Typography>
+                  <Grid
+                    container
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography variant="h3" marginTop="2vh" color="#FFFFFF">
+                      {userData.tokens}
+                    </Typography>
+                  </Grid>
                   <Grid container className="token-add">
                     <Button>
                       {/* <Typography fontWeight="500" fontSize={20}>

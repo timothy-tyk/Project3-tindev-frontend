@@ -140,7 +140,17 @@
   justify-content: flex-end;
 }
 .questions-button-row {
+  align-items: baseline;
+}
+/* Profile Modal */
+.profileModal-row1 {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+.profileModal-questions {
+  margin-left: 1vw;
 }
 /* Review Modal */
 .review-rating {
@@ -192,6 +202,7 @@
 .edit-profile-form {
   display: flex;
   flex-direction: column;
+  color: #ffffff;
 }
 
 /* Lobbies */

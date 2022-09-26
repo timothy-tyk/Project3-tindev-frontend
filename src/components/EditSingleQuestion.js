@@ -47,7 +47,7 @@ function EditSingleQuestion(props) {
         alert("u have edited ur question!");
         props.setEdited(!props.edited);
         props.handleClose();
-        navigate(-2);
+        navigate(`/lobbies/${lobbyId}/questions/${questionId}`);
       });
   };
   return (

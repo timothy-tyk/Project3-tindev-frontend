@@ -8,7 +8,7 @@ import { BACKEND_URL } from "../constants";
 import SingleLobbyNumberDisplay from "./SingleLobbyNumberDisplay.js";
 import LobbyChatComponent from "./LobbyChatComponent.js";
 import PostQuestionTwo from "./PostQuestionTwo.js";
-import { Avatar, Button, Grid, Typography } from "@mui/material";
+import { Avatar, Button, Grid, Typography, Card } from "@mui/material";
 import { Container } from "@mui/system";
 import tokenImage from "../images/token.png";
 import backIcon from "../images/backIcon.png";
@@ -195,7 +195,7 @@ export default function SingleLobby(props) {
                     mr: 5,
                   }}
                 >
-                  <Typography color="tertiary.main" fontSize={"0.5em"}>
+                  <Typography color="tertiary.lighter" fontSize={"0.5em"}>
                     Posted by {question.menteeIdAlias.username}
                     <br />
                     {`${time_ago(new Date(question.createdAt))}`}
@@ -215,7 +215,7 @@ export default function SingleLobby(props) {
                     src={tokenImage}
                     sx={{ width: 0.08, height: 0.7, mr: 2 }}
                   />
-                  <Typography color="tertiary.main" fontSize={"0.7em"}>
+                  <Typography color="tertiary.lighter" fontSize={"0.7em"}>
                     {question.tokensOffered}
                   </Typography>
                 </Grid>
@@ -226,7 +226,7 @@ export default function SingleLobby(props) {
                   alignContent="flex-start"
                   sx={{ pl: 7 }}
                 >
-                  <Typography color="tertiary.main" fontSize={"0.5em"}>
+                  <Typography color="tertiary.lighter" fontSize={"0.5em"}>
                     Subject Title: {question.title}
                   </Typography>
                 </Grid>
@@ -326,7 +326,7 @@ export default function SingleLobby(props) {
           sx={{
             border: 1,
             borderColor: "#e8dacc",
-
+            backgroundColor: "#333333",
             borderRadius: "10px",
             mx: 1,
             display: "flex",
@@ -335,8 +335,8 @@ export default function SingleLobby(props) {
             pl: 4,
           }}
         >
-          <Typography color="primary" fontSize={"0.8em"}>
-            {`< / ${lobbyData.name} Lobby >`}
+          <Typography color="primary" variant="h2">
+            {lobbyData.name} Lobby
           </Typography>
         </Grid>
         {/* Number of people online */}
@@ -349,6 +349,7 @@ export default function SingleLobby(props) {
             borderRadius: "10px",
             display: "flex",
             alignItems: "center",
+            backgroundColor: "#333333",
             justifyContent: "flex-end",
           }}
         >
@@ -370,12 +371,14 @@ export default function SingleLobby(props) {
           height: "15vh",
           display: "flex",
           justifyContent: "space-between",
+          borderRadius: "20px",
+          // backgroundColor: "#333333",
         }}
       >
         <Grid container className="userInfoHolder">
           <Grid item className="userNameDisplay">
             {/* if userName.length < 13 */}
-            <Typography color="secondary" fontSize={"0.9em"}>
+            <Typography color="secondary" variant="h2">
               {userData && userData.username}
             </Typography>
           </Grid>
@@ -403,7 +406,7 @@ export default function SingleLobby(props) {
                 src={tokenImage}
                 sx={{ width: 0.08, height: 0.7, mr: 2 }}
               />
-              <Typography color="offwhite.main" fontSize={"1.1em"}>
+              <Typography color="offwhite.main" variant="h4">
                 {userData.tokens}
               </Typography>
             </Grid>
@@ -412,7 +415,7 @@ export default function SingleLobby(props) {
               xs={4}
               sx={{ display: "flex", justifyContent: "center" }}
             >
-              <Typography color="offwhite.main" fontSize={"0.7em"}>
+              <Typography color="offwhite.main" variant="h4">
                 {userAsMentorData}
                 {userAsMentorData === 1 ? (
                   <span> Question Answered</span>
@@ -426,7 +429,7 @@ export default function SingleLobby(props) {
               xs={4}
               sx={{ display: "flex", justifyContent: "flex-end", pr: 3 }}
             >
-              <Typography color="offwhite.main" fontSize={"0.7em"}>
+              <Typography color="offwhite.main" variant="h4">
                 {userAsMenteeData}
                 {userAsMenteeData === 1 ? (
                   <span> Question Posted</span>
@@ -440,7 +443,10 @@ export default function SingleLobby(props) {
       </Grid>
       <Grid
         container
-        sx={{ mt: 7 }}
+        sx={{
+          mt: 7,
+          backgroundColor: "#333333",
+        }}
         display="flex"
         className="questionDisplayContainer"
       >
@@ -457,7 +463,7 @@ export default function SingleLobby(props) {
         {returnQuestions()}
       </Grid>
 
-      <Grid item xs={12} sx={{ my: 3, border: 1, borderRadius: "10px", py: 3 }}>
+      <Grid item xs={12} sx={{ my: 3, borderRadius: "10px", py: 3 }}>
         <PostQuestionPopup
           setPosted={setPosted}
           posted={posted}
@@ -465,12 +471,16 @@ export default function SingleLobby(props) {
           lobbyId={lobbyId}
         />
       </Grid>
-      <Grid container sx={{ border: 1, p: 2, mb: 2 }} borderRadius="10px">
+      <Grid
+        container
+        sx={{ border: 1, p: 2, mb: 2, backgroundColor: "#333333" }}
+        borderRadius="10px"
+      >
         <Grid
           item
           xs
-          bgcolor="#22212198"
-          sx={{ border: 1, p: 2, mb: 2 }}
+          bgcolor="#333333"
+          sx={{ p: 2, mb: 2 }}
           borderRadius="10px"
         >
           <LobbyChatComponent

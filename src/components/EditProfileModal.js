@@ -188,7 +188,9 @@ export default function EditProfileModalDialogs(props) {
               label="Username"
               value={editUserName}
               onChange={(e) => setEditUserName(e.target.value)}
-              sx={{ marginTop: "1vh" }}
+              sx={{
+                marginTop: "1vh",
+              }}
             />
 
             <TextField
