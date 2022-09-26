@@ -130,7 +130,8 @@ function Chatroom() {
       <div>
         <Grid
           container
-          mt={3}
+          mt={5}
+          sx={{ mt: 8 }}
           direction="row"
           spacing="2"
           height="auto"

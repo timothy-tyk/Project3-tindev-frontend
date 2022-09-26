@@ -120,7 +120,14 @@ function SingleQuestion() {
   return (
     <Box height="100%" width="100%">
       <div>
-        <Grid container direction="column" spacing="2" height="100%">
+        <Grid
+          container
+          direction="column"
+          spacing="2"
+          height="100%"
+          mt={5}
+          sx={{ mt: 8 }}
+        >
           <Grid container direction="row">
             {/* start buttons */}
             <Grid item xs={3} alignContent="flex-start">
