@@ -80,11 +80,10 @@ export default function QuestionChatComponent(props) {
       <div>
         <Grid
           container
-          className="scroll"
           justifyContent="center"
-          alignContent="center"
           sx={{
             p: 4,
+            height: "70vh",
             overflowY: "auto",
             maxHeight: "35vh",
             borderTop: 1,
@@ -135,12 +134,14 @@ export default function QuestionChatComponent(props) {
         </Grid>
       </div>
       <div>
+        {/* here is the input field component */}
         <Grid
           container
           alignItems="center"
           alignContent="center"
           justifyContent="center"
           justify="center"
+          sx={{ mt: 5 }}
         >
           <input
             className="questionChatInputField"

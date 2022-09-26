@@ -15,7 +15,7 @@ import Chatroom from "./components/Chatroom";
 import axios from "axios";
 import { BACKEND_URL } from "./constants";
 
-import SingleQuestionTwo from "./components/SingleQuestionTwo";
+import SingleQuestionTwo from "./components/xSingleQuestionTwo";
 
 //MUI
 import { AppBar, Typography, Grid, Button } from "@mui/material";

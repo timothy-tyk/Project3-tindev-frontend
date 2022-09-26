@@ -236,15 +236,7 @@ function SingleQuestion() {
                         {questionData.mentorId &&
                           questionData.mentorId !== userData.id && (
                             <div>
-                              <Grid item m={4} sx={{ mb: 4 }}>
-                                <KickMentor
-                                  questionId={questionData.id}
-                                  kicked={kicked}
-                                  setKicked={setKicked}
-                                />
-                              </Grid>
-                              <br></br>
-                              <Grid item mt={5} sx={{ mt: 5 }}>
+                              <Grid item sx={{ mb: 2 }}>
                                 <Button
                                   variant="outlined"
                                   color="secondary"
@@ -256,6 +248,13 @@ function SingleQuestion() {
                                 >
                                   Go to chatroom
                                 </Button>
+                              </Grid>
+                              <Grid item>
+                                <KickMentor
+                                  questionId={questionData.id}
+                                  kicked={kicked}
+                                  setKicked={setKicked}
+                                />
                               </Grid>
                             </div>
                           )}
