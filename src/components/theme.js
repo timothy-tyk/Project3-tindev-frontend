@@ -12,6 +12,15 @@ const Drabfont = {
 };
 
 export const theme = createTheme({
+  // breakpoints: {
+  //   values: {
+  //     xs: "20vw",
+  //     sm: "40vw",
+  //     md: "50vw",
+  //     lg: "60vw",
+  //     xl: "80vw",
+  //   },
+  // },
   palette: {
     primary: {
       main: "#CFFF04",
@@ -21,6 +30,7 @@ export const theme = createTheme({
     },
     tertiary: {
       main: "#333333",
+      lighter: "#8E8E8E",
     },
     electric: {
       main: "#1F51FF",
@@ -37,8 +47,11 @@ export const theme = createTheme({
     black: {
       main: "#000000",
     },
-    background: {
-      paper: "#919191",
+    // background: {
+    //   paper: "#919191",
+    // },
+    text: {
+      color: "#FFFFFF",
     },
   },
   question: {
@@ -52,10 +65,15 @@ export const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          border: "solid 1px",
-          borderColor: "#333333",
+          backgroundColor: "#22212198", //black bg
           borderRadius: 24,
+          color: "#FFFFFF",
         },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        color: "#FFFFFF",
       },
     },
   },

@@ -64,7 +64,8 @@ function Review(props) {
     console.log(reviewExist, "reviewExist", canReview, "canReview");
   }, [reviewSent]);
 
-  const submitReview = async () => {
+  const submitReview = async (e) => {
+    e.preventDefault();
     setInputError(false);
     if (inputText === "") {
       setInputError(true);
@@ -97,7 +98,7 @@ function Review(props) {
           justifyContent="center"
           alignItems="center"
           sx={{
-            backgroundColor: alpha("#FF69B4", 0.5),
+            backgroundColor: "#626262",
             borderColor: "primary",
             padding: 1,
             borderRadius: 1,
@@ -106,7 +107,16 @@ function Review(props) {
         >
           {canReview ? (
             <div>
-              <h5>Review Section</h5>
+              <Typography variant="h5" color="black.main" paddingTop="2vh">
+                Review Section
+              </Typography>
+              <Typography color="black.main">
+                You are leaving a review for{" "}
+                {userData.id == props.question.mentorIdAlias.id
+                  ? props.question.menteeIdAlias.username
+                  : props.question.mentorIdAlias.username}
+              </Typography>
+              <br />
               {/* <Paper variant="outlined" raised="true" width="100%"> */}
               <Grid item width="100%" xs={12}>
                 {" "}
@@ -119,7 +129,7 @@ function Review(props) {
                   getLabelText={(value) =>
                     `${value} Heart${value !== 1 ? "s" : ""}`
                   }
-                  precision={0.5}
+                  precision={1}
                   icon={<StarRoundedIcon fontSize="inherit" />}
                   emptyIcon={<StarBorderRoundedIcon fontSize="inherit" />}
                 />
@@ -133,8 +143,15 @@ function Review(props) {
                 /> */}
               </Grid>
               <Grid item>
-                <Grid container alignItems="center" justifyContent="center">
+                <Grid
+                  container
+                  alignItems="center"
+                  justifyContent="center"
+                  marginBottom="2vh"
+                >
                   <TextField
+                    fullWidth
+                    multiline
                     sx={{ mt: 2, mb: 2 }}
                     id="standard-basic"
                     label="Give a review"
@@ -163,7 +180,8 @@ function Review(props) {
             <Alert severity="success">You already have a review!</Alert>
           )}
         </Grid>
-        <Grid container color="primary" justifyContent="center">
+
+        <Grid container color="primary" justifyContent="space-evenly" mt="3vh">
           {reviewContent.length > 0 &&
             reviewContent.map((item) => (
               <div>
@@ -171,7 +189,7 @@ function Review(props) {
                 <Grid item xs={10}>
                   <span>
                     <Typography variant="h6">
-                      {item.reviewerIdAlias.username}'s review:
+                      {item.reviewerIdAlias.username}'s review{" "}
                     </Typography>
                     <Typography> {item.reviewContent}</Typography>
                   </span>

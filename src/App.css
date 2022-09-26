@@ -140,7 +140,17 @@
   justify-content: flex-end;
 }
 .questions-button-row {
+  align-items: baseline;
+}
+/* Profile Modal */
+.profileModal-row1 {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+.profileModal-questions {
+  margin-left: 1vw;
 }
 /* Review Modal */
 .review-rating {
@@ -192,6 +202,7 @@
 .edit-profile-form {
   display: flex;
   flex-direction: column;
+  color: #ffffff;
 }
 
 /* Lobbies */
@@ -355,7 +366,7 @@ a {
 .chatInputField {
   background-color: #1f1d1d;
   color: white;
-  border: 1px solid #e600ff;
+  border: 1px solid #ffffff;
   border-radius: 10px;
   width: 100%;
   height: 10vh;
@@ -371,7 +382,7 @@ a {
 .questionChatInputField {
   background-color: #1f1d1d;
   color: white;
-  border: 1px solid #e600ff;
+  border: 1px solid #ffffff;
   border-radius: 10px;
   width: 100%;
   height: 10px;

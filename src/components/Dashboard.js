@@ -18,17 +18,8 @@ import EditProfileModalDialogs from "./EditProfileModal";
 
 export default function Dashboard(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
-  const [userQuestions, setUserQuestions] = useState([]);
-  const [showQuestions, setShowQuestions] = useState(false);
-  const [questionsList, setQuestionsList] = useState();
-  const [availableLobbies, setAvailableLobbies] = useState([]);
-  const [lobbiesJoined, setLobbiesJoined] = useState([]);
-  const [showAvailableLobbies, setShowAvailableLobbies] = useState(false);
-  const [lobbyInfo, setLobbyInfo] = useState({});
-  const [showLobbyInfo, setShowLobbyInfo] = useState();
-  const [userFriends, setUserFriends] = useState([]);
-  const [userReviews, setUserReviews] = useState([]);
-  const [editModalClose, setEditModalClose] = useState(false);
+  const [userRating, setUserRating] = useState();
+
   const { logout, user } = useAuth0();
   const navigate = useNavigate();
 
@@ -37,11 +28,10 @@ export default function Dashboard(props) {
       navigate("/");
     } else {
       props.handleUpdateUser(userData);
-      // joinedLobbies();
-      // getUserQuestions();
-      // getFriends();
-      // getReviews();
+
       newUserData();
+      getRatings();
+      updateUserLocation();
     }
   }, [props.refresh]);
 
@@ -51,82 +41,32 @@ export default function Dashboard(props) {
     console.log("get new user data!");
   };
 
-  // Get Questions associated to the current User
-  // const getUserQuestions = async () => {
-  //   const response = await axios.get(
-  //     `${BACKEND_URL}/question/users/${userData.id}`
-  //   );
-  //   let questions = response.data;
-  //   let questionsData = [];
-  //   for (let question of questions) {
-  //     question = await axios.get(`${BACKEND_URL}/question/${question.id}`);
-  //     questionsData.push(question.data[0]);
-  //   }
-  //   setUserQuestions(questionsData);
-  // };
+  const getRatings = async () => {
+    const ratings = await axios.get(
+      `${BACKEND_URL}/review/user/${userData.id}`
+    );
+    console.log(ratings.data);
+    let ratingsData = ratings.data.filter(
+      (rating) => rating.revieweeIdAlias.id == userData.id
+    );
+    console.log(ratingsData);
+    let total = 0;
+    ratingsData.forEach((data) => {
+      total += data.rating;
+    });
+    console.log(total);
 
-  // let questionsAnswered = userQuestions.filter(
-  //   (question) => question.mentorId == userData.id
-  // );
-  // let questionsAsked = userQuestions.filter(
-  //   (question) => question.menteeId == userData.id
-  // );
+    let ratingData = total / ratingsData.length;
+    setUserRating(ratingData);
+  };
 
-  // const openQuestionsList = (type) => {
-  //   if (type == "answered") {
-  //     setQuestionsList(questionsAnswered);
-  //   } else {
-  //     setQuestionsList(questionsAsked);
-  //   }
-  // };
-
-  // Lobby Join Functionality
-  // const openLobbyList = async () => {
-  //   const lobbies = await axios.get(`${BACKEND_URL}/lobbies`);
-  //   console.log("lobbies", lobbies);
-  //   if (userData.lobbiesJoin) {
-  //     let availLobbies = lobbies.data.filter(
-  //       (lobby) => !userData.lobbiesJoin.includes(lobby.id)
-  //     );
-  //     console.log(availLobbies, "availLobbies");
-  //     setAvailableLobbies(availLobbies);
-  //   } else {
-  //     setAvailableLobbies(lobbies.data);
-  //   }
-  // };
-  // const joinedLobbies = async () => {
-  //   const response = await axios.get(
-  //     `${BACKEND_URL}/users/${userData.id}/lobbies`
-  //   );
-  //   setLobbiesJoined(response.data);
-  // };
-  // const joinLobby = async (lobbyId) => {
-  //   const updatedUserData = await axios.post(
-  //     `${BACKEND_URL}/users/${userData.id}/joinlobby/${lobbyId}`,
-  //     { prevLobbies: userData.lobbiesJoin }
-  //   );
-  //   setUserData(updatedUserData.data);
-  //   joinedLobbies();
-  //   openLobbyList();
-  //   setShowAvailableLobbies(false);
-  //   props.handleUpdateUser(updatedUserData.data);
-  // };
-
-  // const getLobbyInfo = async (lobbyId) => {
-  //   const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
-  //   setLobbyInfo(response.data);
-  // };
-
-  // const getFriends = async () => {
-  //   let friends = [];
-  //   if (userData.friendsList.length > 0) {
-  //     for (let friendId of userData.friendsList) {
-  //       const response = await axios.get(`${BACKEND_URL}/users/${friendId}`);
-  //       friends.push(response.data);
-  //     }
-  //     setUserFriends(friends);
-  //   }
-  // };
+  const updateUserLocation = async () => {
+    const updatedLocation = await axios.put(
+      `${BACKEND_URL}/users/${userData.id}/updateLocation`,
+      { location: "Dashboard" }
+    );
+    console.log(updatedLocation);
+  };
 
   const refreshData = (data) => {
     setUserData(data);
@@ -165,6 +105,7 @@ export default function Dashboard(props) {
                 color="primary"
                 align="left"
                 marginLeft="0.5vw"
+                marginBottom="1vh"
               >
                 Friends
               </Typography>
@@ -215,12 +156,17 @@ export default function Dashboard(props) {
                         <Typography
                           variant="h6"
                           align="left"
-                          sx={{ marginLeft: "1vw", marginTop: "2vw" }}
+                          sx={{
+                            marginLeft: "1vw",
+                            marginTop: "2vw",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
                         >
                           ({userData.email})
                         </Typography>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={4} display="flex">
                         <Typography
                           variant="h4"
                           align="right"
@@ -228,12 +174,13 @@ export default function Dashboard(props) {
                             display: "flex",
                             alignItems: "end",
                             marginRight: "1vw",
+                            display: "flex",
                           }}
                         >
-                          {userData.rating ? (
-                            <p>Rating: {userData.rating} / 5.0</p>
+                          {userRating ? (
+                            <p>Rating: {userRating} / 5.0</p>
                           ) : (
-                            <i>No Rating yet</i>
+                            <i>No Rating Yet</i>
                           )}
                         </Typography>
                       </Grid>
@@ -293,7 +240,16 @@ export default function Dashboard(props) {
                   >
                     Tokens
                   </Typography>
-                  <Typography variant="h4">{userData.tokens}</Typography>
+                  <Grid
+                    container
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography variant="h3" marginTop="2vh" color="#FFFFFF">
+                      {userData.tokens}
+                    </Typography>
+                  </Grid>
                   <Grid container className="token-add">
                     <Button>
                       {/* <Typography fontWeight="500" fontSize={20}>

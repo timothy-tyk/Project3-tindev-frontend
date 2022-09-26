@@ -153,15 +153,6 @@ export default function Profile(props) {
                   >
                     {lobby.name}
                   </button>
-                  {/* {lobby.id == showLobbyInfo ? (
-                    <div>
-                      <p>
-                        {lobby.numberOnline} people online!
-                        {lobby.questions.length} unanswered questions!{" "}
-                        <Link to={`/lobbies/${lobby.id}`}>Enter Lobby</Link>
-                      </p>
-                    </div>
-                  ) : null} */}
                 </div>
               );
             })

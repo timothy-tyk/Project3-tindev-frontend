@@ -23,7 +23,8 @@ import KickMentor from "./KickMentor.js";
 import EditSingleQuestion from "./EditSingleQuestion.js";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import EditQnsPopup from "./EditQnsPopup.js";
-function SingleQuestion() {
+import ProfileModalDialog from "./ProfileModal.js";
+function SingleQuestion(props) {
   const params = useParams();
   const { user } = useAuth0();
   const navigate = useNavigate();
@@ -168,7 +169,11 @@ function SingleQuestion() {
                   <Divider variant="middle" color="primary" />
                   <Grid item>
                     <Typography variant="caption">
-                      {`Posted by ${questionData.menteeIdAlias.username} `}
+                      {`Posted by`}{" "}
+                      <ProfileModalDialog
+                        handleUpdateUser={props.handleUserData}
+                        profileId={questionData.menteeIdAlias.id}
+                      />
                     </Typography>
 
                     <Typography variant="caption">

@@ -87,7 +87,10 @@ export default function QuestionModalDialog(props) {
   const displaySearch = searchList.map((question) => {
     return (
       <div>
-        <Card className="question-info" sx={{ backgroundColor: "white" }}>
+        <Card
+          className="question-info"
+          sx={{ backgroundColor: "white", border: "solid grey 1px" }}
+        >
           <Link
             className="links"
             to={`/lobbies/${question.lobbyId}/questions/${question.id}`}
@@ -100,6 +103,7 @@ export default function QuestionModalDialog(props) {
                   className="modal-info-row question-info"
                   marginLeft="0.5vw"
                   marginTop="0.5vw"
+                  color="#000000"
                 >
                   {question.title}
                 </Typography>
@@ -107,6 +111,7 @@ export default function QuestionModalDialog(props) {
                   gutterBottom
                   className="modal-info-row"
                   marginLeft="0.5vw"
+                  color="#000000"
                 >
                   Asked By: {question.menteeIdAlias.username}
                   <br />
@@ -136,7 +141,10 @@ export default function QuestionModalDialog(props) {
     ? props.questionsList.map((question) => {
         return (
           <div>
-            <Card className="question-info" sx={{ backgroundColor: "white" }}>
+            <Card
+              className="question-info"
+              sx={{ backgroundColor: "white", border: "solid grey 1px" }}
+            >
               <Link
                 className="links"
                 to={`/lobbies/${question.lobbyId}/questions/${question.id}`}
@@ -149,6 +157,7 @@ export default function QuestionModalDialog(props) {
                       className="modal-info-row question-info"
                       marginLeft="0.5vw"
                       marginTop="0.5vw"
+                      color="#000000"
                     >
                       {question.title}
                     </Typography>
@@ -156,6 +165,7 @@ export default function QuestionModalDialog(props) {
                       gutterBottom
                       className="modal-info-row"
                       marginLeft="0.5vw"
+                      color="#000000"
                     >
                       Asked By: {question.menteeIdAlias.username}
                       <br />
