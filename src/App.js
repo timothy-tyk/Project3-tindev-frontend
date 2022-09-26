@@ -15,6 +15,7 @@ import SingleQuestion from "./components/SingleQuestion";
 import Chatroom from "./components/Chatroom";
 import axios from "axios";
 import { BACKEND_URL } from "./constants";
+
 import SingleQuestionTwo from "./components/SingleQuestionTwo";
 
 export const UserContext = createContext();
@@ -24,7 +25,7 @@ export default function App() {
     useAuth0();
   const navigate = useNavigate();
   const [userData, setUserData] = useState();
-
+  const [refresh, setRefresh] = useState();
   const handleUserData = (data) => {
     setUserData(data);
   };
@@ -84,10 +85,17 @@ export default function App() {
               path="/users/:profileId"
               element={<Profile handleUpdateUser={handleUserData} />}
             />
-            <Route path="/lobbies/:lobbyId" element={<SingleLobby />} />
+            <Route
+              path="/lobbies/:lobbyId"
+              element={
+                <SingleLobby refresh={refresh} setRefresh={setRefresh} />
+              }
+            />
             <Route
               path="/lobbies/:lobbyId/questions/:questionId"
-              element={<SingleQuestion />}
+              element={
+                <SingleQuestion refresh={refresh} setRefresh={setRefresh} />
+              }
             />
             <Route
               path="/lobbies/:lobbyId/questions/:questionId/chatroom"
