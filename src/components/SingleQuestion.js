@@ -62,6 +62,12 @@ function SingleQuestion() {
     }
   }, [questionData]);
 
+  // useEffect(() => {
+  //   if (questionData.menteeId === userData.id) {
+  //     setUserIsMentee(true);
+  //   } else setUserIsMentee(false);
+  // }, [solved]);
+
   function time_ago(time) {
     switch (typeof time) {
       case "number":
@@ -120,7 +126,14 @@ function SingleQuestion() {
   return (
     <Box height="100%" width="100%">
       <div>
-        <Grid container direction="column" spacing="2" height="100%">
+        <Grid
+          container
+          direction="column"
+          spacing="2"
+          height="100%"
+          mt={5}
+          sx={{ mt: 8 }}
+        >
           <Grid container direction="row">
             {/* start buttons */}
             <Grid item xs={3} alignContent="flex-start">
@@ -223,22 +236,27 @@ function SingleQuestion() {
                         {questionData.mentorId &&
                           questionData.mentorId !== userData.id && (
                             <div>
-                              <KickMentor
-                                questionId={questionData.id}
-                                kicked={kicked}
-                                setKicked={setKicked}
-                              />
-                              <Button
-                                variant="outlined"
-                                color="secondary"
-                                onClick={(e) =>
-                                  navigate(
-                                    `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
-                                  )
-                                }
-                              >
-                                Go to chatroom
-                              </Button>
+                              <Grid item m={4} sx={{ mb: 4 }}>
+                                <KickMentor
+                                  questionId={questionData.id}
+                                  kicked={kicked}
+                                  setKicked={setKicked}
+                                />
+                              </Grid>
+                              <br></br>
+                              <Grid item mt={5} sx={{ mt: 5 }}>
+                                <Button
+                                  variant="outlined"
+                                  color="secondary"
+                                  onClick={(e) =>
+                                    navigate(
+                                      `/lobbies/${lobbyId}/questions/${questionId}/chatroom`
+                                    )
+                                  }
+                                >
+                                  Go to chatroom
+                                </Button>
+                              </Grid>
                             </div>
                           )}
                       </div>
@@ -263,8 +281,8 @@ function SingleQuestion() {
       .
       . */}
                     {/* prefix: not yet solved, render if user is the mentor*/}
-                    {(questionData.menteeId === userData.id ||
-                      questionData.mentorId === userData.id) && (
+                    {/* extra chatroom button */}
+                    {questionData.mentorId === userData.id && (
                       <div>
                         <div>
                           <Button
@@ -281,6 +299,7 @@ function SingleQuestion() {
                         </div>
                       </div>
                     )}
+                    {/* extra chatroom button */}
                   </div>
                 )}
               </Grid>
@@ -297,6 +316,7 @@ function SingleQuestion() {
                       <div>
                         <Button
                           variant="outlined"
+                          sx={{ mt: 3 }}
                           color="secondary"
                           onClick={(e) =>
                             navigate(
