@@ -158,7 +158,7 @@ export default function EditProfileModalDialogs(props) {
               <Avatar
                 className="profilepic"
                 alt="profilepic"
-                src={{fileInputFile?:fileInputFile:userData.profilepicture}}
+                src={userData.profilepicture}
                 sx={{
                   width: "10vw",
                   height: "auto",

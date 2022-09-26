@@ -37,10 +37,11 @@ export default function SingleLobby(props) {
       navigate("/");
     } else {
       getLobbyData();
-      props.setRefresh(posted);
+      // props.setRefresh(posted);
+      newUserData();
     }
     // eslint-disable-next-line
-  }, [posted]);
+  }, []);
 
   const updateUserLocation = async () => {
     if (userData) {
@@ -90,6 +91,7 @@ export default function SingleLobby(props) {
     const newData = await axios.get(`${BACKEND_URL}/users/${userData.id}`);
     setUserData(newData.data);
     console.log("get new user data!");
+    console.log(userData);
   };
 
   useEffect(() => {

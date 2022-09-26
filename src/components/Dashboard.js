@@ -37,10 +37,10 @@ export default function Dashboard(props) {
       navigate("/");
     } else {
       props.handleUpdateUser(userData);
-      joinedLobbies();
-      getUserQuestions();
-      getFriends();
-      getReviews();
+      // joinedLobbies();
+      // getUserQuestions();
+      // getFriends();
+      // getReviews();
       newUserData();
     }
   }, [props.refresh]);
