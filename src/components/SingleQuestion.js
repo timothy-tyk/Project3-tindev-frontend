@@ -32,7 +32,6 @@ function SingleQuestion() {
   const [lobbyId, setLobbyId] = useState(params.lobbyId);
   const [questionData, setQuestionData] = useState({});
   const [solved, setSolved] = useState();
-  const [userIsMentee, setUserIsMentee] = useState();
   const [kicked, setKicked] = useState(false);
   const [editToggle, setEditToggle] = useState();
   const [edited, setEdited] = useState(false);
@@ -62,12 +61,6 @@ function SingleQuestion() {
       setSolved(false);
     }
   }, [questionData]);
-
-  useEffect(() => {
-    if (questionData.menteeId === userData.id) {
-      setUserIsMentee(true);
-    } else setUserIsMentee(false);
-  }, [solved]);
 
   function time_ago(time) {
     switch (typeof time) {
