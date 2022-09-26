@@ -11,6 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import PostQuestionTwo from "./PostQuestionTwo";
+import EditSingleQuestion from "./EditSingleQuestion";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -50,7 +51,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function PostQuestionPopup(props) {
+export default function EditQnsPopup(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -69,11 +70,11 @@ Overview
         variant="outlined"
         onClick={() => {
           handleClickOpen();
-          props.setPosted(!props.posted);
+          props.setEdited(true);
         }}
         startIcon={<SummarizeIcon color="primary" />}
       >
-        Post Question
+        Edit Question
       </Button>
 
       <BootstrapDialog
@@ -87,16 +88,15 @@ Overview
           onClose={handleClose}
         >
           <Typography variant="h4" color="secondary" mt={1}>
-            Post A Question
+            Edit Your Question
           </Typography>
         </BootstrapDialogTitle>
         <DialogContent dividers>
-          <PostQuestionTwo
-            userData={props.userData}
-            lobbyId={props.lobbyId}
+          <EditSingleQuestion
+            question={props.question}
+            edited={props.edited}
+            setEdited={props.setEdited}
             handleClose={handleClose}
-            setPosted={props.setPosted}
-            posted={props.posted}
           />
         </DialogContent>
         <DialogActions>

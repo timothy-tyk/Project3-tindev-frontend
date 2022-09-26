@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { TextField } from "@mui/material";
 import { UserContext } from "../App.js";
 import RichTextEditor from "./RichTextEditor.js";
 import { Button } from "@mui/material";
@@ -12,9 +13,18 @@ function EditSingleQuestion(props) {
   const [tokensOffered, setTokensOffered] = useState(
     props.question.tokensOffered
   );
-  const { lobbyId } = useParams();
+  const { questionId, lobbyId } = useParams();
 
   const navigate = useNavigate();
+  useEffect(() => {
+    console.log(
+      { title },
+      { text },
+      { tokensOffered },
+      { questionId },
+      { lobbyId }
+    );
+  }, []);
 
   const getRichText = async (item) => {
     setText(item);
@@ -27,45 +37,67 @@ function EditSingleQuestion(props) {
       details: text,
       tokensOffered: tokensOffered,
       lobbyId: lobbyId,
-      questionId: props.question.id,
+      questionId: questionId,
     };
     axios
       .put("http://localhost:3000/question/editQuestion", submitBody)
       .then((res) => {
+        console.log(submitBody, "submit Body");
+        console.log(props.edited, "edited state");
         alert("u have edited ur question!");
         props.setEdited(!props.edited);
+        props.handleClose();
+        navigate(-2);
       });
   };
   return (
     <div>
-      <Button
+      {/* <Button
         variant="outlined"
         onClick={(e) => props.setEdited(!props.edited)}
       >
         Edit question
-      </Button>
+      </Button> */}
 
       {props.edited && (
         <div>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title?"
-          />
-          <RichTextEditor
-            getRichText={(item) => getRichText(item)}
-            text={text}
-          />
-          <input
-            type="text"
-            value={tokensOffered}
-            onChange={(e) => setTokensOffered(e.target.value)}
-            placeholder="Tokens Offer?"
-          />
-          <Button variant="outlined" type="submit" onClick={postQuestion}>
+          <form noValidate autoComplete="off" onSubmit={(e) => postQuestion()}>
+            <TextField
+              sx={{ mt: 2, mb: 2 }}
+              id="standard-basic"
+              label="Question Title"
+              variant="standard"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Title?"
+            />
+            <br></br>
+            <TextField
+              sx={{ mb: 2 }}
+              id="standard-basic"
+              label="Tokens Offered:"
+              variant="standard"
+              value={tokensOffered}
+              onChange={(e) => setTokensOffered(e.target.value)}
+            />
+
+            <RichTextEditor
+              getRichText={(item) => getRichText(item)}
+              text={text}
+            />
+            <Button
+              type="submit"
+              color="secondary"
+              variant="contained"
+              sx={{ mt: 2 }}
+            >
+              Submit
+            </Button>
+          </form>
+
+          {/* <Button variant="outlined" type="submit" onClick={postQuestion}>
             Submit
-          </Button>
+          </Button> */}
         </div>
       )}
     </div>

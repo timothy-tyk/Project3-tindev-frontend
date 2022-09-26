@@ -37,10 +37,19 @@ export default function Dashboard(props) {
       navigate("/");
     } else {
       props.handleUpdateUser(userData);
-      // joinedLobbies();
-      // getUserQuestions();
+      joinedLobbies();
+      getUserQuestions();
+      getFriends();
+      getReviews();
+      newUserData();
     }
-  }, []);
+  }, [props.refresh]);
+
+  const newUserData = async () => {
+    const newData = await axios.get(`${BACKEND_URL}/users/${userData.id}`);
+    setUserData(newData.data);
+    console.log("get new user data!");
+  };
 
   // Get Questions associated to the current User
   // const getUserQuestions = async () => {

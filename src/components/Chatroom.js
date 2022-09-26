@@ -8,7 +8,15 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import tokenImage from "../images/token.png";
 import QuestionChatComponent from "./QuestionChatComponent";
 import RichTextDisplay from "./RichTextDisplay";
-import { Grid, Typography, Chip, Avatar, Button } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  Chip,
+  Avatar,
+  Button,
+  Divider,
+  Box,
+} from "@mui/material";
 function Chatroom() {
   const [userData, setUserData] = useState(useContext(UserContext));
   const [role, setRole] = useState();
@@ -118,11 +126,23 @@ function Chatroom() {
   }, []);
 
   return (
-    <div>
+    <Box height="100%" width="100vw">
       <div>
-        <div>
+        <Grid
+          container
+          mt={3}
+          direction="row"
+          spacing="2"
+          height="auto"
+          maxHeight="100%"
+          alignItems="center"
+          justifyContent="center"
+          // sx={{ overflowY: "auto" }}
+        >
+          {/* <Grid item xs={12}> */}
+          {/* container for button + question + chat */}
           <Grid container>
-            <Grid item>
+            <Grid item xs={2} alignContent="flex-start">
               <Button
                 variant="outlined"
                 startIcon={
@@ -133,78 +153,111 @@ function Chatroom() {
                 LOBBY
               </Button>
             </Grid>
-
-            {question && (
-              <Grid item>
-                <Typography variant="h1">{question.title} </Typography>
-                <Typography variant="subtitle">
-                  by {question.menteeIdAlias.username}
-                </Typography>
-
-                <Typography variant="caption">
-                  {" "}
-                  {`${time_ago(new Date(question.createdAt))}`}
-                </Typography>
-
-                <Grid item pt={3} mt={1}>
-                  <Typography>Description:</Typography>
-                  <RichTextDisplay richText={question.details} />
-                </Grid>
-
-                <Grid item xs sx={{ pr: 3 }}>
-                  <Typography variant="subtitle">
-                    status:
-                    <span
-                      className={question.solved ? "dotSolved" : "dotNotSolved"}
-                    ></span>
-                  </Typography>
-                </Grid>
-
-                <Grid item xs>
-                  <Chip
-                    avatar={
-                      <Avatar
-                        alt="token"
-                        src={tokenImage}
-                        sx={{ width: 0.08, height: 0.7 }}
-                      />
-                    }
-                    label={`Tokens Offer:${question.tokensOffered}`}
-                    variant="outlined"
-                    color="secondary"
-                  />
-                </Grid>
-              </Grid>
-            )}
-          </Grid>
-
-          <Grid container sx={{ border: 1, p: 2, mb: 2 }} borderRadius="10px">
+            {/* container for qns start here */}
             <Grid
-              item
-              xs
-              bgcolor="#22212198"
+              container
+              direction="row"
+              xs={4}
+              justifyContent="center"
+              alignContent="center"
+            >
+              {question && (
+                <Grid item xs={8}>
+                  <Grid container justifyContent="center" alignContent="center">
+                    <Grid item xs={6}>
+                      <Typography variant="h4"> {question.title}</Typography>{" "}
+                    </Grid>
+                  </Grid>
+                  <Divider variant="middle" color="primary" />
+                  <Grid item>
+                    <Typography variant="caption">
+                      {`Posted by ${question.menteeIdAlias.username} `}
+                    </Typography>
+
+                    <Typography variant="caption">
+                      {`${time_ago(new Date(question.createdAt))}`}
+                    </Typography>
+                  </Grid>
+
+                  <Grid item mt={2}>
+                    <RichTextDisplay richText={question.details} />
+                  </Grid>
+                  <Grid item mt={2}>
+                    {question.imgUrl && (
+                      <img
+                        className="questionpic"
+                        alt="qns img"
+                        src={question.imgUrl}
+                      />
+                    )}
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="subtitle" mr={3}>
+                      Status:{" "}
+                      <span
+                        className={
+                          question.solved ? "dotSolved" : "dotNotSolved"
+                        }
+                      ></span>
+                    </Typography>
+                    <Chip
+                      avatar={
+                        <Avatar
+                          alt="token"
+                          src={tokenImage}
+                          sx={{ width: 0.08, height: 0.7 }}
+                        />
+                      }
+                      label={`Bounty: ${question.tokensOffered}`}
+                      variant="outlined"
+                      color="primary"
+                    />
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
+            {/* container for qns end here */}
+            {/* container for chat component starts here*/}
+            <Grid
+              container
+              xs={4}
               sx={{ border: 1, p: 2, mb: 2 }}
               borderRadius="10px"
+              height="70vh"
+              maxHeight="70vh"
+              alignContent="stretch"
             >
-              <QuestionChatComponent userData={userData} />
+              <Grid
+                item
+                xs
+                bgcolor="#22212198"
+                sx={{ border: 1, p: 2, mb: 2 }}
+                borderRadius="10px"
+              >
+                <QuestionChatComponent userData={userData} />
+              </Grid>
+            </Grid>{" "}
+            {/* container for chat component ends here */}
+            {/* </Grid> */}
+          </Grid>
+          {/* above ending point is for button,qns,chat grid container */}
+          {/* container for reviews start here */}
+          {/* <Grid item> */}
+          <Grid container justifyContent="center" mt="3vh" mb={5}>
+            <Grid item xs={6}>
+              <Review
+                question={question}
+                role={role}
+                revieweeId={revieweeId}
+                reviewerId={reviewerId}
+              />
             </Grid>
           </Grid>
-        </div>
+          {/* container for review ends here */}
+          {/* </Grid> */}
+        </Grid>
       </div>
-      <div>
-        {" "}
-        {/* If there is a review, show the review, if not show the form */}
-        {showReview && (
-          <Review
-            questionId={questionId}
-            role={role}
-            revieweeId={revieweeId}
-            reviewerId={reviewerId}
-          />
-        )}
-      </div>
-      {/* <button onClick={(e) => navigate(-2)}>Go back to previous lobby</button> */}
-    </div>
+    </Box>
   );
 }
 

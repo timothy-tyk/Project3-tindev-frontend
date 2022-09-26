@@ -62,7 +62,7 @@
 }
 .questionpic {
   width: 20vw;
-  height: auto;
+  height: 20vw;
 }
 
 /* Landing Page */
@@ -366,3 +366,18 @@ a {
 }
 
 /* END OF LOBBY STYLING */
+
+/* qns chat */
+.questionChatInputField {
+  background-color: #1f1d1d;
+  color: white;
+  border: 1px solid #e600ff;
+  border-radius: 10px;
+  width: 100%;
+  height: 10px;
+  text-align: left;
+  padding-top: 3vh;
+  padding-left: 10px;
+  padding-bottom: 8vh;
+  margin: 10px 0 10px 0;
+}
