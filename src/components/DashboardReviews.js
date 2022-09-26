@@ -6,7 +6,15 @@ import axios from "axios";
 import ReviewModalDialog from "./DashboardReviewModal";
 
 //MUI
-import { Card, Grid, Typography, Avatar, Badge, Box } from "@mui/material";
+import {
+  Card,
+  Grid,
+  Typography,
+  Avatar,
+  Badge,
+  Box,
+  Button,
+} from "@mui/material";
 
 export default function DashboardReviews(props) {
   const [userData, setUserData] = useState(props.user);
@@ -44,12 +52,14 @@ export default function DashboardReviews(props) {
 
   return (
     <div>
-      <Typography variant="h3" color="primary" align="left">
+      <Typography variant="h2" color="primary" align="left" marginLeft="0.5vw">
         Reviews
       </Typography>
-      <Grid container>
+      <Grid container marginTop="1vh" className="questions-button-row">
         <Grid item xs={5}>
-          <button
+          <Button
+            variant="outlined"
+            sx={{ borderRadius: 50 }}
             onClick={() => {
               setShowReviews(!showReviews);
               openReviewList("Reviewer");
@@ -58,14 +68,16 @@ export default function DashboardReviews(props) {
             <Typography variant="h2">
               {userReviewsListReviewer.length}
             </Typography>
-          </button>
-          <Typography>Reviews of Others</Typography>
+          </Button>
+          <Typography marginTop="1vh">Reviews of Others</Typography>
         </Grid>
         <Grid item xs={2}>
           <Typography variant="h2">/</Typography>
         </Grid>
         <Grid item xs={5}>
-          <button
+          <Button
+            variant="outlined"
+            sx={{ borderRadius: 50 }}
             onClick={() => {
               setShowReviews(!showReviews);
               openReviewList("Reviewee");
@@ -74,8 +86,8 @@ export default function DashboardReviews(props) {
             <Typography variant="h2">
               {userReviewsListReviewee.length}
             </Typography>
-          </button>
-          <Typography>Reviews of You</Typography>
+          </Button>
+          <Typography marginTop="1vh">Reviews of You</Typography>
         </Grid>
       </Grid>
       <ReviewModalDialog

@@ -301,7 +301,7 @@ export default function SingleLobby() {
           height: "6.5vh",
           display: "flex",
           justifyContent: "space-between",
-          mt: 2,
+          mt: 5,
           mb: 5,
         }}
         wrap="nowrap"

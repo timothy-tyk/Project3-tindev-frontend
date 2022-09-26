@@ -1,4 +1,15 @@
 import { createTheme } from "@mui/material";
+import Drab from "../Font/DRAB.ttf";
+
+const Drabfont = {
+  fontFamily: "Drab",
+  fontStyle: "normal",
+  fontDisplay: "swap",
+  fontWeight: 400,
+  src: `
+    url(${Drab}) format('truetype')
+  `,
+};
 
 export const theme = createTheme({
   palette: {
@@ -23,6 +34,12 @@ export const theme = createTheme({
     offwhite: {
       main: "#E8DACC",
     },
+    black: {
+      main: "#000000",
+    },
+    background: {
+      paper: "#919191",
+    },
   },
   question: {
     field: {
@@ -30,8 +47,31 @@ export const theme = createTheme({
       marginBottom: 20,
       display: "block",
     },
-    black: {
-      main: "#000000",
+  },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          border: "solid 1px",
+          borderColor: "#333333",
+          borderRadius: 24,
+        },
+      },
     },
+  },
+  typography: {
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+      "Drab",
+    ].join(","),
   },
 });

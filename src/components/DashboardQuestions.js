@@ -6,7 +6,14 @@ import axios from "axios";
 import ModalDialog from "./DashboardQuestionModals";
 
 //MUI
-import { Typography, Grid, Card, Modal, SimpleDialog } from "@mui/material";
+import {
+  Typography,
+  Grid,
+  Card,
+  Modal,
+  SimpleDialog,
+  Button,
+} from "@mui/material";
 
 export default function DashboardQuestions(props) {
   const [userData, setUserData] = useState(props.user);
@@ -45,19 +52,21 @@ export default function DashboardQuestions(props) {
       setQuestionType("Answered");
       setQuestionsList(questionsAnswered);
     } else {
-      setQuestionType("Answered");
+      setQuestionType("Asked");
       setQuestionsList(questionsAsked);
     }
   };
 
   return (
     <div>
-      <Typography variant="h3" align="left" color="primary">
+      <Typography variant="h2" align="left" color="primary" marginLeft="0.5vw">
         Questions
       </Typography>
-      <Grid container>
+      <Grid container marginTop="1vh" className="questions-button-row">
         <Grid item xs={5}>
-          <button
+          <Button
+            variant="outlined"
+            sx={{ borderRadius: 50 }}
             onClick={() => {
               setShowQuestions(!showQuestions);
               getUserQuestions();
@@ -65,14 +74,16 @@ export default function DashboardQuestions(props) {
             }}
           >
             <Typography variant="h2">{questionsAnswered.length}</Typography>
-          </button>
-          <Typography>Questions Answered</Typography>
+          </Button>
+          <Typography marginTop="1vh">Questions Answered</Typography>
         </Grid>
         <Grid item xs={2}>
           <Typography variant="h2">/</Typography>
         </Grid>
         <Grid item xs={5}>
-          <button
+          <Button
+            variant="outlined"
+            sx={{ borderRadius: 50 }}
             onClick={() => {
               setShowQuestions(!showQuestions);
               getUserQuestions();
@@ -80,8 +91,8 @@ export default function DashboardQuestions(props) {
             }}
           >
             <Typography variant="h2">{questionsAsked.length}</Typography>
-          </button>
-          <Typography>Questions Asked</Typography>
+          </Button>
+          <Typography marginTop="1vh">Questions Asked</Typography>
         </Grid>
       </Grid>
 

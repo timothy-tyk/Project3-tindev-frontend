@@ -5,7 +5,16 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 //MUI
-import { Card, Grid, Typography, Avatar, Badge, Box } from "@mui/material";
+import {
+  Card,
+  Grid,
+  Typography,
+  Avatar,
+  Badge,
+  Box,
+  styled,
+  Stack,
+} from "@mui/material";
 
 export default function DashboardFriends(props) {
   const [userData, setUserData] = useState(props.user);
@@ -22,59 +31,93 @@ export default function DashboardFriends(props) {
         const response = await axios.get(`${BACKEND_URL}/users/${friendId}`);
         friends.push(response.data);
       }
-      setUserFriends(friends);
+      let onlinefriends = friends.filter((friend) => friend.online);
+      let offlinefriends = friends.filter((friend) => !friend.online);
+      setUserFriends([...onlinefriends, ...offlinefriends]);
     }
   };
+  //MUI StyledBadge
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    "& .MuiBadge-badge": {
+      backgroundColor: "#44b700",
+      marginTop: 20,
+      width: "0.5vw",
+      height: "0.5vw",
+      borderRadius: 25,
+      color: "#44b700",
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+      "&::after": {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        borderRadius: "50%",
+        animation: "ripple 1.2s infinite ease-in-out",
+        border: "1px solid currentColor",
+        content: '""',
+      },
+    },
+    "@keyframes ripple": {
+      "0%": {
+        transform: "scale(.8)",
+        opacity: 1,
+      },
+      "100%": {
+        transform: "scale(2.4)",
+        opacity: 0,
+      },
+    },
+  }));
 
   return (
-    <div>
+    <Box className="friend-box">
       {userFriends && userFriends.length > 0 ? (
         userFriends.map((friend, index) => {
           return (
-            <Box
-              key={index}
-              className="friend-box"
-              sx={{
-                overflow: "auto",
-                overflowY: "scroll",
-              }}
-            >
-              <div key={friend.id} className="friend-row">
-                <Grid container>
-                  <Grid item xs={2}>
-                    <Avatar
-                      alt="profile"
-                      src={friend.profilepicture}
-                      className="friend-avatar"
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Link to={`/users/${friend.id}`}>
-                      <Typography>{friend.username}</Typography>
-                    </Link>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    {friend.online ? (
-                      <div>
-                        <Typography align="right">
-                          <i>In {friend.location} Lobby</i>
-                        </Typography>
-                      </div>
-                    ) : (
-                      <Typography align="right">
-                        <i>Offline</i>
-                      </Typography>
-                    )}
-                  </Grid>
+            <Card key={index} className="friend-row">
+              <Grid container>
+                <Grid item xs={2} className="friend-row">
+                  <Avatar
+                    alt="profile"
+                    src={friend.profilepicture}
+                    className="friend-avatar"
+                    sx={{ height: "8vh", width: "8vh" }}
+                  />
+                  {friend.online ? (
+                    <StyledBadge overlap="circular" variant="dot"></StyledBadge>
+                  ) : null}
                 </Grid>
-              </div>
-            </Box>
+                <Grid item xs={4} className="friend-name">
+                  <Link to={`/users/${friend.id}`} className="links">
+                    <Typography variant="h5">{friend.username}</Typography>
+                  </Link>
+                </Grid>
+
+                <Grid item xs={6} className="friend-name-end">
+                  {friend.online ? (
+                    <div>
+                      <Typography
+                        align="right"
+                        variant="h5"
+                        marginRight="0.5vw"
+                      >
+                        <i>In {friend.location} Lobby</i>
+                      </Typography>
+                    </div>
+                  ) : (
+                    <Typography align="right" variant="h5" marginRight="0.5vw">
+                      <i>Offline</i>
+                    </Typography>
+                  )}
+                </Grid>
+              </Grid>
+            </Card>
           );
         })
       ) : (
         <p>No Friends Yet</p>
       )}
-    </div>
+    </Box>
   );
 }

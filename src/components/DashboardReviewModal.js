@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
@@ -105,17 +106,46 @@ export default function ReviewModalDialog(props) {
     ? props.reviewList.map((review, index) => {
         return (
           <div key={index}>
-            <Card>
-              <Typography gutterBottom className="modal-info-row">
-                Rating: {review.rating}
-                <br />
-                Review: {review.reviewContent}
-                <br />
-                Review For: {review.revieweeIdAlias.username}
-                <br />
-                By:
-                {review.reviewerIdAlias.username}
-              </Typography>
+            <Card sx={{ backgroundColor: "white" }}>
+              <Grid container>
+                <Grid item xs={8} className="review-info">
+                  <Typography
+                    variant="h4"
+                    gutterBottom
+                    className="modal-info-row"
+                    marginLeft="0.5vw"
+                    marginTop="0.5vw"
+                  >
+                    " {review.reviewContent} "
+                    <br />
+                  </Typography>
+                  <Typography
+                    gutterBottom
+                    marginLeft="0.5vw"
+                    sx={{ position: "absolute", bottom: 0 }}
+                  >
+                    Review For:{" "}
+                    <Link
+                      to={`/users/${review.revieweeIdAlias.id}`}
+                      className="links"
+                    >
+                      {review.revieweeIdAlias.username}{" "}
+                    </Link>
+                    | By:
+                    <Link
+                      to={`/users/${review.reviewerIdAlias.id}`}
+                      className="links"
+                    >
+                      {review.reviewerIdAlias.username}
+                    </Link>
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} className="review-rating">
+                  <Typography variant="h1" marginRight="1vw">
+                    {review.rating}
+                  </Typography>
+                </Grid>
+              </Grid>
             </Card>
           </div>
         );
@@ -142,6 +172,7 @@ export default function ReviewModalDialog(props) {
           id="outlined-basic"
           label="Search Reviews"
           variant="outlined"
+          sx={{ borderRadius: "50%" }}
           onChange={(e) => {
             setSearch(e.target.value);
             searchReviews(e.target.value);
@@ -154,11 +185,6 @@ export default function ReviewModalDialog(props) {
             ? displayReviews
             : null}
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
       </BootstrapDialog>
     </div>
   );

@@ -18,6 +18,7 @@ import SingleQuestionTwo from "./components/SingleQuestionTwo";
 
 //MUI
 import { AppBar, Typography, Grid, Button } from "@mui/material";
+import EditProfileModalDialogs from "./components/EditProfileModal";
 
 export const UserContext = createContext();
 
@@ -85,7 +86,9 @@ export default function App() {
             />
             <Route
               path="/editprofile"
-              element={<EditProfile handleSignIn={handleUserData} />}
+              element={
+                <EditProfileModalDialogs handleSignIn={handleUserData} />
+              }
             />
             <Route
               path="/users/:profileId"

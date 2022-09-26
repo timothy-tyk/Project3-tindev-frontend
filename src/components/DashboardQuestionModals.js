@@ -87,19 +87,45 @@ export default function QuestionModalDialog(props) {
   const displaySearch = searchList.map((question) => {
     return (
       <div>
-        <Card>
+        <Card className="question-info" sx={{ backgroundColor: "white" }}>
           <Link
             className="links"
             to={`/lobbies/${question.lobbyId}/questions/${question.id}`}
           >
-            <Typography gutterBottom className="modal-info-row">
-              Title: {question.title}
-              <br />
-              Asked By: {question.menteeIdAlias.username}
-              <br />
-              Answered By:{" "}
-              {question.mentorId ? question.mentorIdAlias.username : <>None</>}
-            </Typography>
+            <Grid container>
+              <Grid item xs={10}>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  className="modal-info-row question-info"
+                  marginLeft="0.5vw"
+                  marginTop="0.5vw"
+                >
+                  {question.title}
+                </Typography>
+                <Typography
+                  gutterBottom
+                  className="modal-info-row"
+                  marginLeft="0.5vw"
+                >
+                  Asked By: {question.menteeIdAlias.username}
+                  <br />
+                  Answered By:{" "}
+                  {question.mentorId ? (
+                    question.mentorIdAlias.username
+                  ) : (
+                    <>None</>
+                  )}
+                </Typography>
+              </Grid>
+              <Grid item xs={2} sx={{ pr: 3 }} className="question-dot">
+                {question.solved ? (
+                  <span className="dotSolved" />
+                ) : (
+                  <span className="dotNotSolved" />
+                )}
+              </Grid>
+            </Grid>
           </Link>
         </Card>
       </div>
@@ -110,23 +136,45 @@ export default function QuestionModalDialog(props) {
     ? props.questionsList.map((question) => {
         return (
           <div>
-            <Card>
+            <Card className="question-info" sx={{ backgroundColor: "white" }}>
               <Link
                 className="links"
                 to={`/lobbies/${question.lobbyId}/questions/${question.id}`}
               >
-                <Typography gutterBottom className="modal-info-row">
-                  Title: {question.title}
-                  <br />
-                  Asked By: {question.menteeIdAlias.username}
-                  <br />
-                  Answered By:{" "}
-                  {question.mentorId ? (
-                    question.mentorIdAlias.username
-                  ) : (
-                    <>None</>
-                  )}
-                </Typography>
+                <Grid container>
+                  <Grid item xs={10}>
+                    <Typography
+                      variant="h5"
+                      gutterBottom
+                      className="modal-info-row question-info"
+                      marginLeft="0.5vw"
+                      marginTop="0.5vw"
+                    >
+                      {question.title}
+                    </Typography>
+                    <Typography
+                      gutterBottom
+                      className="modal-info-row"
+                      marginLeft="0.5vw"
+                    >
+                      Asked By: {question.menteeIdAlias.username}
+                      <br />
+                      Answered By:{" "}
+                      {question.mentorId ? (
+                        question.mentorIdAlias.username
+                      ) : (
+                        <>None</>
+                      )}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={2} sx={{ pr: 3 }} className="question-dot">
+                    {question.solved ? (
+                      <span className="dotSolved" />
+                    ) : (
+                      <span className="dotNotSolved" />
+                    )}
+                  </Grid>
+                </Grid>
               </Link>
             </Card>
           </div>
@@ -164,12 +212,17 @@ export default function QuestionModalDialog(props) {
             : props.questionsList && props.questionsList.length > 0
             ? displayQuestions
             : null}
+          <Grid container>
+            <Grid item xs={6} display="flex" sx={{ mb: 3 }} alignItems="center">
+              <span className="dotNotSolved" />
+              <Typography sx={{ ml: 2 }}>Available Questions</Typography>
+            </Grid>
+            <Grid item xs={6} display="flex" sx={{ mb: 4 }} alignItems="center">
+              <span className="dotSolved" />
+              <Typography sx={{ ml: 2 }}>Question has been solved</Typography>
+            </Grid>
+          </Grid>
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
       </BootstrapDialog>
     </div>
   );

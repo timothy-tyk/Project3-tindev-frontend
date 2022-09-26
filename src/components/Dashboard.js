@@ -8,11 +8,13 @@ import DashboardFriends from "./DashboardFriends";
 
 //Mui
 import { Typography, Card, Grid, Button, Avatar } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 //Sub Components
 import DashboardLobbies from "./DashboardLobbies";
 import DashboardQuestions from "./DashboardQuestions";
 import DashboardReviews from "./DashboardReviews";
+import EditProfileModalDialogs from "./EditProfileModal";
 
 export default function Dashboard(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
@@ -26,6 +28,7 @@ export default function Dashboard(props) {
   const [showLobbyInfo, setShowLobbyInfo] = useState();
   const [userFriends, setUserFriends] = useState([]);
   const [userReviews, setUserReviews] = useState([]);
+  const [editModalClose, setEditModalClose] = useState(false);
   const { logout, user } = useAuth0();
   const navigate = useNavigate();
 
@@ -116,58 +119,81 @@ export default function Dashboard(props) {
   //   }
   // };
 
+  const refreshData = (data) => {
+    setUserData(data);
+  };
+
   return (
     <div className="container">
-      <Card>
+      <Grid container spacing={1}>
+        <Grid item xs={8}>
+          <Card className="dashboard-top-left" variant="outlined">
+            <Typography variant="h1" color="primary" marginLeft="0.5vw">
+              Dashboard
+            </Typography>
+          </Card>
+        </Grid>
+        <Grid item xs={4}>
+          <div className="dashboard-top-right">
+            <Card className="dashboard-top-right-row1">
+              <Button variant="contained" fullWidth sx={{ borderRadius: 50 }}>
+                Friends
+              </Button>
+              <Button variant="outlined" fullWidth sx={{ borderRadius: 50 }}>
+                Leaderboard
+              </Button>
+              <Button variant="outlined" fullWidth sx={{ borderRadius: 50 }}>
+                Logout
+              </Button>
+            </Card>
+            <Card
+              className="dashboard-top-right-row2 scroll"
+              variant="outlined"
+              sx={{ maxHeight: "29vh", overflowY: "auto", marginBottom: "1vh" }}
+            >
+              <Typography
+                variant="h2"
+                color="primary"
+                align="left"
+                marginLeft="0.5vw"
+              >
+                Friends
+              </Typography>
+              <DashboardFriends user={userData} />
+            </Card>
+          </div>
+        </Grid>
+      </Grid>
+
+      {userData ? (
         <Grid container spacing={1}>
           <Grid item xs={8}>
-            <Card className="dashboard-top-left" variant="outlined">
-              <Typography variant="h1" color="primary">
-                Dashboard
-              </Typography>
-            </Card>
-          </Grid>
-          <Grid item xs={4}>
-            <Card className="dashboard-top-right" variant="outlined">
-              <Card className="dashboard-top-right-row1">
-                <Button variant="contained">Friends</Button>
-                <Button variant="contained">Leaderboard</Button>
-                <Button variant="contained">Logout</Button>
-              </Card>
-              <Card className="dashboard-top-right-row2" variant="outlined">
-                <Typography variant="h3" color="primary" align="left">
-                  Friends
-                </Typography>
-                <DashboardFriends user={userData} />
-              </Card>
-            </Card>
-          </Grid>
-        </Grid>
-      </Card>
-      {userData ? (
-        <Card>
-          <Grid container spacing={1}>
-            <Grid item xs={8}>
-              <Grid container spacing={1}>
-                <Grid item xs={8}>
-                  <Card variant="outlined" className="dashboard-bottom-left">
-                    <div>
-                      <Typography variant="h1" color="primary" align="left">
-                        Profile
-                      </Typography>
-                      {/* <Card> */}
+            <Grid container spacing={1}>
+              <Grid item xs={8}>
+                <Card variant="outlined" className="dashboard-bottom-left">
+                  <div>
+                    <Typography
+                      variant="h1"
+                      color="primary"
+                      align="left"
+                      marginLeft="0.5vw"
+                    >
+                      Profile
+                    </Typography>
+                    {/* <Card> */}
 
-                      <Avatar
-                        className="profilepic"
-                        alt={userData.profilepicture}
-                        src={userData.profilepicture}
-                        sx={{
-                          width: "5vw",
-                          height: "auto",
-                          marginLeft: "2vw",
-                        }}
-                      />
-                      <Grid container>
+                    <Avatar
+                      className="profilepic"
+                      alt={userData.profilepicture}
+                      src={userData.profilepicture}
+                      sx={{
+                        width: "10vw",
+                        height: "auto",
+                        marginLeft: "2vw",
+                      }}
+                    />
+                    <Grid container>
+                      <Grid item xs={8} sx={{ display: "flex" }}>
                         <Typography
                           variant="h2"
                           align="left"
@@ -176,8 +202,7 @@ export default function Dashboard(props) {
                         >
                           {userData.username}
                         </Typography>
-                        {/* </Card> */}
-                        {/* <Card sx={{ marginTop: "1vh" }}> */}
+
                         <Typography
                           variant="h6"
                           align="left"
@@ -186,95 +211,98 @@ export default function Dashboard(props) {
                           ({userData.email})
                         </Typography>
                       </Grid>
-                      {/* </Card> */}
-                      {/* <Card sx={{ marginTop: "1vh" }}> */}
-                      <Typography
-                        variant="h5"
-                        align="left"
-                        sx={{ marginLeft: "1vw" }}
-                      >
-                        <i>{userData.bio}</i>
-                      </Typography>
-                      {/* </Card> */}
-
-                      <br />
-                      <Grid
-                        sx={{ display: "flex", justifyContent: "flex-end" }}
-                      >
-                        <Button
-                          variant="outlined"
-                          onClick={() => {
-                            navigate("/editprofile");
+                      <Grid item xs={4}>
+                        <Typography
+                          variant="h4"
+                          align="right"
+                          sx={{
+                            display: "flex",
+                            alignItems: "end",
+                            marginRight: "1vw",
                           }}
                         >
-                          Edit Profile
-                        </Button>
+                          {userData.rating ? (
+                            <p>Rating: {userData.rating} / 5.0</p>
+                          ) : (
+                            <i>No Rating yet</i>
+                          )}
+                        </Typography>
                       </Grid>
-                    </div>
-                  </Card>
-                </Grid>
-
-                <Grid item xs={4}>
-                  <Card
-                    variant="outlined"
-                    className="dashboard-bottom-left-right"
-                  >
-                    <DashboardReviews user={userData} />
-                    {/* <div>
-                    <h3>Reviews</h3>
-                    {userReviews && userReviews.length > 0 ? (
-                      <div>
-                        <h5>As Reviewer</h5>
-                        {userReviewsListReviewer.map((review) => {
-                          return (
-                            <div>
-                              <p>Question Id:{review.questionId}</p>
-                              <p>Reviewee:{review.revieweeIdAlias.username}</p>
-                              <p>Details:{review.reviewContent}</p>
-                            </div>
-                          );
-                        })}
-                        <h5>As Reviewee</h5>
-                        {userReviewsListReviewee.map((review) => {
-                          return (
-                            <div>
-                              <p>Question Id:{review.questionId}</p>
-                              <p>Reviewer:{review.reviewerIdAlias.username}</p>
-                              <p>Details:{review.reviewContent}</p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <p>No Reviews Yet</p>
-                    )}
-                  </div> */}
-                  </Card>
-                  <Card
-                    variant="outlined"
-                    className="dashboard-bottom-left-right"
-                  >
-                    <DashboardQuestions user={userData} />
-                  </Card>
-                  <Card
-                    variant="outlined"
-                    className="dashboard-bottom-left-right"
-                  >
-                    <Typography variant="h3" align="left" color="primary">
-                      Tokens
+                    </Grid>
+                    {/* </Card> */}
+                    {/* <Card sx={{ marginTop: "1vh" }}> */}
+                    <Typography
+                      variant="h5"
+                      align="left"
+                      sx={{ marginLeft: "1vw" }}
+                    >
+                      <i>{userData.bio}</i>
                     </Typography>
-                    <Typography variant="h5">{userData.tokens}</Typography>
-                  </Card>
-                </Grid>
+                    {/* </Card> */}
+
+                    <br />
+                    <Grid
+                      className="dashboard-edit-profile"
+                      sx={{ display: "flex", justifyContent: "flex-end" }}
+                    >
+                      {/* <Button>
+                        <EditIcon fontSize="large" />
+                      </Button> */}
+                      <EditProfileModalDialogs
+                        userData={userData}
+                        handleSignIn={props.handleUpdateUser}
+                        handleRefreshData={refreshData}
+                      />
+                    </Grid>
+                  </div>
+                </Card>
+              </Grid>
+
+              <Grid item xs={4}>
+                <Card
+                  variant="outlined"
+                  className="dashboard-bottom-left-right"
+                >
+                  <DashboardReviews user={userData} />
+                </Card>
+                <Card
+                  variant="outlined"
+                  className="dashboard-bottom-left-right"
+                >
+                  <DashboardQuestions user={userData} />
+                </Card>
+                <Card
+                  variant="outlined"
+                  className="dashboard-bottom-left-right"
+                  sx={{ maxHeight: "17vh", position: "relative" }}
+                >
+                  <Typography
+                    variant="h2"
+                    align="left"
+                    color="primary"
+                    marginLeft="0.5vw"
+                  >
+                    Tokens
+                  </Typography>
+                  <Typography variant="h4">{userData.tokens}</Typography>
+                  <Grid container className="token-add">
+                    <Button>
+                      {/* <Typography fontWeight="500" fontSize={20}>
+                        + Add
+                      </Typography> */}
+                      <AddCircleIcon fontSize="large" />
+                    </Button>
+                  </Grid>
+                </Card>
               </Grid>
             </Grid>
-            <Grid item xs={4}>
-              <Card variant="outlined" className="dashboard-bottom-right">
-                <DashboardLobbies user={userData} />
-              </Card>
-            </Grid>
           </Grid>
-        </Card>
+          <Grid item xs={4}>
+            <Card variant="outlined" className="dashboard-bottom-right">
+              <DashboardLobbies user={userData} />
+            </Card>
+          </Grid>
+        </Grid>
       ) : null}
     </div>
   );

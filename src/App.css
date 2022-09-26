@@ -37,6 +37,9 @@
     transform: scale(1.5);
   }
 }
+.black-bg {
+  background-color: #000;
+}
 
 .App-header {
   background-color: #000;
@@ -54,8 +57,8 @@
 }
 /* DASHBOARD */
 .profilepic {
-  width: auto;
-  height: 5vh;
+  width: 50vh;
+  height: 50vh;
 }
 .questionpic {
   width: 20vw;
@@ -85,6 +88,9 @@
   display: inline-block;
 }
 /* Dashboard */
+.dashboard-cards {
+  background-color: #333333;
+}
 .dashboard-top-left {
   height: 35vh;
   display: flex;
@@ -98,17 +104,25 @@
 .dashboard-top-right-row1 {
   height: 5vh;
   display: flex;
-  justify-content: end;
+  justify-content: space-around;
 }
 .dashboard-top-right-row2 {
   margin-top: 1vh;
-  height: 30vh;
+  height: 29vh;
 }
 .dashboard-bottom-left {
   margin-top: 1vh;
   height: 60vh;
   display: block;
   justify-content: end;
+  position: relative;
+}
+.dashboard-edit-profile {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
 }
 .dashboard-bottom-right {
   margin-top: 1vh;
@@ -118,17 +132,42 @@
   margin-top: 1vh;
   height: 33%;
 }
+.token-add {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+.questions-button-row {
+  align-items: center;
+}
+/* Review Modal */
+.review-rating {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-right: 1vw;
+}
+.review-info {
+  position: relative;
+}
 
 /* Dashboard Friends */
 .friend-box {
   display: flex;
   flex-direction: column;
+
   /* justify-content: flex-end; */
 }
 .friend-row {
   display: flex;
   height: 10vh;
   align-items: center;
+  flex-wrap: nowrap;
+  margin-bottom: 0.75vh;
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
 }
 .friend-grid-row {
   margin-top: 0px;
@@ -136,17 +175,44 @@
 .friend-avatar {
   height: 5vh;
   width: auto;
+  margin-left: 0.5vw;
+}
+.friend-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.friend-name-end {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+/* Edit Profile */
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Lobbies */
+.lobbies-box {
+  margin-right: 1vw;
+}
+.lobby-avatar {
+  margin-right: 1vw;
+}
 .lobbies-row {
   display: flex;
+  margin-left: 0.5vw;
+  margin-right: 0.5vw;
+  align-items: center;
 }
 .lobbies-info {
   display: flex;
   justify-content: end;
   margin-left: 2px;
   margin-right: auto;
+  align-items: center;
 }
 .lobbies-add-button {
   display: flex;
@@ -158,6 +224,13 @@
   display: flex;
   flex-direction: column;
 }
+.question-info {
+}
+.question-dot {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
 
 /* Modal */
 /* .modal {
@@ -165,6 +238,7 @@
 } */
 .modal-info-row {
   display: flex;
+  margin-left: 0.5vw;
 }
 
 /* remove all underlines from */

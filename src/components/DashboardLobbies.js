@@ -6,6 +6,7 @@ import axios from "axios";
 
 //MUI
 import { Typography, Grid, Box, Avatar, Card, Button } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 export default function DashboardLobbies(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
@@ -60,7 +61,7 @@ export default function DashboardLobbies(props) {
 
   return (
     <div>
-      <Typography variant="h3" color="primary" align="left">
+      <Typography variant="h2" color="primary" align="left" marginLeft="0.5vw">
         Lobbies
       </Typography>
       <Box className="lobbies-box">
@@ -72,7 +73,7 @@ export default function DashboardLobbies(props) {
                   className="lobbies-row"
                   sx={{ display: "inline-block" }}
                 >
-                  <Card>
+                  <Card sx={{ minHeight: "10vh" }}>
                     <Grid
                       container
                       className="lobbies-row"
@@ -82,6 +83,7 @@ export default function DashboardLobbies(props) {
                         <Typography
                           align="left"
                           variant="h4"
+                          marginLeft="0.5vw"
                           onClick={() => {
                             setShowLobbyInfo(lobby.id);
                             setShowLobbyInfo2();
@@ -96,16 +98,24 @@ export default function DashboardLobbies(props) {
                           <>
                             <Link to={`/lobbies/${lobby.id}`} className="links">
                               <Grid item className="lobbies-info">
-                                <Typography variant="h6">Online</Typography>
-                                <Avatar color="secondary">
+                                <Typography marginRight="0.5vw" variant="h6">
+                                  Online{" "}
+                                </Typography>
+                                <Avatar
+                                  color="secondary"
+                                  className="lobby-avatar"
+                                >
                                   {lobbyInfo.numberOnline}
                                 </Avatar>
                               </Grid>
                               <Grid item className="lobbies-info">
-                                <Typography variant="h6">
+                                <Typography variant="h6" marginRight="0.5vw">
                                   Unanswered Questions
                                 </Typography>
-                                <Avatar color="secondary">
+                                <Avatar
+                                  color="secondary"
+                                  className="lobby-avatar"
+                                >
                                   {lobbyInfo.questions.length}
                                 </Avatar>
                               </Grid>
@@ -127,7 +137,10 @@ export default function DashboardLobbies(props) {
               setShowAvailableLobbies(true);
             }}
           >
-            + Add
+            {/* <Typography fontWeight="500" fontSize={20}>
+              + Add
+            </Typography> */}
+            <AddCircleIcon fontSize="large" />
           </Button>
         </Grid>
         <Grid

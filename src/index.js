@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./components/theme";
-// import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history.js";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
@@ -19,9 +19,7 @@ root.render(
       scope={process.env.REACT_APP_SCOPE}
     >
       <BrowserRouter>
-        {/* <Auth0ProviderWithHistory> */}
         <App />
-        {/* </Auth0ProviderWithHistory> */}
       </BrowserRouter>
     </Auth0Provider>
   </ThemeProvider>
