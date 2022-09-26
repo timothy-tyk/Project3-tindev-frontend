@@ -4,6 +4,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { BACKEND_URL } from "../constants";
 import axios from "axios";
+import DashboardFriends from "./DashboardFriends";
+
+//Mui
+import { Typography, Card, Grid, Button, Avatar } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+
+//Sub Components
+import DashboardLobbies from "./DashboardLobbies";
+import DashboardQuestions from "./DashboardQuestions";
+import DashboardReviews from "./DashboardReviews";
+import EditProfileModalDialogs from "./EditProfileModal";
 
 export default function Dashboard(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
@@ -17,7 +28,7 @@ export default function Dashboard(props) {
   const [showLobbyInfo, setShowLobbyInfo] = useState();
   const [userFriends, setUserFriends] = useState([]);
   const [userReviews, setUserReviews] = useState([]);
-
+  const [editModalClose, setEditModalClose] = useState(false);
   const { logout, user } = useAuth0();
   const navigate = useNavigate();
 
@@ -26,10 +37,10 @@ export default function Dashboard(props) {
       navigate("/");
     } else {
       props.handleUpdateUser(userData);
-      joinedLobbies();
-      getUserQuestions();
-      getFriends();
-      getReviews();
+      // joinedLobbies();
+      // getUserQuestions();
+      // getFriends();
+      // getReviews();
       newUserData();
     }
   }, [props.refresh]);
@@ -41,266 +52,267 @@ export default function Dashboard(props) {
   };
 
   // Get Questions associated to the current User
-  const getUserQuestions = async () => {
-    const response = await axios.get(
-      `${BACKEND_URL}/question/users/${userData.id}`
-    );
-    let questions = response.data;
-    let questionsData = [];
-    for (let question of questions) {
-      question = await axios.get(`${BACKEND_URL}/question/${question.id}`);
-      questionsData.push(question.data[0]);
-    }
-    setUserQuestions(questionsData);
-  };
+  // const getUserQuestions = async () => {
+  //   const response = await axios.get(
+  //     `${BACKEND_URL}/question/users/${userData.id}`
+  //   );
+  //   let questions = response.data;
+  //   let questionsData = [];
+  //   for (let question of questions) {
+  //     question = await axios.get(`${BACKEND_URL}/question/${question.id}`);
+  //     questionsData.push(question.data[0]);
+  //   }
+  //   setUserQuestions(questionsData);
+  // };
 
-  let questionsAnswered = userQuestions.filter(
-    (question) => question.mentorId == userData.id
-  );
-  let questionsAsked = userQuestions.filter(
-    (question) => question.menteeId == userData.id
-  );
+  // let questionsAnswered = userQuestions.filter(
+  //   (question) => question.mentorId == userData.id
+  // );
+  // let questionsAsked = userQuestions.filter(
+  //   (question) => question.menteeId == userData.id
+  // );
 
-  const openQuestionsList = (type) => {
-    if (type == "answered") {
-      setQuestionsList(questionsAnswered);
-    } else {
-      setQuestionsList(questionsAsked);
-    }
-  };
+  // const openQuestionsList = (type) => {
+  //   if (type == "answered") {
+  //     setQuestionsList(questionsAnswered);
+  //   } else {
+  //     setQuestionsList(questionsAsked);
+  //   }
+  // };
 
   // Lobby Join Functionality
-  const openLobbyList = async () => {
-    const lobbies = await axios.get(`${BACKEND_URL}/lobbies`);
-    console.log("lobbies", lobbies);
-    if (userData.lobbiesJoin) {
-      let availLobbies = lobbies.data.filter(
-        (lobby) => !userData.lobbiesJoin.includes(lobby.id)
-      );
-      console.log(availLobbies, "availLobbies");
-      setAvailableLobbies(availLobbies);
-    } else {
-      setAvailableLobbies(lobbies.data);
-    }
-  };
-  const joinedLobbies = async () => {
-    const response = await axios.get(
-      `${BACKEND_URL}/users/${userData.id}/lobbies`
-    );
-    setLobbiesJoined(response.data);
-  };
-  const joinLobby = async (lobbyId) => {
-    const updatedUserData = await axios.post(
-      `${BACKEND_URL}/users/${userData.id}/joinlobby/${lobbyId}`,
-      { prevLobbies: userData.lobbiesJoin }
-    );
-    setUserData(updatedUserData.data);
-    joinedLobbies();
-    openLobbyList();
-    setShowAvailableLobbies(false);
-    props.handleUpdateUser(updatedUserData.data);
-  };
+  // const openLobbyList = async () => {
+  //   const lobbies = await axios.get(`${BACKEND_URL}/lobbies`);
+  //   console.log("lobbies", lobbies);
+  //   if (userData.lobbiesJoin) {
+  //     let availLobbies = lobbies.data.filter(
+  //       (lobby) => !userData.lobbiesJoin.includes(lobby.id)
+  //     );
+  //     console.log(availLobbies, "availLobbies");
+  //     setAvailableLobbies(availLobbies);
+  //   } else {
+  //     setAvailableLobbies(lobbies.data);
+  //   }
+  // };
+  // const joinedLobbies = async () => {
+  //   const response = await axios.get(
+  //     `${BACKEND_URL}/users/${userData.id}/lobbies`
+  //   );
+  //   setLobbiesJoined(response.data);
+  // };
+  // const joinLobby = async (lobbyId) => {
+  //   const updatedUserData = await axios.post(
+  //     `${BACKEND_URL}/users/${userData.id}/joinlobby/${lobbyId}`,
+  //     { prevLobbies: userData.lobbiesJoin }
+  //   );
+  //   setUserData(updatedUserData.data);
+  //   joinedLobbies();
+  //   openLobbyList();
+  //   setShowAvailableLobbies(false);
+  //   props.handleUpdateUser(updatedUserData.data);
+  // };
 
-  const getLobbyInfo = async (lobbyId) => {
-    const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
-    setLobbyInfo(response.data);
-  };
+  // const getLobbyInfo = async (lobbyId) => {
+  //   const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
+  //   setLobbyInfo(response.data);
+  // };
 
-  const getFriends = async () => {
-    let friends = [];
-    if (userData.friendsList.length > 0) {
-      for (let friendId of userData.friendsList) {
-        const response = await axios.get(`${BACKEND_URL}/users/${friendId}`);
-        friends.push(response.data);
-      }
-      setUserFriends(friends);
-    }
-  };
+  // const getFriends = async () => {
+  //   let friends = [];
+  //   if (userData.friendsList.length > 0) {
+  //     for (let friendId of userData.friendsList) {
+  //       const response = await axios.get(`${BACKEND_URL}/users/${friendId}`);
+  //       friends.push(response.data);
+  //     }
+  //     setUserFriends(friends);
+  //   }
+  // };
 
-  const getReviews = async () => {
-    const reviews = await axios.get(
-      `${BACKEND_URL}/review/user/${userData.id}`
-    );
-    setUserReviews(reviews.data);
+  const refreshData = (data) => {
+    setUserData(data);
   };
-  let userReviewsListReviewer = userReviews.filter(
-    (review) => review.reviewerId == userData.id
-  );
-  let userReviewsListReviewee = userReviews.filter(
-    (review) => review.revieweeId == userData.id
-  );
 
   return (
-    <div>
-      {" "}
-      <h1>USER DASHBOARD</h1>
+    <div className="container">
+      <Grid container spacing={1}>
+        <Grid item xs={8}>
+          <Card className="dashboard-top-left" variant="outlined">
+            <Typography variant="h1" color="primary" marginLeft="0.5vw">
+              Dashboard
+            </Typography>
+          </Card>
+        </Grid>
+        <Grid item xs={4}>
+          <div className="dashboard-top-right">
+            <Card className="dashboard-top-right-row1">
+              <Button variant="contained" fullWidth sx={{ borderRadius: 50 }}>
+                Friends
+              </Button>
+              <Button variant="outlined" fullWidth sx={{ borderRadius: 50 }}>
+                Leaderboard
+              </Button>
+              <Button variant="outlined" fullWidth sx={{ borderRadius: 50 }}>
+                Logout
+              </Button>
+            </Card>
+            <Card
+              className="dashboard-top-right-row2 scroll"
+              variant="outlined"
+              sx={{ maxHeight: "29vh", overflowY: "auto", marginBottom: "1vh" }}
+            >
+              <Typography
+                variant="h2"
+                color="primary"
+                align="left"
+                marginLeft="0.5vw"
+              >
+                Friends
+              </Typography>
+              <DashboardFriends user={userData} />
+            </Card>
+          </div>
+        </Grid>
+      </Grid>
+
       {userData ? (
-        <div>
-          <img
-            className="profilepic"
-            alt={userData.profilepicture}
-            src={userData.profilepicture}
-          />
-          <p>Username : {userData.username}</p>
-          <p>Email : {userData.email}</p>
-          <p>Bio : {userData.bio}</p>
-          <p>Tokens : {userData.tokens}</p>
-          <p>
-            Activity Ratio:{" "}
-            <button
-              onClick={() => {
-                setShowQuestions(!showQuestions);
-                getUserQuestions();
-                openQuestionsList("answered");
-              }}
-            >
-              {questionsAnswered.length} Questions Answered{" "}
-            </button>
-            /
-            <button
-              onClick={() => {
-                setShowQuestions(!showQuestions);
-                openQuestionsList("asked");
-              }}
-            >
-              {questionsAsked.length} Questions Asked
-            </button>
-          </p>
-          {showQuestions && questionsList
-            ? questionsList.map((question) => {
-                return (
-                  <div key={question.id}>
-                    <p>Asked By: {question.menteeIdAlias.username}</p>
-                    <p>
-                      Answered By:
-                      {question.mentorIdAlias
-                        ? question.mentorIdAlias.username
-                        : null}
-                    </p>
-                    <p>Title: {question.title}</p>
-                    <Link
-                      to={`/lobbies/${question.lobbyId}/questions/${question.id}`}
+        <Grid container spacing={1}>
+          <Grid item xs={8}>
+            <Grid container spacing={1}>
+              <Grid item xs={8}>
+                <Card variant="outlined" className="dashboard-bottom-left">
+                  <div>
+                    <Typography
+                      variant="h1"
+                      color="primary"
+                      align="left"
+                      marginLeft="0.5vw"
                     >
-                      Go To Question
-                    </Link>
-                  </div>
-                );
-              })
-            : null}
-          <br />
-          <button
-            onClick={() => {
-              navigate("/profile");
-            }}
-          >
-            Edit Profile
-          </button>
-          <div>
-            <h4>Lobbies</h4>
-            {lobbiesJoined && lobbiesJoined.length > 0
-              ? lobbiesJoined.map(({ lobby }) => {
-                  return (
-                    <div key={lobby.id}>
-                      <button
-                        onClick={() => {
-                          setShowLobbyInfo(lobby.id);
-                          getLobbyInfo(lobby.id);
-                        }}
-                      >
-                        {lobby.name}
-                      </button>
-                      {lobby.id == showLobbyInfo &&
-                      Object.keys(lobbyInfo).length > 0 ? (
-                        <div>
-                          <p>
-                            {lobbyInfo.numberOnline} people online!
-                            {lobbyInfo.questions.length} unanswered questions!{" "}
-                            <Link to={`/lobbies/${lobby.id}`}>Enter Lobby</Link>
-                          </p>
-                        </div>
-                      ) : null}
-                    </div>
-                  );
-                })
-              : null}
-            <button
-              onClick={() => {
-                openLobbyList();
-                setShowAvailableLobbies(true);
-              }}
-            >
-              + Add
-            </button>
-            <div>
-              {showAvailableLobbies && availableLobbies.length > 0
-                ? availableLobbies.map((lobby) => {
-                    return (
-                      <div key={lobby.id}>
-                        <button>
-                          <Link to={`/lobbies/${lobby.id}`}>{lobby.name}</Link>
-                        </button>
-                        <button
-                          onClick={() => {
-                            joinLobby(lobby.id);
+                      Profile
+                    </Typography>
+                    {/* <Card> */}
+
+                    <Avatar
+                      className="profilepic"
+                      alt={userData.profilepicture}
+                      src={userData.profilepicture}
+                      sx={{
+                        width: "10vw",
+                        height: "auto",
+                        marginLeft: "2vw",
+                      }}
+                    />
+                    <Grid container>
+                      <Grid item xs={8} sx={{ display: "flex" }}>
+                        <Typography
+                          variant="h2"
+                          align="left"
+                          marginTop="1vw"
+                          marginLeft="1vw"
+                        >
+                          {userData.username}
+                        </Typography>
+
+                        <Typography
+                          variant="h6"
+                          align="left"
+                          sx={{ marginLeft: "1vw", marginTop: "2vw" }}
+                        >
+                          ({userData.email})
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography
+                          variant="h4"
+                          align="right"
+                          sx={{
+                            display: "flex",
+                            alignItems: "end",
+                            marginRight: "1vw",
                           }}
                         >
-                          Join
-                        </button>
-                        <p>{lobby.numberOnline} online</p>
-                      </div>
-                    );
-                  })
-                : null}
-            </div>
-          </div>
-        </div>
+                          {userData.rating ? (
+                            <p>Rating: {userData.rating} / 5.0</p>
+                          ) : (
+                            <i>No Rating yet</i>
+                          )}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    {/* </Card> */}
+                    {/* <Card sx={{ marginTop: "1vh" }}> */}
+                    <Typography
+                      variant="h5"
+                      align="left"
+                      sx={{ marginLeft: "1vw" }}
+                    >
+                      <i>{userData.bio}</i>
+                    </Typography>
+                    {/* </Card> */}
+
+                    <br />
+                    <Grid
+                      className="dashboard-edit-profile"
+                      sx={{ display: "flex", justifyContent: "flex-end" }}
+                    >
+                      {/* <Button>
+                        <EditIcon fontSize="large" />
+                      </Button> */}
+                      <EditProfileModalDialogs
+                        userData={userData}
+                        handleSignIn={props.handleUpdateUser}
+                        handleRefreshData={refreshData}
+                      />
+                    </Grid>
+                  </div>
+                </Card>
+              </Grid>
+
+              <Grid item xs={4}>
+                <Card
+                  variant="outlined"
+                  className="dashboard-bottom-left-right"
+                >
+                  <DashboardReviews user={userData} />
+                </Card>
+                <Card
+                  variant="outlined"
+                  className="dashboard-bottom-left-right"
+                >
+                  <DashboardQuestions user={userData} />
+                </Card>
+                <Card
+                  variant="outlined"
+                  className="dashboard-bottom-left-right"
+                  sx={{ maxHeight: "17vh", position: "relative" }}
+                >
+                  <Typography
+                    variant="h2"
+                    align="left"
+                    color="primary"
+                    marginLeft="0.5vw"
+                  >
+                    Tokens
+                  </Typography>
+                  <Typography variant="h4">{userData.tokens}</Typography>
+                  <Grid container className="token-add">
+                    <Button>
+                      {/* <Typography fontWeight="500" fontSize={20}>
+                        + Add
+                      </Typography> */}
+                      <AddCircleIcon fontSize="large" />
+                    </Button>
+                  </Grid>
+                </Card>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={4}>
+            <Card variant="outlined" className="dashboard-bottom-right">
+              <DashboardLobbies user={userData} />
+            </Card>
+          </Grid>
+        </Grid>
       ) : null}
-      <div>
-        <h3>Friends</h3>
-        {userFriends && userFriends.length > 0 ? (
-          userFriends.map((friend) => {
-            return (
-              <div key={friend.id}>
-                <Link to={`/users/${friend.id}`}>
-                  <p>{friend.username}</p>
-                </Link>
-                {friend.online ? <p>Online</p> : null}
-              </div>
-            );
-          })
-        ) : (
-          <p>No Friends Yet</p>
-        )}
-      </div>
-      <div>
-        <h3>Reviews</h3>
-        {userReviews && userReviews.length > 0 ? (
-          <div>
-            <h5>As Reviewer</h5>
-            {userReviewsListReviewer.map((review) => {
-              return (
-                <div>
-                  <p>Question Id:{review.questionId}</p>
-                  <p>Reviewee:{review.revieweeIdAlias.username}</p>
-                  <p>Details:{review.reviewContent}</p>
-                </div>
-              );
-            })}
-            <h5>As Reviewee</h5>
-            {userReviewsListReviewee.map((review) => {
-              return (
-                <div>
-                  <p>Question Id:{review.questionId}</p>
-                  <p>Reviewer:{review.reviewerIdAlias.username}</p>
-                  <p>Details:{review.reviewContent}</p>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <p>No Reviews Yet</p>
-        )}
-      </div>
     </div>
   );
 }

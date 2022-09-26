@@ -37,10 +37,11 @@ export default function SingleLobby(props) {
       navigate("/");
     } else {
       getLobbyData();
-      props.setRefresh(posted);
+      // props.setRefresh(posted);
+      newUserData();
     }
     // eslint-disable-next-line
-  }, [posted]);
+  }, []);
 
   const updateUserLocation = async () => {
     if (userData) {
@@ -90,6 +91,7 @@ export default function SingleLobby(props) {
     const newData = await axios.get(`${BACKEND_URL}/users/${userData.id}`);
     setUserData(newData.data);
     console.log("get new user data!");
+    console.log(userData);
   };
 
   useEffect(() => {
@@ -309,7 +311,7 @@ export default function SingleLobby(props) {
           height: "6.5vh",
           display: "flex",
           justifyContent: "space-between",
-          mt: 2,
+          mt: 5,
           mb: 5,
         }}
         wrap="nowrap"

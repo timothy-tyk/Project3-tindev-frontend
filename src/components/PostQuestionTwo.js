@@ -14,6 +14,9 @@ import {
 import { set, push, ref as databaseRef } from "firebase/database";
 import { storage, database } from "../DB/firebase";
 import { Typography } from "@mui/material";
+import { useLoaderData } from "react-router-dom";
+
+import { BACKEND_URL } from "../constants.js";
 
 function PostQuestionTwo(props) {
   const [postStatus, setPostStatus] = useState(false);
@@ -32,6 +35,16 @@ function PostQuestionTwo(props) {
   };
 
   const IMAGES_FOLDER_NAME = "questionpictures";
+
+  useEffect(() => {
+    newUserData();
+  }, []);
+
+  const newUserData = async () => {
+    const newData = await axios.get(`${BACKEND_URL}/users/${userData.id}`);
+    setUserData(newData.data);
+    console.log("get new user data!");
+  };
 
   const uploadImage = async (e, file, user) => {
     e.preventDefault();
@@ -59,6 +72,7 @@ function PostQuestionTwo(props) {
 
   const postNewQuestion = async (e) => {
     e.preventDefault();
+    console.log(userData);
     let imageUrl;
     if (fileInputFile) {
       imageUrl = await uploadImage(e);
@@ -72,15 +86,11 @@ function PostQuestionTwo(props) {
 
     if (title == "") {
       setTitleError(true);
-    }
-    if (tokensOffered > userData.tokens || isNaN(tokensOffered)) {
+    } else if (tokensOffered > userData.tokens || isNaN(tokensOffered)) {
       setTokenError(true);
-    }
-    if (text == "") {
+    } else if (text == "") {
       setTextError(true);
-    }
-
-    if (!titleError && !tokenError && !textError) {
+    } else if (!titleError && !tokenError && !textError) {
       //send it to DB as a string
       const menteeId = props.userData.id;
       const lobbyId = props.lobbyId;
@@ -102,6 +112,7 @@ function PostQuestionTwo(props) {
         props.setPosted(!props.posted);
       });
     }
+    newUserData();
   };
 
   return (
