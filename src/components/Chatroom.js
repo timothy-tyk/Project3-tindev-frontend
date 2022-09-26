@@ -213,6 +213,11 @@ function Chatroom() {
                       color="primary"
                     />
                   </Grid>
+                  {question.mentorId && (
+                    <Typography>
+                      You are talking to {question.mentorIdAlias.username}{" "}
+                    </Typography>
+                  )}
                 </Grid>
               )}
             </Grid>
@@ -245,12 +250,14 @@ function Chatroom() {
           {/* <Grid item> */}
           <Grid container justifyContent="center" mt="3vh" mb={5}>
             <Grid item xs={6}>
-              <Review
-                question={question}
-                role={role}
-                revieweeId={revieweeId}
-                reviewerId={reviewerId}
-              />
+              {showReview && (
+                <Review
+                  question={question}
+                  role={role}
+                  revieweeId={revieweeId}
+                  reviewerId={reviewerId}
+                />
+              )}
             </Grid>
           </Grid>
           {/* container for review ends here */}

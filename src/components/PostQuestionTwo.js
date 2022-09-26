@@ -58,6 +58,7 @@ function PostQuestionTwo(props) {
   };
 
   const postNewQuestion = async (e) => {
+    console.log({ titleError, textError, tokenError });
     e.preventDefault();
     let imageUrl;
     if (fileInputFile) {
@@ -70,13 +71,11 @@ function PostQuestionTwo(props) {
     setTextError(false);
     setTokenError(false);
 
-    if (title == "") {
+    if (title === "") {
       setTitleError(true);
-    }
-    if (tokensOffered > userData.tokens || isNaN(tokensOffered)) {
+    } else if (tokensOffered > userData.tokens || isNaN(tokensOffered)) {
       setTokenError(true);
-    }
-    if (text == "") {
+    } else if (text === "") {
       setTextError(true);
     }
 
