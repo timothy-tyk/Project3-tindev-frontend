@@ -52,7 +52,7 @@ export default function App() {
       <div className="App">
         <header className="App-header">
           <div className="main"> </div>
-          <AppBar className="topNav" color="black" mb={10} sx={{ mb: 7 }}>
+          <AppBar className="topNav" color="black">
             <Grid container>
               <Grid item xs={6} className="links left-link">
                 <Button>
