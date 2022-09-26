@@ -6,6 +6,7 @@ import { TextField } from "@mui/material";
 import { UserContext } from "../App.js";
 import RichTextEditor from "./RichTextEditor.js";
 import { Button } from "@mui/material";
+import RichTextDisplayForEdits from "./RichTextDisplayForEdits.js";
 function EditSingleQuestion(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
   const [title, setTitle] = useState(props.question.title);
@@ -31,7 +32,8 @@ function EditSingleQuestion(props) {
     console.log(item, "rich text");
   };
 
-  const postQuestion = async () => {
+  const postQuestion = async (e) => {
+    e.preventDefault();
     const submitBody = {
       title: title,
       details: text,
@@ -44,7 +46,7 @@ function EditSingleQuestion(props) {
       .then((res) => {
         console.log(submitBody, "submit Body");
         console.log(props.edited, "edited state");
-        alert("u have edited ur question!");
+        alert("you have edited ur question!");
         props.setEdited(!props.edited);
         props.handleClose();
       });
@@ -60,7 +62,7 @@ function EditSingleQuestion(props) {
 
       {props.edited && (
         <div>
-          <form noValidate autoComplete="off" onSubmit={(e) => postQuestion()}>
+          <form noValidate autoComplete="off" onSubmit={(e) => postQuestion(e)}>
             <TextField
               sx={{ mt: 2, mb: 2 }}
               id="standard-basic"
@@ -79,11 +81,14 @@ function EditSingleQuestion(props) {
               value={tokensOffered}
               onChange={(e) => setTokensOffered(e.target.value)}
             />
-
             <RichTextEditor
               getRichText={(item) => getRichText(item)}
               text={text}
             />
+            <br />
+            <br />
+            Original Question Details:
+            <RichTextDisplayForEdits richText={text} />
             <Button
               type="submit"
               color="secondary"

@@ -165,7 +165,14 @@ function Chatroom() {
               {question && (
                 <Grid item xs={8}>
                   <Grid container justifyContent="center" alignContent="center">
-                    <Grid item xs={6}>
+                    <Grid
+                      item
+                      xs={6}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
                       <Typography variant="h4"> {question.title}</Typography>{" "}
                     </Grid>
                   </Grid>
