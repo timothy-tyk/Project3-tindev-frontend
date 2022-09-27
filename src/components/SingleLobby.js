@@ -38,7 +38,6 @@ export default function SingleLobby(props) {
       navigate("/");
     } else {
       getLobbyData();
-      // props.setRefresh(posted);
       newUserData();
     }
     // eslint-disable-next-line
@@ -91,13 +90,10 @@ export default function SingleLobby(props) {
   const newUserData = async () => {
     const newData = await axios.get(`${BACKEND_URL}/users/${userData.id}`);
     setUserData(newData.data);
-    console.log("get new user data!");
-    console.log(userData);
   };
 
   useEffect(() => {
     getUserStatsData();
-    console.log(questionsData);
     newUserData();
     // eslint-disable-next-line
   }, [questionsData]);

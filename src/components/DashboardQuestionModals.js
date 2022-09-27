@@ -78,10 +78,8 @@ export default function QuestionModalDialog(props) {
         //   .includes(value.toLowerCase()) ||
         // question.details.toLowerCase().includes(value.toLowerCase())
       });
-      console.log(value);
       setSearchList(results);
     }
-    console.log(searchList);
   };
 
   const displaySearch = searchList.map((question) => {

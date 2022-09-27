@@ -1,11 +1,7 @@
 import React from "react";
-import { useEffect, useState, useContext } from "react";
-import { UserContext } from "../App.js";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../constants";
-import { Grid } from "@mui/material";
 
 export default function SingleLobbyNumberDisplay(props) {
   const [numberOnline, setNumberOnline] = useState(0);
@@ -25,7 +21,6 @@ export default function SingleLobbyNumberDisplay(props) {
 
     const interval = setInterval(() => {
       getNumberOnline();
-      console.log("refreshing number online");
     }, 5000);
 
     return () => clearInterval(interval);

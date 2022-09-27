@@ -22,7 +22,7 @@ function KickMentor(props) {
     axios
       .put("http://localhost:3000/question/kickMentor", submitBody)
       .then((res) => {
-        alert("u have kicked the mentor!");
+        alert("You have kicked the mentor!");
         props.setKicked(!props.kicked);
       });
   };

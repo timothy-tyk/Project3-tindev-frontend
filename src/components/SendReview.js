@@ -9,7 +9,6 @@ function SendReview(props) {
 
   const [reviewContent, setReviewContent] = useState("");
   const { lobbyId } = useParams();
-  //hard coded
   const navigate = useNavigate();
   const submitReview = async () => {
     const submitBody = {
@@ -20,7 +19,7 @@ function SendReview(props) {
       role: props.role,
     };
     axios.post("http://localhost:3000/review/", submitBody).then((res) => {
-      alert("u have sent a review! back to lobby!");
+      alert("You have sent a review! Back to lobby!");
       navigate(-1);
     });
   };

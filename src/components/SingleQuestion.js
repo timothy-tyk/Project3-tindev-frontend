@@ -48,26 +48,18 @@ function SingleQuestion(props) {
     if (!user) {
       navigate("/");
     } else {
-      console.log("re-render qns", edited);
       getQuestionData();
     }
     // eslint-disable-next-line
   }, [edited, kicked]);
 
   useEffect(() => {
-    console.log(questionData);
     if (questionData.solved === true) {
       setSolved(true);
     } else {
       setSolved(false);
     }
   }, [questionData]);
-
-  // useEffect(() => {
-  //   if (questionData.menteeId === userData.id) {
-  //     setUserIsMentee(true);
-  //   } else setUserIsMentee(false);
-  // }, [solved]);
 
   function time_ago(time) {
     switch (typeof time) {

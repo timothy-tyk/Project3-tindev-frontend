@@ -17,7 +17,7 @@ function EditSolved(props) {
     axios
       .put("http://localhost:3000/question/updateStatus", submitBody)
       .then((res) => {
-        alert("u have marked it as solved! question is closed");
+        alert("You have marked it as solved! question is closed");
         navigate(-1);
       });
   };

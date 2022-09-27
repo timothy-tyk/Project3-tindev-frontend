@@ -25,12 +25,10 @@ export default function DashboardLobbies(props) {
   // Lobby Join Functionality
   const openLobbyList = async () => {
     const lobbies = await axios.get(`${BACKEND_URL}/lobbies`);
-    console.log("lobbies", lobbies);
     if (userData.lobbiesJoin) {
       let availLobbies = lobbies.data.filter(
         (lobby) => !userData.lobbiesJoin.includes(lobby.id)
       );
-      console.log(availLobbies, "availLobbies");
       setAvailableLobbies(availLobbies);
     } else {
       setAvailableLobbies(lobbies.data);
@@ -40,7 +38,6 @@ export default function DashboardLobbies(props) {
     const response = await axios.get(
       `${BACKEND_URL}/users/${userData.id}/lobbies`
     );
-    console.log("getJoinnedLobbies", response.data);
     setLobbiesJoined(response.data);
   };
   const joinLobby = async (lobbyId) => {
@@ -59,11 +56,9 @@ export default function DashboardLobbies(props) {
     const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
     setLobbyInfo(response.data);
     const online = await axios.get(`${BACKEND_URL}/users/`);
-    console.log(online.data);
     let usersOnline = online.data.filter(
       (user) => user.location == response.data.name
     );
-    console.log(usersOnline);
     setLobbyOnline(usersOnline.length);
   };
 
