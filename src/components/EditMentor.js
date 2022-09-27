@@ -24,7 +24,7 @@ function EditMentor(props) {
     axios
       .put("http://localhost:3000/question/updateMentor", submitBody)
       .then((res) => {
-        alert("u have accepted the question! Going to chatroom now!");
+        alert("You have accepted the question! Going to chatroom now!");
 
         navigate(`/lobbies/${lobbyId}/questions/${props.question.id}/chatroom`);
       });

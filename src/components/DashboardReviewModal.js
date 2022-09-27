@@ -69,6 +69,7 @@ export default function ReviewModalDialog(props) {
     if (value.length > 0) {
       const results = props.reviewList.filter((review) => {
         return review.reviewContent.toLowerCase().includes(value.toLowerCase());
+        // for more search parameters
         // ||
         // question.mentorIdAlias.username
         //   .toLowerCase()
@@ -78,10 +79,8 @@ export default function ReviewModalDialog(props) {
         //   .includes(value.toLowerCase()) ||
         // question.details.toLowerCase().includes(value.toLowerCase())
       });
-      console.log(value);
       setSearchList(results);
     }
-    console.log(searchList);
   };
 
   const displaySearch = searchList.map((review, index) => {
@@ -117,6 +116,7 @@ export default function ReviewModalDialog(props) {
                 <ProfileModalDialog
                   handleUpdateUser={props.handleUserData}
                   profileId={review.revieweeIdAlias.id}
+                  small
                 />
                 | By:
                 {/* <Link
@@ -128,6 +128,7 @@ export default function ReviewModalDialog(props) {
                 <ProfileModalDialog
                   handleUpdateUser={props.handleUserData}
                   profileId={review.revieweeIdAlias.id}
+                  small
                 />
               </Typography>
             </Grid>
@@ -176,14 +177,12 @@ export default function ReviewModalDialog(props) {
                       handleUpdateUser={props.handleUserData}
                       profileId={review.revieweeIdAlias.id}
                       small
-                      sx={{ display: "flex" }}
                     />
                     | By:
                     <ProfileModalDialog
                       handleUpdateUser={props.handleUserData}
                       profileId={review.reviewerIdAlias.id}
                       small
-                      sx={{ display: "flex" }}
                     />
                   </Typography>
                 </Grid>

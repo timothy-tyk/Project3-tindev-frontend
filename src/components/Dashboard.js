@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { BACKEND_URL } from "../constants";
 import axios from "axios";
@@ -38,23 +38,19 @@ export default function Dashboard(props) {
   const newUserData = async () => {
     const newData = await axios.get(`${BACKEND_URL}/users/${userData.id}`);
     setUserData(newData.data);
-    console.log("get new user data!");
   };
 
   const getRatings = async () => {
     const ratings = await axios.get(
       `${BACKEND_URL}/review/user/${userData.id}`
     );
-    console.log(ratings.data);
     let ratingsData = ratings.data.filter(
       (rating) => rating.revieweeIdAlias.id == userData.id
     );
-    console.log(ratingsData);
     let total = 0;
     ratingsData.forEach((data) => {
       total += data.rating;
     });
-    console.log(total);
 
     let ratingData = total / ratingsData.length;
     setUserRating(ratingData);
@@ -65,7 +61,6 @@ export default function Dashboard(props) {
       `${BACKEND_URL}/users/${userData.id}/updateLocation`,
       { location: "Dashboard" }
     );
-    console.log(updatedLocation);
   };
 
   const refreshData = (data) => {

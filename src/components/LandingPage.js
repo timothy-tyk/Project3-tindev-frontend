@@ -18,29 +18,7 @@ export default function LandingPage(props) {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    console.log("login");
     loginWithRedirect();
-  };
-
-  const animationEffect = () => {
-    anime({
-      targets: "#demo-svg polygon",
-      points: [
-        {
-          value:
-            "64 68.64 8.574 100 63.446 67.68 64 4 64.554 67.68 119.426 100",
-        },
-        {
-          value: "64 128 8.574 96 8.574 32 64 0 119.426 32 119.426 96",
-        },
-      ],
-      easing: "easeInOutExpo",
-      baseFrequency: 0,
-      scale: 1,
-      duration: 2500,
-      loop: true,
-      direction: "alternate",
-    });
   };
 
   const userInfo = async (user) => {
@@ -64,7 +42,6 @@ export default function LandingPage(props) {
   };
 
   useEffect(() => {
-    // animationEffect();
     if (isAuthenticated) {
       userInfo(user);
     } else {
@@ -74,8 +51,8 @@ export default function LandingPage(props) {
 
   return (
     <div className="container">
-      <Grid container spacing={4}>
-        <Grid item xs={4}>
+      <Grid container spacing={12}>
+        <Grid item xs={12}>
           <Typography variant="h3" color="primary">
             Code-llaborate with Devs, Urgently.
           </Typography>
@@ -88,23 +65,6 @@ export default function LandingPage(props) {
           >
             Get Started
           </Button>
-        </Grid>
-        <Grid item xs={8}>
-          <div className="svg-container">
-            <svg
-              id="demo-svg"
-              width="100%"
-              height="100%"
-              viewBox="0 0 300 300"
-              preserveAspectRatio="xMaxYMax"
-            >
-              <polygon
-                stroke="none"
-                fill="#CFFF04"
-                points="64 128 8.574 96 8.574 32 64 0 119.426 32 119.426 96"
-              />
-            </svg>
-          </div>
         </Grid>
       </Grid>
     </div>

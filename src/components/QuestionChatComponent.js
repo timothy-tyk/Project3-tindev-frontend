@@ -19,8 +19,6 @@ export default function QuestionChatComponent(props) {
     socket.emit("join_question", { question: questionId });
     // eslint-disable-next-line
     getChatLogs();
-    console.log(userData, "userdata");
-    console.log(userData.id);
   }, []);
 
   useEffect(() => {
@@ -34,13 +32,11 @@ export default function QuestionChatComponent(props) {
       setChatMessages((chatMessages) => [...chatMessages, newMessage]);
       // getChatLogs();
     });
-    console.log("socket fire off");
     // eslint-disable-next-line
   }, [socket]);
 
   const getChatLogs = async () => {
     const response = await axios.get(`${BACKEND_URL}/message/${questionId}`);
-    console.log(response.data);
     let messages = [];
     response.data.forEach((message) => {
       let messageObject = {
@@ -69,7 +65,6 @@ export default function QuestionChatComponent(props) {
       userId: userData.id,
       message: currentMessage,
     });
-    console.log(output);
     getChatLogs();
 
     setCurrentMessage("");

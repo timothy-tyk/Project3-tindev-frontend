@@ -2,13 +2,11 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../App";
-import SendReview from "./SendReview";
 import Review from "./Review";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import tokenImage from "../images/token.png";
 import QuestionChatComponent from "./QuestionChatComponent";
 import RichTextDisplay from "./RichTextDisplay";
-import ProfileModalDialog from "./ProfileModal";
 import {
   Grid,
   Typography,
@@ -33,8 +31,6 @@ function Chatroom(props) {
   if (questionId !== params.questionId) {
     setQuestionId(params.questionId);
   }
-  // const [review, setReview] = useState();
-  // const [reviewExist, setReviewExist] = useState();
   const [showReview, setShowReview] = useState();
   /* If there is a review, show the review, if not show the form */
 
@@ -98,8 +94,6 @@ function Chatroom(props) {
       axios
         .get(`http://localhost:3000/question/${questionId}`)
         .then((response) => {
-          console.log(response, "response");
-          console.log(response.data, "response.data");
           setQuestion(response.data[0]);
           if (response.data[0].solved === true) {
             setShowReview(true);
@@ -122,8 +116,6 @@ function Chatroom(props) {
           }
         });
     }
-
-    console.log(params, "params");
   }, []);
 
   return (
@@ -239,8 +231,8 @@ function Chatroom(props) {
                         small
                       /> */}
                       {userData.id == question.mentorIdAlias.id
-                        ? question.menteeIdAlias.id
-                        : question.mentorIdAlias.id}{" "}
+                        ? question.menteeIdAlias.username
+                        : question.mentorIdAlias.username}{" "}
                     </Typography>
                   )}
                 </Grid>

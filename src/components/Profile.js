@@ -4,14 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { UserContext } from "../App";
 import axios from "axios";
-import {
-  getDownloadURL,
-  getStorage,
-  ref as storageReference,
-  uploadBytes,
-} from "firebase/storage";
-import { set, push, ref as databaseRef } from "firebase/database";
-import { storage, database } from "../DB/firebase";
+
 import { BACKEND_URL } from "../constants";
 
 export default function Profile(props) {
@@ -23,8 +16,7 @@ export default function Profile(props) {
   const [questionsList, setQuestionsList] = useState([]);
   const [showQuestions, setShowQuestions] = useState(false);
   const [lobbiesJoined, setLobbiesJoined] = useState([]);
-  const [lobbyInfo, setLobbyInfo] = useState({});
-  const [showLobbyInfo, setShowLobbyInfo] = useState();
+
   const navigate = useNavigate();
 
   useEffect(() => {

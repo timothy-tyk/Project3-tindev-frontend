@@ -1,14 +1,8 @@
 import React from "react";
-import {
-  Editor,
-  EditorState,
-  editorState,
-  getDefaultKeyBinding,
-  RichUtils,
-} from "draft-js";
+import { Editor, EditorState } from "draft-js";
 import "./RichText.css";
 import "../../node_modules/draft-js/dist/Draft.css";
-import { convertToRaw, convertFromRaw } from "draft-js";
+import { convertFromRaw } from "draft-js";
 
 class RichTextDisplayForEdits extends React.Component {
   constructor(props) {

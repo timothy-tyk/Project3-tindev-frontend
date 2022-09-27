@@ -30,7 +30,6 @@ export default function EditProfile(props) {
     if (!user) {
       navigate("/");
     } else {
-      console.log(userData);
       setEditUserName(userData.username);
       setFileInputFile(userData.profilepicture);
       setEditBio(userData.bio == null ? "" : userData.bio);
@@ -49,7 +48,6 @@ export default function EditProfile(props) {
         return getDownloadURL(snapshot.ref);
       })
       .then((url) => {
-        console.log(url);
         setFileInputValue(url);
         return url;
       });
@@ -58,11 +56,9 @@ export default function EditProfile(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
     let imageUrl;
     if (imageChanged) {
       imageUrl = await uploadImage(e);
-      console.log(imageUrl);
     } else {
       imageUrl = userData.profilepicture;
     }
@@ -90,7 +86,6 @@ export default function EditProfile(props) {
           type="file"
           onChange={(e) => {
             setImageChanged(true);
-            console.log(e.target.files[0]);
             setFileInputFile(e.target.files[0]);
             setFileInputValue(e.target.files[0].name);
           }}

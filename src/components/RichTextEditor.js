@@ -1,15 +1,8 @@
 import React from "react";
-import {
-  Editor,
-  EditorState,
-  editorState,
-  getDefaultKeyBinding,
-  RichUtils,
-} from "draft-js";
+import { Editor, EditorState, getDefaultKeyBinding, RichUtils } from "draft-js";
 import "./RichText.css";
 import "../../node_modules/draft-js/dist/Draft.css";
 import { convertToRaw } from "draft-js";
-import draftToMarkdown from "draftjs-to-markdown";
 
 class RichTextEditor extends React.Component {
   constructor(props) {
@@ -17,15 +10,9 @@ class RichTextEditor extends React.Component {
     this.state = { editorState: EditorState.createEmpty() };
     this.focus = () => this.refs.editor.focus();
     this.onChange = (editorState) => {
-      // JSON.stringify(convertToRaw(the content here))
       this.setState({ editorState });
       const blocksFirst = this.state.editorState.getCurrentContent();
       const blocks = JSON.stringify(convertToRaw(blocksFirst));
-      // const value = blocks
-      //   .map((block) => (!block.text.trim() && "\n") || block.text)
-      //   .join("\n");
-      console.log(this.state.editorState, "editor state");
-      console.log(blocks, "blocks");
       // pass it back up to send back to DB here
       this.props.getRichText(blocks);
     };
@@ -214,10 +201,3 @@ const InlineStyleControls = (props) => {
   );
 };
 export default RichTextEditor;
-
-{
-  /* const rawContent = convertToRaw(
-        this.state.editorState.getCurrentContent()
-      );
-      markup = draftToMarkdown(rawContent); */
-}

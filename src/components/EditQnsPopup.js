@@ -63,9 +63,6 @@ export default function EditQnsPopup(props) {
 
   return (
     <div>
-      {/* <Button onClick={()=>{this.setState({showOverview:!this.state.showOverview})}} variant="outlined" >
-Overview
-</Button> */}
       <Button
         variant="outlined"
         onClick={() => {

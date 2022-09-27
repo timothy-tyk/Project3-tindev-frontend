@@ -17,19 +17,9 @@ function EditSingleQuestion(props) {
   const { questionId, lobbyId } = useParams();
 
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log(
-      { title },
-      { text },
-      { tokensOffered },
-      { questionId },
-      { lobbyId }
-    );
-  }, []);
 
   const getRichText = async (item) => {
     setText(item);
-    console.log(item, "rich text");
   };
 
   const postQuestion = async (e) => {
@@ -44,9 +34,7 @@ function EditSingleQuestion(props) {
     axios
       .put("http://localhost:3000/question/editQuestion", submitBody)
       .then((res) => {
-        console.log(submitBody, "submit Body");
-        console.log(props.edited, "edited state");
-        alert("you have edited ur question!");
+        alert("You have edited your question.");
         props.setEdited(!props.edited);
         props.handleClose();
       });

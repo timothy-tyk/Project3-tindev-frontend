@@ -34,7 +34,6 @@ export default function LobbyChatComponent(props) {
       setChatMessages((chatMessages) => [...chatMessages, newMessage]);
       // getChatLogs();
     });
-    console.log("socket fire off");
     // eslint-disable-next-line
     console.log(chatMessages);
   }, [socket]);

@@ -14,11 +14,9 @@ import {
   Alert,
 } from "@mui/material";
 import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
-import { alpha } from "@mui/material";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
 function Review(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
-  // const [review, setReview] = useState();
   const [reviewExist, setReviewExist] = useState(false);
   const [reviewSent, setReviewSent] = useState(false);
   const [reviewContent, setReviewContent] = useState("");
@@ -42,26 +40,19 @@ function Review(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("qns id", questionId);
-    console.log("review!");
     if (questionId) {
       axios.get(`http://localhost:3000/review/${questionId}`).then((review) => {
-        console.log(review.data, "review.data");
         if (review.data.length > 0) {
           setReviewContent(review.data);
 
           for (let i = 0; i < review.data.length; i++) {
             if (review.data[i].reviewerId === userData.id) {
-              console.log("my user exist in review");
               setCanReview(false);
             }
           }
         }
-        console.log(canReview, "canreview?");
       });
     }
-
-    console.log(reviewExist, "reviewExist", canReview, "canReview");
   }, [reviewSent]);
 
   const submitReview = async (e) => {
@@ -79,9 +70,8 @@ function Review(props) {
         role: props.role,
         rating: rating,
       };
-      console.log(submitBody, "submitBody");
       axios.post("http://localhost:3000/review/", submitBody).then((res) => {
-        alert("u have sent a review!");
+        alert("You have sent a review.");
         setInputText("");
         setReviewSent(!reviewSent);
       });
