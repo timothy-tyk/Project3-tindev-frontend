@@ -15,27 +15,21 @@ export default function LobbyChatComponent(props) {
   const lobbyName = props.lobbyData.name;
 
   useEffect(() => {
-    //when user joins the lobby and this chat component is refreshed, send the lobbyId to backend
-    // eslint-disable-next-line
-    // socket.emit("send_message", {});
     getChatLogs();
+    socket.emit("join_room", { room: `${lobbyId}chat` });
   }, []);
 
   useEffect(() => {
     socket.on("received_message", (data) => {
-      let newMessage = {
-        username: data.username,
-        message: data.message,
-        room: data.room,
-        date: data.date,
-        id: data.userId,
-      };
-      setChatMessages((chatMessages) => [...chatMessages, newMessage]);
-      // getChatLogs();
+      getChatLogs();
     });
     // eslint-disable-next-line
     console.log(chatMessages);
   }, [socket]);
+
+  useEffect(() => {
+    socket.emit("send_message", { room: `${lobbyId}chat` });
+  }, [chatMessages]);
 
   const getChatLogs = async () => {
     const response = await axios.get(`${BACKEND_URL}/lobbies/${lobbyId}`);
@@ -50,20 +44,11 @@ export default function LobbyChatComponent(props) {
   };
 
   const sendMessage = async () => {
-    //user sends a message which includes username, message, and room(i.e.lobbyId)
-    socket.emit("send_message", {
-      username: userData.username,
-      message: currentMessage,
-      room: lobbyId,
-      date: new Date().toLocaleString(),
-      userId: userData.id,
-    });
-    //add message to the database
     let newMessage = JSON.stringify({
       username: userData.username,
       date: new Date().toLocaleString(),
       message: currentMessage,
-      room: lobbyId,
+      room: `${lobbyId}chat`,
       userId: userData.id,
     });
     const dbMessages = await axios.post(
@@ -73,11 +58,6 @@ export default function LobbyChatComponent(props) {
       }
     );
     getChatLogs();
-    //set chat messages to the same value as what was emited to backend
-    // setChatMessages((chatMessages) => [
-    //   ...chatMessages,
-    //   { userame: userData.username, message: currentMessage, room: lobbyId,  },
-    // ]);
     setCurrentMessage("");
   };
 
