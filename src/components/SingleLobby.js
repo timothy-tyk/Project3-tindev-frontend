@@ -16,6 +16,10 @@ import backIcon from "../images/backIcon.png";
 import onlineUsersIcon from "../images/onlineUsersIcon.png";
 import PostQuestionPopup from "./PostQuestionPopup.js";
 
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
+
 export default function SingleLobby(props) {
   const { user } = useAuth0();
   const { lobbyId } = useParams();
@@ -39,9 +43,16 @@ export default function SingleLobby(props) {
     } else {
       getLobbyData();
       newUserData();
+      socket.emit("join_room", { room: lobbyId });
     }
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    socket.on("update_the_frontend", (data) => {
+      getQuestionsData();
+    });
+  }, [socket]);
 
   const updateUserLocation = async () => {
     if (userData) {

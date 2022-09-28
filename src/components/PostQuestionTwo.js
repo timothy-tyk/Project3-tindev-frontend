@@ -18,6 +18,10 @@ import { useLoaderData } from "react-router-dom";
 
 import { BACKEND_URL } from "../constants.js";
 
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
+
 function PostQuestionTwo(props) {
   const [postStatus, setPostStatus] = useState(false);
   const [userData, setUserData] = useState(useContext(UserContext));
@@ -109,6 +113,7 @@ function PostQuestionTwo(props) {
       });
     }
     newUserData();
+    socket.emit("something_has_updated", { room: props.lobbyId });
   };
 
   return (

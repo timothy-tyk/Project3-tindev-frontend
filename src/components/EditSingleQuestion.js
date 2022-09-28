@@ -7,6 +7,11 @@ import { UserContext } from "../App.js";
 import RichTextEditor from "./RichTextEditor.js";
 import { Button } from "@mui/material";
 import RichTextDisplayForEdits from "./RichTextDisplayForEdits.js";
+
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:3000");
+
 function EditSingleQuestion(props) {
   const [userData, setUserData] = useState(useContext(UserContext));
   const [title, setTitle] = useState(props.question.title);
@@ -38,6 +43,7 @@ function EditSingleQuestion(props) {
         props.setEdited(!props.edited);
         props.handleClose();
       });
+    socket.emit("something_has_updated", { room: lobbyId });
   };
   return (
     <div>

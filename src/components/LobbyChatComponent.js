@@ -16,7 +16,6 @@ export default function LobbyChatComponent(props) {
 
   useEffect(() => {
     //when user joins the lobby and this chat component is refreshed, send the lobbyId to backend
-    socket.emit("join_room", { room: lobbyId });
     // eslint-disable-next-line
     // socket.emit("send_message", {});
     getChatLogs();
